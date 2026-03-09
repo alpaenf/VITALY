@@ -117,7 +117,7 @@ class AiChatController extends Controller
 
         // -- SEARCH YOUTUBE VIDEOS HANYA JIKA DIBUTUHKAN --
         $videos = [];
-        $wantVideo = str_contains($reply, '[TAMPILKAN_VIDEO]') || preg_match('/(ya|mau|boleh|tampilin|lihat|tampilkan|carikan|silakan).*video/i', $lastUserText);
+        $wantVideo = str_contains($reply, '[TAMPILKAN_VIDEO]') || preg_match('/(^|\b)(ya|mau|boleh|tampilin|lihat|tampilkan|carikan|silakan|gas|oke|ayo|y)(\b|$)/i', trim($lastUserText));
         $youtubeKey = env('YOUTUBE_API_KEY', '');
         
         // Buang tag khusus dari respons balasan
@@ -195,6 +195,10 @@ class AiChatController extends Controller
         $d_hr = ($record && $record->heart_rate) ? " *(detak kamu: {$record->heart_rate} bpm)*" : "";
         $d_spo2 = ($record && $record->oxygen_saturation) ? " *(SpO2 kamu: {$record->oxygen_saturation}%)*" : "";
         $d_temp = ($record && $record->temperature) ? " *(suhu kamu: {$record->temperature}°C)*" : "";
+
+        if (preg_match('/(^|\b)(ya|mau|boleh|tampilin|lihat|tampilkan|carikan|silakan|gas|oke|ayo|y)(\b|$)/i', trim($t)) || preg_match('/(ya|mau|boleh|tampilin|lihat|tampilkan|carikan|silakan).*video/i', $t)) {
+            return "Baik, ini dia video edukasi yang bisa kamu tonton. Semoga bermanfaat ya! [TAMPILKAN_VIDEO]";
+        }
 
         if (preg_match('/(tekanan darah|hipertensi|sistolik|diastolik|tensi|blood pressure)/', $t)) {
             return "Tekanan darah normal itu **di bawah 120/80 mmHg**{$d_bp}.\n\nKlasifikasi Kemenkes RI:\n- **Normal:** <120/<80\n- **Elevated (Meningkat):** 120-129/<80\n- **Hipertensi Tahap 1:** 130-139/80-89\n- **Hipertensi Tahap 2:** >=140/>=90\n- **Krisis:** >180/>120\n\nCara menurunkannya: kurangi garam (<5g/hari atau cukup 1 sendok teh), olahraga aerobik ringan 30 menit 5x/minggu, dan hindari stres. Kalau konsisten di atas 140/90, mending minum obat resep dokter ya.\n\nApakah kamu mau aku carikan video edukasi terkait hal ini?";
