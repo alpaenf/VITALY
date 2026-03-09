@@ -286,27 +286,27 @@ const downloadPdf = (analysis) => {
         if (line.startsWith('# ')) {
             // Ignore main title as we have our own
         } else if (line.startsWith('## ')) {
-            if (inSection) html += '</td></tr>';
+            if (inSection) html += '</table></td></tr>';
             const title = line.slice(3).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>');
-            html += `<tr><th class="section-header">${title}</th></tr><tr><td class="section-content">`;
+            html += `<tr><th class="section-header">${title}</th></tr><tr><td class="section-content"><table class="inner-table">`;
             inSection = true;
         } else if (line.startsWith('### ')) {
             const subtitle = line.slice(4).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>');
-            html += `<div class="sub-header">${subtitle}</div>`;
+            html += `<tr><td colspan="2" class="sub-header">${subtitle}</td></tr>`;
         } else if (line.startsWith('- ') || line.startsWith('* ')) {
             let formatText = line.slice(2).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>');
             if (formatText.includes(':')) {
                 let parts = formatText.split(':');
-                html += `<div class="list-row"><div class="list-label">${parts[0]}:</div><div class="list-value">${parts.slice(1).join(':')}</div></div>`;
+                html += `<tr><td class="list-label">${parts[0]}:</td><td class="list-value">${parts.slice(1).join(':')}</td></tr>`;
             } else {
-                html += `<div class="list-item">&bull; ${formatText}</div>`;
+                html += `<tr><td colspan="2" class="list-item">&bull; ${formatText}</td></tr>`;
             }
         } else if (line !== '') {
             let formatText = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>');
-            html += `<p class="paragraph">${formatText}</p>`;
+            html += `<tr><td colspan="2" class="paragraph">${formatText}</td></tr>`;
         }
     }
-    if (inSection) html += '</td></tr>';
+    if (inSection) html += '</table></td></tr>';
     html += '</table>';
 
     const content = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
@@ -316,19 +316,20 @@ const downloadPdf = (analysis) => {
   .header-box { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #B92521; }
   .logo { color: #B92521; font-size: 24px; font-weight: 900; letter-spacing: 1px; margin-bottom: 5px; text-transform: uppercase; }
   .meta { color: #6b7280; font-size: 13px; font-weight: 500; }
-  .analysis-table { width: 100%; border-collapse: collapse; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-  .section-header { background: #FEF0F0; color: #B92521; text-align: left; padding: 12px 16px; font-size: 14px; border-bottom: 2px solid #F18E8C; border-top: 1px solid #e5e7eb; }
-  .section-content { padding: 12px 16px 16px; background: #fff; vertical-align: top; }
-  .sub-header { color: #A91127; font-weight: 700; font-size: 13px; margin: 10px 0 6px; padding-bottom: 4px; border-bottom: 1px dashed #EFDBDC; }
-  .list-row { display: flex; padding: 6px 0; border-bottom: 1px solid #f3f4f6; page-break-inside: avoid; }
-  .list-row:last-child { border-bottom: none; }
-  .list-label { width: 30%; font-weight: 600; color: #4b5563; padding-right: 15px; }
-  .list-value { width: 70%; color: #111827; }
-  .list-item { padding: 4px 0 4px 10px; position: relative; color: #374151; }
-  .paragraph { margin: 8px 0; color: #374151; }
+  .analysis-table { width: 100%; border-collapse: collapse; border: 2px solid #374151; }
+  .section-header { background: #FEF0F0; color: #B92521; text-align: left; padding: 12px 16px; font-size: 14px; border-bottom: 2px solid #374151; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section-content { padding: 0; background: #fff; vertical-align: top; border-bottom: 2px solid #374151; }
+  .inner-table { width: 100%; border-collapse: collapse; }
+  .inner-table td { border-bottom: 1px solid #9ca3af; padding: 8px 16px; }
+  .inner-table tr:last-child td { border-bottom: none; }
+  .sub-header { color: #A91127; font-weight: 700; font-size: 13px; background: #fafafa; border-bottom: 1px solid #9ca3af; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .list-label { width: 33%; font-weight: 600; color: #4b5563; border-right: 1px solid #9ca3af; vertical-align: top; }
+  .list-value { width: 67%; color: #111827; }
+  .list-item { padding-left: 20px; color: #374151; }
+  .paragraph { color: #374151; }
   strong { color: #111827; }
   .footer { margin-top: 40px; text-align: center; font-size: 11px; color: #9ca3af; padding-top: 15px; border-top: 1px solid #e5e7eb; }
-  @media print { body { padding: 0; box-shadow: none; } .analysis-table { box-shadow: none; border: 1px solid #d1d5db; } }
+  @media print { body { padding: 0; } .analysis-table { border: 2px solid #111; } .section-header { border-bottom: 2px solid #111; border-top: 2px solid #111; } .section-content { border-bottom: 2px solid #111; } .inner-table td, .sub-header, .list-label { border-color: #666; } }
 </style></head><body>
 <div class="header-box">
     <div class="logo">HEALTIVA</div>
