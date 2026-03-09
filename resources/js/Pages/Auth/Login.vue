@@ -22,7 +22,7 @@
                 <input
                     v-model="form.password"
                     :type="showPassword ? 'text' : 'password'"
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    placeholder="********"
                     class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition pr-10"
                     :class="{ 'border-red-400': form.errors.password }"
                     autocomplete="current-password"

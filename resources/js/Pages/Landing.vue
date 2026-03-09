@@ -53,9 +53,8 @@
                     Kesehatan Anda,<br>
                     <span class="text-white/70">Lebih Terkontrol</span>
                 </h1>
-                <p class="hero-anim-2 text-white/70 text-sm sm:text-base leading-relaxed mb-7 max-w-xl mx-auto">
-                    Pantau tekanan darah, gula darah, BMI, dan kondisi vital lainnya setiap hari.
-                    Dapatkan analisis cerdas berbasis AI untuk menjaga kesehatan optimal.
+                <p class="hero-anim-2 text-sm sm:text-base leading-relaxed mb-7 max-w-xl mx-auto min-h-[4rem] sm:min-h-[3rem]">
+                    <span class="text-white/80 font-medium whitespace-pre-line">{{ typewriterText }}<span class="animate-pulse inline-block align-baseline text-white">|</span></span>
                 </p>
                 <div class="hero-anim-3 flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a href="/register" class="w-full sm:w-auto bg-white text-primary font-bold px-9 py-3.5 rounded-full hover:bg-white/90 transition-all shadow-2xl shadow-black/20 text-sm hover:scale-105 active:scale-100">
@@ -465,11 +464,36 @@
 </template>
 
 <script setup>
-import { h, ref, onMounted } from 'vue';
+import { h, ref, onMounted, onUnmounted } from 'vue';
 
 const navScrolled = ref(false);
 
+const typewriterText = ref('');
+const fullText = "Pantau tekanan darah, gula darah, BMI, dan kondisi vital lainnya setiap hari.\nDapatkan analisis cerdas berbasis AI untuk menjaga kesehatan optimal.";
+let typewriterTimer = null;
+
 onMounted(() => {
+    let i = 0;
+    let isDeleting = false;
+
+    const typeWriter = () => {
+        if (!isDeleting && i < fullText.length) {
+            typewriterText.value += fullText.charAt(i);
+            i++;
+            typewriterTimer = setTimeout(typeWriter, 80);
+        } else if (isDeleting && i > 0) {
+            typewriterText.value = fullText.substring(0, i - 1);
+            i--;
+            typewriterTimer = setTimeout(typeWriter, 30);
+        } else {
+            isDeleting = !isDeleting;
+            typewriterTimer = setTimeout(typeWriter, isDeleting ? 4000 : 1500);
+        }
+    };
+    
+    // Start after 1.2 seconds, matching the other entry animations
+    typewriterTimer = setTimeout(typeWriter, 1200);
+
     // Navbar scroll effect
     window.addEventListener('scroll', () => {
         navScrolled.value = window.scrollY > 60;
@@ -667,5 +691,18 @@ const testimonials = [
     0%, 100% { transform: translate(0, 0) rotate(0deg); }
     40%       { transform: translate(5px, 8px) rotate(-20deg); }
     80%       { transform: translate(-3px, -4px) rotate(10deg); }
+}
+
+/* ── Shimmering text ─────────────────────────────────────── */
+.text-shimmer {
+    background: linear-gradient(90deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 100%);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shimmerText 3s linear infinite;
+}
+@keyframes shimmerText {
+    to { background-position: 200% center; }
 }
 </style>
