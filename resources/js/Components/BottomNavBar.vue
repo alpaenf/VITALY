@@ -1,51 +1,53 @@
 <template>
 <div class="lg:hidden">
-    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-[0_-4px_24px_rgba(0,0,0,0.07)]">
-        <div class="max-w-lg mx-auto px-1">
-            <div class="flex items-end justify-around py-2 pb-3">
-                <button
-                    v-for="item in navItems"
-                    :key="item.name"
-                    @click="navigate(item)"
-                    class="flex flex-col items-center gap-1 min-w-[60px] relative group outline-none"
-                >
-                    <!-- Ripple -->
-                    <span v-if="rippling === item.name"
-                        class="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-primary/20 animate-nav-ripple pointer-events-none"/>
+    <div class="fixed bottom-6 left-0 right-0 z-50 px-4 flex justify-center pointer-events-none">
+        <nav class="w-full max-w-[390px] sm:max-w-[420px] bg-white/75 backdrop-blur-lg border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-[2rem] pointer-events-auto">
+            <div class="px-5 py-2">
+                <div class="flex items-center justify-between w-full">
+                    <button
+                        v-for="item in navItems"
+                        :key="item.name"
+                        @click="navigate(item)"
+                        class="flex flex-col items-center gap-1 flex-1 min-w-0 relative group outline-none"
+                    >
+                        <!-- Ripple -->
+                        <!-- Ripple -->
+                        <span v-if="rippling === item.name"
+                            class="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-primary/20 animate-nav-ripple pointer-events-none"></span>
 
-                    <!-- Icon capsule -->
-                    <span :class="[
-                        'relative flex items-center justify-center rounded-full transition-all duration-300',
-                        isActive(item.href)
-                            ? 'w-14 h-9 bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/40'
-                            : 'w-11 h-11 bg-gray-100/80 group-hover:bg-gray-200/80',
-                        tapping === item.name ? 'scale-90' : '',
-                    ]">
-                        <component :is="item.icon"
-                            :class="['w-5 h-5 transition-all duration-300', isActive(item.href) ? 'text-white' : 'text-gray-400 group-hover:text-gray-600']"/>
-                    </span>
+                        <!-- Icon capsule -->
+                        <span :class="[
+                            'relative flex items-center justify-center rounded-full transition-all duration-300',
+                            isActive(item.href)
+                                ? 'w-16 h-8 bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/40'
+                                : 'w-11 h-11 bg-gray-100/80 group-hover:bg-gray-200/80',
+                            tapping === item.name ? 'scale-90' : '',
+                        ]">
+                            <component :is="item.icon"
+                                :class="['w-5 h-5 transition-all duration-300', isActive(item.href) ? 'text-white' : 'text-gray-400 group-hover:text-gray-600']"/>
+                        </span>
 
-                    <!-- Label -->
-                    <span :class="['text-[10px] font-semibold leading-none transition-all duration-200', isActive(item.href) ? 'text-primary' : 'text-gray-400']">{{ item.label }}</span>
-                </button>
+                        <!-- Label -->
+                        <span :class="['text-[10px] font-semibold leading-none transition-all duration-200', isActive(item.href) ? 'text-primary' : 'text-gray-400']">{{ item.label }}</span>
+                    </button>
 
-                <!-- More button -->
-                <button @click="toggleMore"
-                    class="flex flex-col items-center gap-1 min-w-[60px] relative group outline-none">
-                    <span :class="[
-                        'relative flex items-center justify-center rounded-full transition-all duration-300',
-                        showMore ? 'w-14 h-9 bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/40' : 'w-11 h-11 bg-gray-100/80 group-hover:bg-gray-200/80',
-                    ]">
-                        <svg class="w-5 h-5 transition-all duration-300" :class="showMore ? 'text-white' : 'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/>
-                        </svg>
-                    </span>
-                    <span :class="['text-[10px] font-semibold leading-none transition-all duration-200', showMore ? 'text-primary' : 'text-gray-400']">Lainnya</span>
-                </button>
+                    <!-- More button -->
+                    <button @click="toggleMore"
+                        class="flex flex-col items-center gap-1 flex-1 min-w-0 relative group outline-none">
+                        <span :class="[
+                            'relative flex items-center justify-center rounded-full transition-all duration-300',
+                            showMore ? 'w-16 h-8 bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/40' : 'w-11 h-11 bg-gray-100/80 group-hover:bg-gray-200/80',
+                        ]">
+                            <svg class="w-5 h-5 transition-all duration-300" :class="showMore ? 'text-white' : 'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/>
+                            </svg>
+                        </span>
+                        <span :class="['text-[10px] font-semibold leading-none transition-all duration-200', showMore ? 'text-primary' : 'text-gray-400']">Lainnya</span>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="h-safe-area-inset-bottom bg-transparent"></div>
-    </nav>
+        </nav>
+    </div>
 
     <!-- Backdrop -->
     <Transition name="fade-backdrop">
