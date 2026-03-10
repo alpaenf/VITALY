@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\AiAnalysis;
+use App\Models\Patient;
 use App\Services\GeminiService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
@@ -16,10 +16,10 @@ class AiAnalysisController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-        $analyses = $user->aiAnalyses()->latest()->take(5)->get();
+        $patient  = Patient::findOrFail(session('patient_id'));
+        $analyses = $patient->aiAnalyses()->latest()->take(5)->get();
         $latestAnalysis = $analyses->first();
-        $hasRecords = $user->healthRecords()->exists();
+        $hasRecords     = $patient->healthRecords()->exists();
 
         // Reuse YouTube videos cached by Edukasi page; populate via API if cache is empty
         $eduVideos = Cache::get('edukasi_videos_all', []);
@@ -82,18 +82,18 @@ class AiAnalysisController extends Controller
             'hasRecords'     => $hasRecords,
             'eduVideos'      => $eduVideos,
             'userInfo'       => [
-                'name'   => $user->name,
-                'gender' => $user->gender,
-                'age'    => $user->date_of_birth ? $user->date_of_birth->age : null,
+                'name'   => $patient->name,
+                'gender' => $patient->gender,
+                'age'    => $patient->age,
             ],
         ]);
     }
 
     public function analyze(Request $request)
     {
-        $user = Auth::user();
+        $patient = Patient::findOrFail(session('patient_id'));
 
-        $records = $user->healthRecords()
+        $records = $patient->healthRecords()
             ->latest('recorded_at')
             ->take(5)
             ->get();
@@ -102,15 +102,12 @@ class AiAnalysisController extends Controller
             return back()->withErrors(['error' => 'Belum ada data kesehatan untuk dianalisis.']);
         }
 
-        $age = null;
-        if ($user->date_of_birth) {
-            $age = $user->date_of_birth->age;
-        }
+        $age = $patient->age;
 
         $userData = [
-            'name' => $user->name,
-            'gender' => $user->gender ?? 'male',
-            'age' => $age,
+            'name'   => $patient->name,
+            'gender' => $patient->gender ?? 'male',
+            'age'    => $age,
         ];
 
         $recordsData = $records->map(fn($r) => [
@@ -131,9 +128,9 @@ class AiAnalysisController extends Controller
             $result = $this->gemini->analyzeHealth($userData, $recordsData);
 
             $analysis = AiAnalysis::create([
-                'user_id' => $user->id,
-                'prompt' => json_encode(['user' => $userData, 'records_count' => count($recordsData)]),
-                'result' => $result,
+                'patient_id'       => $patient->id,
+                'prompt'           => json_encode(['user' => $userData, 'records_count' => count($recordsData)]),
+                'result'           => $result,
                 'records_analyzed' => $records->count(),
             ]);
 
@@ -145,7 +142,7 @@ class AiAnalysisController extends Controller
 
     public function destroy(AiAnalysis $aiAnalysis)
     {
-        if ($aiAnalysis->user_id !== Auth::id()) {
+        if ($aiAnalysis->patient_id !== session('patient_id')) {
             abort(403);
         }
         $aiAnalysis->delete();

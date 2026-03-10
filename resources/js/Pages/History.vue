@@ -7,11 +7,6 @@
                 <h1 class="text-2xl font-bold text-gray-800">Riwayat Kesehatan</h1>
                 <p class="text-sm text-gray-500">{{ records.total }} data tersimpan</p>
             </div>
-            <Link href="/input-data"
-                class="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-sm shadow-primary/20 flex items-center gap-1.5 transition">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Input
-            </Link>
         </div>
 
         <!-- Empty state -->
@@ -20,10 +15,7 @@
                 <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             </div>
             <h3 class="font-semibold text-gray-700 mb-1">Belum Ada Riwayat</h3>
-            <p class="text-sm text-gray-500 mb-4">Mulai catat data kesehatan Anda</p>
-            <Link href="/input-data" class="inline-block bg-primary text-white text-sm px-5 py-2.5 rounded-xl font-medium hover:bg-primary-dark transition">
-                Input Data Pertama
-            </Link>
+            <p class="text-sm text-gray-500 mb-4">Data kesehatan Anda akan muncul di sini setelah kader memasukkan data.</p>
         </div>
 
         <!-- Records Grid -->

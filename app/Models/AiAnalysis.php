@@ -10,14 +10,14 @@ class AiAnalysis extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'patient_id',
         'prompt',
         'result',
         'records_analyzed',
     ];
 
-    public function user()
+    public function patient()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Patient::class);
     }
 }

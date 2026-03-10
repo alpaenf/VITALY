@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Patient;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -13,84 +13,75 @@ class AdminUserController extends Controller
     {
         $search = $request->input('search');
 
-        $users = User::where('role', 'user')
-            ->when($search, function ($q) use ($search) {
-                $q->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
-                });
+        $patients = Patient::when($search, function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%");
             })
             ->withCount('healthRecords', 'aiAnalyses')
             ->latest()
             ->paginate(15)
             ->withQueryString();
 
-        return Inertia::render('Admin/Users', [
-            'users'   => $users,
-            'filters' => ['search' => $search],
+        return Inertia::render('Admin/Patients', [
+            'patients' => $patients,
+            'filters'  => ['search' => $search],
         ]);
     }
 
-    public function show(User $user)
+    public function show(Patient $patient)
     {
-        $user->load([
+        $patient->load([
             'healthRecords' => fn($q) => $q->latest('recorded_at')->take(50),
             'aiAnalyses'    => fn($q) => $q->latest()->take(10),
         ]);
 
-        return Inertia::render('Admin/UserDetail', [
-            'user'    => $user,
-            'records' => $user->healthRecords,
-            'analyses'=> $user->aiAnalyses,
+        return Inertia::render('Admin/PatientDetail', [
+            'patient'  => $patient,
+            'records'  => $patient->healthRecords,
+            'analyses' => $patient->aiAnalyses,
         ]);
     }
 
-    public function destroy(User $user)
+    public function destroy(Patient $patient)
     {
-        if ($user->isAdmin()) {
-            return back()->withErrors(['error' => 'Tidak dapat menghapus akun admin.']);
-        }
-
-        $user->delete();
-        return back()->with('success', 'Pengguna berhasil dihapus.');
+        $patient->delete();
+        return back()->with('success', 'Pasien berhasil dihapus.');
     }
 
     public function export(Request $request)
     {
         $search = $request->input('search');
 
-        $users = User::where('role', 'user')
-            ->when($search, function ($q) use ($search) {
-                $q->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
-                });
+        $patients = Patient::when($search, function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%");
             })
             ->withCount('healthRecords', 'aiAnalyses')
             ->latest()
             ->get();
 
-        $filename = 'users_' . now()->format('Ymd_His') . '.csv';
+        $filename = 'pasien_' . now()->format('Ymd_His') . '.csv';
 
         $headers = [
             'Content-Type'        => 'text/csv; charset=UTF-8',
             'Content-Disposition' => "attachment; filename=\"{$filename}\"",
         ];
 
-        $callback = function () use ($users) {
+        $callback = function () use ($patients) {
             $file = fopen('php://output', 'w');
-            fwrite($file, "\xEF\xBB\xBF"); // BOM for Excel
-            fputcsv($file, ['ID', 'Nama', 'Email', 'Gender', 'Umur', 'Total Data', 'Total Analisis', 'Bergabung']);
-            foreach ($users as $user) {
+            fwrite($file, "\xEF\xBB\xBF");
+            fputcsv($file, ['ID', 'NIK', 'Nama', 'Gender', 'Tanggal Lahir', 'No HP', 'Total Data', 'Total Analisis', 'Terdaftar']);
+            foreach ($patients as $p) {
                 fputcsv($file, [
-                    $user->id,
-                    $user->name,
-                    $user->email,
-                    $user->gender ?? '-',
-                    $user->age    ?? '-',
-                    $user->health_records_count,
-                    $user->ai_analyses_count,
-                    $user->created_at->format('d/m/Y'),
+                    $p->id,
+                    $p->nik,
+                    $p->name,
+                    $p->gender ?? '-',
+                    $p->date_of_birth?->format('d/m/Y') ?? '-',
+                    $p->phone ?? '-',
+                    $p->health_records_count,
+                    $p->ai_analyses_count,
+                    $p->created_at->format('d/m/Y'),
                 ]);
             }
             fclose($file);

@@ -32,7 +32,9 @@ class AuthController extends Controller
             if ($user->isAdmin()) {
                 return redirect()->route('admin.dashboard');
             }
-            return redirect()->route('dashboard');
+
+            // Kader → kader dashboard
+            return redirect()->route('kader.dashboard');
         }
 
         return back()->withErrors([
@@ -81,37 +83,61 @@ class AuthController extends Controller
 
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        // Encode flow type in state so it survives the Google roundtrip
+        return Socialite::driver('google')
+            ->stateless()
+            ->with(['state' => 'kader_' . Str::random(40)])
+            ->redirect();
     }
 
-    public function handleGoogleCallback()
+    public function redirectToGoogleTamu()
+    {
+        return Socialite::driver('google')
+            ->stateless()
+            ->with(['state' => 'tamu_' . Str::random(40)])
+            ->redirect();
+    }
+
+    public function handleGoogleCallback(Request $request)
     {
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
 
-            $user = User::updateOrCreate(
-                ['google_id' => $googleUser->getId()],
-                [
-                    'name'   => $googleUser->getName(),
-                    'email'  => $googleUser->getEmail(),
-                    'avatar' => $googleUser->getAvatar(),
-                    'role'   => 'user',
-                    'email_verified_at' => now(),
-                    'password' => null,
-                ]
-            );
+            // Determine flow from the state parameter Google echoes back
+            $state = $request->input('state', '');
+            $flow  = str_starts_with($state, 'tamu_') ? 'tamu' : 'kader';
 
-            // If user exists with same email but no google_id, link the account
-            if (!$user->wasRecentlyCreated && !$user->google_id) {
-                $user->update(['google_id' => $googleUser->getId(), 'avatar' => $googleUser->getAvatar()]);
+            // ── Tamu / Pasien flow ──────────────────────────────────────
+            if ($flow === 'tamu') {
+                $request->session()->put('tamu_google_verified', true);
+                $request->session()->put('tamu_google_name', $googleUser->getName());
+                return redirect()->route('patient.lookup');
             }
+
+            // ── Kader / Admin flow ──────────────────────────────────────
+            $user = User::where('email', $googleUser->getEmail())
+                ->orWhere('google_id', $googleUser->getId())
+                ->first();
+
+            if (!$user || !in_array($user->role, ['admin', 'kader'])) {
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Akun Google Anda belum terdaftar. Hubungi admin untuk mendaftarkan email Anda.',
+                ]);
+            }
+
+            // Link google_id on first Google login
+            $user->update([
+                'google_id'         => $googleUser->getId(),
+                'avatar'            => $googleUser->getAvatar(),
+                'email_verified_at' => $user->email_verified_at ?? now(),
+            ]);
 
             Auth::login($user, true);
 
             if ($user->isAdmin()) {
                 return redirect()->route('admin.dashboard');
             }
-            return redirect()->route('dashboard');
+            return redirect()->route('kader.dashboard');
         } catch (\Exception $e) {
             return redirect()->route('login')->withErrors(['email' => 'Login Google gagal. Silakan coba lagi.']);
         }

@@ -11,7 +11,7 @@
             <div class="relative flex items-center justify-between z-10">
                 <div>
                     <p class="text-white/80 text-sm font-medium tracking-wide uppercase">{{ greeting }}</p>
-                    <h1 class="text-3xl font-bold mt-1 tracking-tight text-white">{{ user?.name?.split(' ')[0] }}</h1>
+                    <h1 class="text-3xl font-bold mt-1 tracking-tight text-white">{{ patient?.name?.split(' ')[0] }}</h1>
                     <p class="text-white/70 text-xs mt-1.5 font-medium">{{ currentDate }}</p>
                 </div>
                 <div class="text-right flex flex-col items-end">
@@ -118,9 +118,9 @@
                     <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 </div>
                 <h3 class="font-semibold text-gray-700 mb-1">Belum Ada Data</h3>
-                <p class="text-sm text-gray-500 mb-4">Mulailah memasukkan data kesehatan pertama Anda</p>
-                <Link href="/input-data" class="inline-block bg-primary text-white text-sm font-semibold px-6 py-2.5 rounded-xl hover:bg-primary-dark transition">
-                    Input Data Sekarang
+                <p class="text-sm text-gray-500 mb-4">Data kesehatan Anda belum tersedia. Minta kader untuk memasukkan data.</p>
+                <Link href="/ai-analysis" class="inline-block bg-primary text-white text-sm font-semibold px-6 py-2.5 rounded-xl hover:bg-primary-dark transition">
+                    Analisis AI Sekarang
                 </Link>
             </div>
         </div>
@@ -168,11 +168,11 @@
             <div v-else class="card-medix p-5 animate-fade-in-up delay-300">
                 <h3 class="font-semibold text-gray-700 text-sm mb-3">Aksi Cepat</h3>
                 <div class="space-y-2">
-                    <Link href="/input-data" class="flex items-center gap-3 p-2.5 rounded-xl bg-red-50 hover:bg-red-100 transition">
+                    <Link href="/ai-analysis" class="flex items-center gap-3 p-2.5 rounded-xl bg-red-50 hover:bg-red-100 transition">
                         <div class="w-8 h-8 bg-primary rounded-xl flex items-center justify-center">
-                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
                         </div>
-                        <span class="text-sm font-medium text-gray-700">Input Data Baru</span>
+                        <span class="text-sm font-medium text-gray-700">Analisis AI</span>
                     </Link>
                     <Link href="/history" class="flex items-center gap-3 p-2.5 rounded-xl bg-[#EFDBDC] hover:bg-[#e4cdce] transition">
                         <div class="w-8 h-8 bg-[#B74443] rounded-xl flex items-center justify-center">
@@ -231,7 +231,7 @@ const props = defineProps({
 });
 
 const page = usePage();
-const user = computed(() => page.props.auth?.user);
+const patient = computed(() => page.props.patient);
 
 const greeting = computed(() => {
     const hour = new Date().getHours();

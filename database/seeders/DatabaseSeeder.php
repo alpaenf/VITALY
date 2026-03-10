@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Patient;
 use App\Models\HealthRecord;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -11,22 +12,27 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
+        $admin = User::create([
             'name' => 'Admin HEALTIVA',
             'email' => 'admin@healtiva.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
-            'gender' => 'male',
         ]);
 
-        $user = User::create([
-            'name' => 'Demo User',
-            'email' => 'user@healtiva.com',
+        $kader = User::create([
+            'name' => 'Kader Demo',
+            'email' => 'kader@healtiva.com',
             'password' => Hash::make('password'),
-            'role' => 'user',
+            'role' => 'kader',
+        ]);
+
+        $patient = Patient::create([
+            'nik' => '3201012505950001',
+            'name' => 'Budi Santoso',
+            'date_of_birth' => '1995-05-25',
             'gender' => 'male',
-            'date_of_birth' => '1995-05-15',
             'phone' => '081234567890',
+            'address' => 'Jl. Contoh No. 1, Jakarta',
         ]);
 
         $records = [
@@ -37,7 +43,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($records as $record) {
-            HealthRecord::create(array_merge($record, ['user_id' => $user->id]));
+            HealthRecord::create(array_merge($record, [
+                'patient_id' => $patient->id,
+                'recorded_by' => $kader->id,
+            ]));
         }
     }
 }

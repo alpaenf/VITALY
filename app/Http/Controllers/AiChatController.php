@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\Models\AiKnowledge;
+use App\Models\Patient;
 
 class AiChatController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $latestRecord = $user->healthRecords()->latest('recorded_at')->first();
+        $patient = Patient::findOrFail(session('patient_id'));
+        $latestRecord = $patient->healthRecords()->latest('recorded_at')->first();
 
         $initQuestion = null;
         if ($request->query('from_analysis')) {
-            $analysis = $user->aiAnalyses()->find($request->query('from_analysis'));
+            $analysis = $patient->aiAnalyses()->find($request->query('from_analysis'));
             if ($analysis) {
                 $plain = preg_replace('/#{1,3}\s/', '', $analysis->result ?? '');
                 $plain = preg_replace('/\*\*(.+?)\*\*/', '$1', $plain);
@@ -30,8 +30,8 @@ class AiChatController extends Controller
         }
 
         return Inertia::render('AiChat', [
-            'latestRecord'  => $latestRecord,
-            'initQuestion'  => $initQuestion,
+            'latestRecord' => $latestRecord,
+            'initQuestion' => $initQuestion,
         ]);
     }
 
@@ -43,13 +43,11 @@ class AiChatController extends Controller
             'messages.*.text' => 'required|string|max:4000',
         ]);
 
-        $user = Auth::user();
-        $latestRecord = $user->healthRecords()->latest('recorded_at')->first();
-
-        // 1. Build Context
+        $patient = Patient::findOrFail(session('patient_id'));
+        $latestRecord = $patient->healthRecords()->latest('recorded_at')->first();
         $systemPrompt = "Kamu adalah dr. Medix, asisten virtual medis di aplikasi HEALTIVA berbasis AI. Jawab dengan sangat ramah, hangat, penuh empati, dan logis. Kamu bukan cuma tempat bertanya soal penyakit fisik, tapi juga teman yang siap mendengarkan curhat (keluh kesah/kecemasan pasien). Berikan kata-kata penyemangat dan validasi perasaan mereka, apalagi orang sakit seringkali butuh dukungan mental. DILARANG KERAS MENGGUNAKAN EMOJI ATAU EMOTIKON APAPUN dalam balasanmu. Jika ditanya hal umum atau diajak curhat, jawablah dengan sabar layaknya sahabat, namun tetap arahkan pelan-pelan ke kesehatan jika relevan. Beri peringatan singkat di akhir setiap sesi awal bahwa kamu bukan dokter sungguhan.\n\nSANGAT PENTING: Jika kamu memberikan penjelasan medis dan merasa video visual bisa membantu (seperti senam, cara pakai insulin, terapi), di akhir jawaban WAJIB tawarkan kepada pengguna apakah ia ingin diputarkan video edukasi terkait (Contoh: 'Apakah kamu mau aku carikan video tentang hal ini?').\n\nJika pengguna membalas setuju (misal: 'ya', 'mau', 'boleh', 'carikan video'), jawablah dengan singkat bahwa kamu akan menampilkan videonya, lalu WAJIB tambahkan kata kunci '[TAMPILKAN_VIDEO]' di akhir pesanmu agar sistem bisa memunculkan video.";
-        $systemPrompt .= "\nIdentitas Pasien: " . $user->name . " (" . ($user->gender ?? 'Tidak diketahui') . ", " . ($user->age ?? '?') . " tahun).";
-        
+        $systemPrompt .= "\nIdentitas Pasien: " . $patient->name . " (" . ($patient->gender ?? 'Tidak diketahui') . ", " . ($patient->age ?? '?') . " tahun).";
+
         if ($latestRecord) {
             $systemPrompt .= "\nData Vital Terakhir: Tekanan Darah {$latestRecord->systolic}/{$latestRecord->diastolic} mmHg, Gula Darah {$latestRecord->blood_sugar} mg/dL, HR {$latestRecord->heart_rate} bpm, BB/TB {$latestRecord->weight}kg/{$latestRecord->height}cm.";
         }
@@ -112,7 +110,7 @@ class AiChatController extends Controller
 
         // FALLBACK: Rule-based local reply jika Gemini gagal/habis limit/error
         if (!$reply) {
-            $reply = $this->ruleBasedReply($lastUserText, $latestRecord, $user);
+            $reply = $this->ruleBasedReply($lastUserText, $latestRecord, $patient);
         }
 
         // -- SEARCH YOUTUBE VIDEOS HANYA JIKA DIBUTUHKAN --

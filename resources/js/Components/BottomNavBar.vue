@@ -1,6 +1,29 @@
 <template>
 <div class="lg:hidden">
-    <div class="fixed bottom-6 left-0 right-0 z-50 px-4 flex justify-center pointer-events-none">
+
+    <!-- Collapsed pill: tap to restore -->
+    <Transition name="pill-up">
+        <div v-if="collapsed"
+            @click="collapsed = false"
+            class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-white/80 backdrop-blur-lg border border-white/40 shadow-lg rounded-full px-5 py-2.5 cursor-pointer pointer-events-auto select-none">
+            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+            </svg>
+            <span class="text-xs font-semibold text-gray-600">Menu</span>
+        </div>
+    </Transition>
+
+    <!-- Full navbar -->
+    <Transition name="nav-slide">
+    <div v-if="!collapsed" class="fixed bottom-6 left-0 right-0 z-50 px-4 flex flex-col items-center pointer-events-none">
+        <!-- Drag handle / collapse button -->
+        <button @click="collapsed = true"
+            class="mb-1.5 pointer-events-auto flex items-center gap-1.5 px-4 py-1 rounded-full bg-white/70 backdrop-blur-md border border-white/40 shadow text-gray-400 hover:text-gray-600 transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+            <span class="text-[10px] font-semibold">Sembunyikan</span>
+        </button>
         <nav class="w-full max-w-[390px] sm:max-w-[420px] bg-white/75 backdrop-blur-lg border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-[2rem] pointer-events-auto">
             <div class="px-5 py-2">
                 <div class="flex items-center justify-between w-full">
@@ -48,6 +71,7 @@
             </div>
         </nav>
     </div>
+    </Transition>
 
     <!-- Backdrop -->
     <Transition name="fade-backdrop">
@@ -78,22 +102,6 @@
                         <div class="flex-1">
                             <p class="text-sm font-semibold text-gray-800">Riwayat Data</p>
                             <p class="text-xs text-gray-400 mt-0.5">Lihat semua rekam data kesehatanmu</p>
-                        </div>
-                        <svg class="w-4 h-4 text-gray-300 group-hover:text-primary transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </button>
-
-                    <button @click="goTo('/profile')"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-[#FFF5F5] transition text-left group w-full">
-                        <div class="w-10 h-10 bg-[#EFDBDC] rounded-xl flex items-center justify-center flex-shrink-0">
-                            <svg class="w-5 h-5 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-sm font-semibold text-gray-800">Profil Saya</p>
-                            <p class="text-xs text-gray-400 mt-0.5">Edit data & ubah kata sandi</p>
                         </div>
                         <svg class="w-4 h-4 text-gray-300 group-hover:text-primary transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -159,13 +167,14 @@
 import { ref, h } from 'vue';
 import { router } from '@inertiajs/vue3';
 
-const tapping = ref(null);
-const rippling = ref(null);
-const showMore = ref(false);
+const tapping   = ref(null);
+const rippling  = ref(null);
+const showMore  = ref(false);
+const collapsed = ref(false);
 
 const logout = () => {
     showMore.value = false;
-    router.post('/logout');
+    router.post('/keluar');
 };
 
 const isActive = (href) => {
@@ -200,7 +209,6 @@ const HistoryIcon = { render: () => h('svg', { fill: 'none', stroke: 'currentCol
 
 const navItems = [
     { name: 'dashboard', href: '/dashboard',  label: 'Dashboard', icon: DashboardIcon },
-    { name: 'input',     href: '/input-data',  label: 'Input',     icon: InputIcon },
     { name: 'ai',        href: '/ai-analysis', label: 'Analisis',  icon: AiIcon },
     { name: 'chat',      href: '/ai-chat',     label: 'Chat AI',   icon: ChatIcon },
 ];
@@ -222,4 +230,16 @@ const navItems = [
 .slide-up-leave-active { transition: all 0.2s ease; }
 .slide-up-enter-from { opacity: 0; transform: translateY(24px); }
 .slide-up-leave-to   { opacity: 0; transform: translateY(16px); }
+
+/* Navbar collapse/expand */
+.nav-slide-enter-active { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.nav-slide-leave-active { transition: all 0.2s ease; }
+.nav-slide-enter-from   { opacity: 0; transform: translateY(32px); }
+.nav-slide-leave-to     { opacity: 0; transform: translateY(32px); }
+
+/* Collapsed pill */
+.pill-up-enter-active { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+.pill-up-leave-active { transition: all 0.15s ease; }
+.pill-up-enter-from   { opacity: 0; transform: translateX(-50%) translateY(16px); }
+.pill-up-leave-to     { opacity: 0; transform: translateX(-50%) translateY(16px); }
 </style>

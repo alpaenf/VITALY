@@ -4,47 +4,47 @@ namespace App\Http\Controllers;
 
 use App\Models\HealthRecord;
 use App\Models\AiAnalysis;
+use App\Models\Patient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+        $patient = Patient::findOrFail(session('patient_id'));
 
-        $latestRecord = $user->healthRecords()
+        $latestRecord = $patient->healthRecords()
             ->latest('recorded_at')
             ->first();
 
-        $recentRecords = $user->healthRecords()
+        $recentRecords = $patient->healthRecords()
             ->latest('recorded_at')
             ->take(7)
             ->get()
             ->reverse()
             ->values();
 
-        $totalRecords = $user->healthRecords()->count();
-        $latestAnalysis = $user->aiAnalyses()->latest()->first();
+        $totalRecords  = $patient->healthRecords()->count();
+        $latestAnalysis = $patient->aiAnalyses()->latest()->first();
 
         $healthScore = $this->calculateHealthScore($latestRecord);
 
         $chartData = $recentRecords->map(fn($r) => [
-            'date' => $r->recorded_at->format('d/m'),
-            'systolic' => $r->systolic,
-            'diastolic' => $r->diastolic,
+            'date'       => $r->recorded_at->format('d/m'),
+            'systolic'   => $r->systolic,
+            'diastolic'  => $r->diastolic,
             'heart_rate' => $r->heart_rate,
-            'weight' => $r->weight,
+            'weight'     => $r->weight,
         ]);
 
         return Inertia::render('Dashboard', [
-            'latestRecord' => $latestRecord,
-            'recentRecords' => $recentRecords,
-            'totalRecords' => $totalRecords,
+            'latestRecord'   => $latestRecord,
+            'recentRecords'  => $recentRecords,
+            'totalRecords'   => $totalRecords,
             'latestAnalysis' => $latestAnalysis,
-            'healthScore' => $healthScore,
-            'chartData' => $chartData,
+            'healthScore'    => $healthScore,
+            'chartData'      => $chartData,
         ]);
     }
 

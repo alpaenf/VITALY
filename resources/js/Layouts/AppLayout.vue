@@ -18,14 +18,6 @@
                     </template>
                     Dashboard
                 </SidebarLink>
-                <SidebarLink href="/input-data" :active="isActive('/input-data')">
-                    <template #icon>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                    </template>
-                    Input Data
-                </SidebarLink>
                 <SidebarLink href="/ai-analysis" :active="isActive('/ai-analysis')">
                     <template #icon>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,15 +34,6 @@
                     </template>
                     Riwayat
                 </SidebarLink>
-                <SidebarLink href="/profile" :active="isActive('/profile')">
-                    <template #icon>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                    </template>
-                    Profil
-                </SidebarLink>
-
                 <!-- Divider -->
                 <div class="my-2 border-t border-gray-100"></div>
                 <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Fitur Lainnya</p>
@@ -81,15 +64,8 @@
                 </SidebarLink>
             </nav>
 
-            <!-- Bottom admin / logout -->
-            <div class="px-3 py-4 border-t border-gray-100 space-y-1">
-                <a v-if="user?.role === 'admin'" href="/admin/dashboard"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#B92521] bg-[#FDD3CF] hover:bg-[#F18E8C]/30 transition font-medium">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    Admin Panel
-                </a>
+            <!-- Bottom logout -->
+            <div class="px-3 py-4 border-t border-gray-100">
                 <form @submit.prevent="logout">
                     <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-500 hover:bg-red-50 hover:text-red-500 transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,12 +83,9 @@
                 <div class="flex items-center">
                     <img src="/images/logo.png" alt="Healtiva" class="h-[60px] w-auto" />
                 </div>
-                <Link href="/profile" class="block w-10 h-10 rounded-xl overflow-hidden shadow flex-shrink-0 active:opacity-80 transition">
-                    <img v-if="user?.avatar" :src="userAvatarUrl" class="w-full h-full object-cover" alt="avatar" />
-                    <div v-else class="w-full h-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white text-sm font-bold">
-                        {{ userInitial }}
-                    </div>
-                </Link>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white text-sm font-bold shadow flex-shrink-0">
+                    {{ patientInitial }}
+                </div>
             </div>
         </header>
 
@@ -120,7 +93,7 @@
         <div class="hidden lg:flex fixed top-0 left-64 right-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 px-8 py-3 items-center justify-between">
             <div>
                 <p class="text-xs text-gray-400">{{ greeting }},</p>
-                <p class="font-semibold text-gray-800 text-sm leading-tight">{{ user?.name }}</p>
+                <p class="font-semibold text-gray-800 text-sm leading-tight">{{ patient?.name }}</p>
             </div>
             <span class="text-xs text-gray-400 bg-gray-100 px-3 py-1.5 rounded-full">{{ currentDate }}</span>
         </div>
@@ -160,14 +133,8 @@ import { usePage, Link, router } from '@inertiajs/vue3';
 import BottomNavBar from '@/Components/BottomNavBar.vue';
 
 const page = usePage();
-const user = computed(() => page.props.auth?.user);
-const userInitial = computed(() => user.value?.name?.charAt(0)?.toUpperCase() || 'U');
-const userAvatarUrl = computed(() => {
-    const avatar = user.value?.avatar;
-    if (!avatar) return null;
-    if (avatar.startsWith('http')) return avatar;
-    return '/storage/' + avatar;
-});
+const patient = computed(() => page.props.patient);
+const patientInitial = computed(() => patient.value?.name?.charAt(0)?.toUpperCase() || 'P');
 const isActive = (href) => window.location.pathname === href;
 
 const greeting = computed(() => {
@@ -182,7 +149,7 @@ const currentDate = computed(() =>
     new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })
 );
 
-const logout = () => router.post('/logout');
+const logout = () => router.post('/keluar');
 
 const SidebarLink = {
     props: ['href', 'active'],

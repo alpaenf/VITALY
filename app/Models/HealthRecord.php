@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Patient;
 
 class HealthRecord extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'patient_id',
+        'recorded_by',
         'systolic',
         'diastolic',
         'heart_rate',
@@ -31,9 +33,14 @@ class HealthRecord extends Model
         'blood_sugar' => 'float',
     ];
 
-    public function user()
+    public function patient()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function recorder()
+    {
+        return $this->belongsTo(User::class, 'recorded_by');
     }
 
     public function getBmiAttribute(): ?float

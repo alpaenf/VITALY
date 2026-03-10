@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->date('date_of_birth')->nullable()->after('phone');
-            $table->string('gender', 10)->nullable()->after('date_of_birth');
-        });
+        // These columns were already added in 2025_01_01_000003_add_role_to_users_table.php
+        // Profile fields have been moved to the patients table in the new architecture
     }
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['date_of_birth', 'gender']);
-        });
+        //
     }
 };

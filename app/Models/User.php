@@ -15,10 +15,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'phone',
-        'date_of_birth',
-        'gender',
-        'avatar',
         'google_id',
     ];
 
@@ -32,7 +28,6 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'date_of_birth' => 'date',
         ];
     }
 
@@ -41,13 +36,13 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    public function healthRecords()
+    public function isKader(): bool
     {
-        return $this->hasMany(HealthRecord::class);
+        return $this->role === 'kader';
     }
 
-    public function aiAnalyses()
+    public function inputtedRecords()
     {
-        return $this->hasMany(AiAnalysis::class);
+        return $this->hasMany(HealthRecord::class, 'recorded_by');
     }
 }

@@ -15,7 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'admin'          => \App\Http\Middleware\AdminMiddleware::class,
+            'kader'          => \App\Http\Middleware\KaderMiddleware::class,
+            'patient.session'=> \App\Http\Middleware\PatientSessionMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

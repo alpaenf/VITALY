@@ -1,5 +1,5 @@
 <template>
-    <AppLayout>
+    <component :is="layout">
         <Head title="Edukasi Kesehatan" />
 
         <!-- Header -->
@@ -138,13 +138,23 @@
             </div>
         </div>
 
-    </AppLayout>
+    </component>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import KaderLayout from '@/Layouts/KaderLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
+
+const page = usePage();
+const layout = computed(() => {
+    const role = page.props.auth?.user?.role;
+    if (role === 'kader') return KaderLayout;
+    if (role === 'admin') return AdminLayout;
+    return AppLayout;
+});
 
 const props = defineProps({
     videos:       { type: Array,   default: () => [] },

@@ -1,73 +1,109 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthRecordController;
 use App\Http\Controllers\AiAnalysisController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AiChatController;
 use App\Http\Controllers\EdukasiController;
 use App\Http\Controllers\StandarNormalController;
-use App\Http\Controllers\AiChatController;
+use App\Http\Controllers\Kader\KaderDashboardController;
+use App\Http\Controllers\Kader\KaderPatientController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminKaderController;
 use App\Http\Controllers\Admin\AiKnowledgeController;
 use Illuminate\Support\Facades\Route;
 
-// Landing page
+// ─────────────────────────────────────────────────────────────
+// Landing
+// ─────────────────────────────────────────────────────────────
 Route::get('/', function () {
     return inertia('Landing');
 });
 
-// Auth routes (guests only)
+// ─────────────────────────────────────────────────────────────
+// Auth routes (admin / kader login)  — guests only
+// ─────────────────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
     Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 });
 
-// Authenticated user routes
-Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Tamu Google OAuth (open — no guest middleware, any visitor can use)
+Route::get('/auth/google/tamu', [AuthController::class, 'redirectToGoogleTamu'])->name('auth.google.tamu');
 
-    // Main user routes
+Route::middleware('auth')->post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// ─────────────────────────────────────────────────────────────
+// Patient lookup (no login required)
+// ─────────────────────────────────────────────────────────────
+Route::get('/masuk', [PatientController::class, 'showLookup'])->name('patient.lookup');
+Route::post('/masuk', [PatientController::class, 'lookup'])->name('patient.login');
+Route::post('/keluar', [PatientController::class, 'logout'])->name('patient.logout');
+
+// ─────────────────────────────────────────────────────────────
+// Patient session routes (NIK session required)
+// ─────────────────────────────────────────────────────────────
+Route::middleware('patient.session')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/input-data', [HealthRecordController::class, 'create'])->name('input-data');
-    Route::post('/input-data', [HealthRecordController::class, 'store']);
     Route::get('/history', [HealthRecordController::class, 'index'])->name('history');
     Route::delete('/history/{healthRecord}', [HealthRecordController::class, 'destroy'])->name('history.destroy');
     Route::get('/ai-analysis', [AiAnalysisController::class, 'index'])->name('ai-analysis');
     Route::post('/ai-analysis', [AiAnalysisController::class, 'analyze'])->name('ai-analysis.run');
     Route::delete('/ai-analysis/{aiAnalysis}', [AiAnalysisController::class, 'destroy'])->name('ai-analysis.destroy');
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
-    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
-
-    // Edukasi
-    Route::get('/edukasi', [EdukasiController::class, 'index'])->name('edukasi');
-
-    // Standar Normal
-    Route::get('/standar-normal', [StandarNormalController::class, 'index'])->name('standar-normal');
-
-    // AI Chat
     Route::get('/ai-chat', [AiChatController::class, 'index'])->name('ai-chat');
     Route::post('/ai-chat/message', [AiChatController::class, 'message'])->name('ai-chat.message');
+});
 
-    // Admin routes
-    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/users', [AdminUserController::class, 'index'])->name('users');
-        Route::get('/users/export', [AdminUserController::class, 'export'])->name('users.export');
-        Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
-        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+// ─────────────────────────────────────────────────────────────
+// Shared info routes (patient session OR kader/admin — no guard needed)
+// ─────────────────────────────────────────────────────────────
+Route::get('/edukasi', [EdukasiController::class, 'index'])->name('edukasi');
+Route::get('/standar-normal', [StandarNormalController::class, 'index'])->name('standar-normal');
 
-        // AI Knowledge Base
-        Route::get('/knowledge', [AiKnowledgeController::class, 'index'])->name('knowledge.index');
-        Route::post('/knowledge', [AiKnowledgeController::class, 'store'])->name('knowledge.store');
-        Route::put('/knowledge/{knowledge}', [AiKnowledgeController::class, 'update'])->name('knowledge.update');
-        Route::delete('/knowledge/{knowledge}', [AiKnowledgeController::class, 'destroy'])->name('knowledge.destroy');
-    });
+// ─────────────────────────────────────────────────────────────
+// Kader routes
+// ─────────────────────────────────────────────────────────────
+Route::middleware(['auth', 'kader'])->prefix('kader')->name('kader.')->group(function () {
+    Route::get('/dashboard', [KaderDashboardController::class, 'index'])->name('dashboard');
+
+    // Patients management
+    Route::get('/pasien', [KaderPatientController::class, 'index'])->name('patients');
+    Route::post('/pasien', [KaderPatientController::class, 'store'])->name('patients.store');
+    Route::get('/pasien/cari', [KaderPatientController::class, 'search'])->name('patients.search');
+    Route::get('/pasien/{patient}', [KaderPatientController::class, 'show'])->name('patients.show');
+    Route::put('/pasien/{patient}', [KaderPatientController::class, 'update'])->name('patients.update');
+    Route::delete('/pasien/{patient}', [KaderPatientController::class, 'destroy'])->name('patients.destroy');
+
+    // Input health data for a patient
+    Route::get('/pasien/{patient}/input', [KaderPatientController::class, 'showInput'])->name('patients.input');
+    Route::post('/pasien/{patient}/input', [KaderPatientController::class, 'storeInput'])->name('patients.input.store');
+});
+
+// ─────────────────────────────────────────────────────────────
+// Admin routes
+// ─────────────────────────────────────────────────────────────
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Patients
+    Route::get('/patients', [AdminUserController::class, 'index'])->name('patients');
+    Route::get('/patients/export', [AdminUserController::class, 'export'])->name('patients.export');
+    Route::get('/patients/{patient}', [AdminUserController::class, 'show'])->name('patients.show');
+    Route::delete('/patients/{patient}', [AdminUserController::class, 'destroy'])->name('patients.destroy');
+
+    // Kaders
+    Route::get('/kaders', [AdminKaderController::class, 'index'])->name('kaders');
+    Route::post('/kaders', [AdminKaderController::class, 'store'])->name('kaders.store');
+    Route::delete('/kaders/{user}', [AdminKaderController::class, 'destroy'])->name('kaders.destroy');
+
+    // AI Knowledge Base
+    Route::get('/knowledge', [AiKnowledgeController::class, 'index'])->name('knowledge.index');
+    Route::post('/knowledge', [AiKnowledgeController::class, 'store'])->name('knowledge.store');
+    Route::put('/knowledge/{knowledge}', [AiKnowledgeController::class, 'update'])->name('knowledge.update');
+    Route::delete('/knowledge/{knowledge}', [AiKnowledgeController::class, 'destroy'])->name('knowledge.destroy');
 });

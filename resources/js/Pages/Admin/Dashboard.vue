@@ -9,10 +9,10 @@
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <StatCard :value="stats.totalUsers" label="Total Pengguna" color="blue" class="animate-fade-in-up delay-75" />
-            <StatCard :value="stats.totalRecords" label="Total Data" color="green" class="animate-fade-in-up delay-150" />
-            <StatCard :value="stats.totalAnalyses" label="Analisis AI" color="purple" class="animate-fade-in-up delay-200" />
-            <StatCard :value="stats.newUsersThisMonth" label="User Baru (Bulan Ini)" color="orange" class="animate-fade-in-up delay-300" />
+            <StatCard :value="stats.totalPatients" label="Total Pasien" color="blue" class="animate-fade-in-up delay-75" />
+            <StatCard :value="stats.totalKaders" label="Total Kader" color="green" class="animate-fade-in-up delay-150" />
+            <StatCard :value="stats.totalRecords" label="Total Data" color="purple" class="animate-fade-in-up delay-200" />
+            <StatCard :value="stats.newPatientsThisMonth" label="Pasien Baru (Bulan Ini)" color="orange" class="animate-fade-in-up delay-300" />
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
@@ -24,34 +24,27 @@
                 </div>
             </div>
 
-            <!-- Recent Users -->
+            <!-- Recent Patients -->
             <div class="lg:col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover-lift animate-fade-in-right delay-150">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-semibold text-gray-700">Pengguna Terbaru</h3>
-                    <Link href="/admin/users" class="text-xs text-primary hover:underline">Lihat semua</Link>
+                    <h3 class="font-semibold text-gray-700">Pasien Terbaru</h3>
+                    <Link href="/admin/patients" class="text-xs text-primary hover:underline">Lihat semua</Link>
                 </div>
                 <div class="space-y-2">
-                    <div v-for="(user, i) in recentUsers" :key="user.id"
+                    <div v-for="(patient, i) in recentPatients" :key="patient.id"
                         class="flex items-center gap-3 p-2.5 bg-gray-50 rounded-xl hover:bg-gray-100 transition"
                         :style="`animation-delay:${i*60}ms`">
-                        <div class="w-8 h-8 rounded-xl overflow-hidden flex-shrink-0">
-                            <img v-if="user.avatar"
-                                :src="user.avatar.startsWith('http') ? user.avatar : `/storage/${user.avatar}`"
-                                :alt="user.name"
-                                class="w-full h-full object-cover" />
-                            <div v-else
-                                class="w-full h-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-bold text-xs">
-                                {{ user.name.charAt(0).toUpperCase() }}
-                            </div>
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                            {{ patient.name.charAt(0).toUpperCase() }}
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-800 truncate">{{ user.name }}</p>
-                            <p class="text-xs text-gray-400 truncate">{{ user.email }}</p>
+                            <p class="text-sm font-medium text-gray-800 truncate">{{ patient.name }}</p>
+                            <p class="text-xs text-gray-400 font-mono truncate">{{ patient.nik }}</p>
                         </div>
-                        <span class="text-xs text-gray-400 whitespace-nowrap">{{ formatDate(user.created_at) }}</span>
+                        <span class="text-xs text-gray-400 whitespace-nowrap">{{ formatDate(patient.created_at) }}</span>
                     </div>
-                    <div v-if="!recentUsers.length" class="text-center py-6 text-sm text-gray-400">
-                        Belum ada pengguna
+                    <div v-if="!recentPatients.length" class="text-center py-6 text-sm text-gray-400">
+                        Belum ada pasien
                     </div>
                 </div>
             </div>
@@ -70,7 +63,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 const props = defineProps({
     stats: Object,
-    recentUsers: Array,
+    recentPatients: Array,
     monthlyChart: Array,
 });
 

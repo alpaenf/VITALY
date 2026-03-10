@@ -34,16 +34,28 @@
                     Dashboard
                 </Link>
 
-                <Link href="/admin/users"
-                    :class="isActive('/admin/users') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                <Link href="/admin/patients"
+                    :class="isActive('/admin/patients') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 group">
-                    <span :class="isActive('/admin/users') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
+                    <span :class="isActive('/admin/patients') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
                         class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
-                        <svg class="w-4 h-4" :class="isActive('/admin/users') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4" :class="isActive('/admin/patients') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </span>
-                    Kelola Pengguna
+                    Kelola Pasien
+                </Link>
+
+                <Link href="/admin/kaders"
+                    :class="isActive('/admin/kaders') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 group">
+                    <span :class="isActive('/admin/kaders') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4" :class="isActive('/admin/kaders') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
+                        </svg>
+                    </span>
+                    Kelola Kader
                 </Link>
 
                 <Link href="/admin/knowledge"
@@ -113,7 +125,8 @@ const logout = () => router.post('/logout');
 const pageTitle = computed(() => {
     const p = window.location.pathname;
     if (p.startsWith('/admin/knowledge')) return 'Knowledge Base AI';
-    if (p.startsWith('/admin/users'))     return 'Kelola Pengguna';
+    if (p.startsWith('/admin/patients'))  return 'Kelola Pasien';
+    if (p.startsWith('/admin/kaders'))    return 'Kelola Kader';
     if (p === '/admin/dashboard')         return 'Dashboard Admin';
     return 'Admin Panel';
 });
