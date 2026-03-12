@@ -35,8 +35,8 @@ class AdminUserController extends Controller
             'aiAnalyses'    => fn($q) => $q->latest()->take(10),
         ]);
 
-        return Inertia::render('Admin/PatientDetail', [
-            'patient'  => $patient,
+        return Inertia::render('Admin/UserDetail', [
+            'user'     => $patient,
             'records'  => $patient->healthRecords,
             'analyses' => $patient->aiAnalyses,
         ]);

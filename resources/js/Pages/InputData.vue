@@ -88,13 +88,13 @@
                     <input v-model="form.blood_sugar" type="number" step="0.1" placeholder="90" class="input-field" />
                 </div>
 
-                <!-- Suhu & SpO2 -->
+                <!-- Suhu & RR -->
                 <div class="card-medix p-5 hover-lift animate-fade-in-up delay-250">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                             <svg class="w-4 h-4 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                         </div>
-                        <h3 class="font-semibold text-gray-700">Suhu & Saturasi Oksigen</h3>
+                        <h3 class="font-semibold text-gray-700">Suhu & Laju Nafas</h3>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
@@ -102,8 +102,8 @@
                             <input v-model="form.temperature" type="number" step="0.1" placeholder="36.5" class="input-field" />
                         </div>
                         <div>
-                            <label class="text-xs text-gray-500 mb-1 block">SpO2 (%)</label>
-                            <input v-model="form.oxygen_saturation" type="number" placeholder="98" class="input-field" />
+                            <label class="text-xs text-gray-500 mb-1 block">RR (x/menit)</label>
+                            <input v-model="form.respiratory_rate" type="number" placeholder="20" class="input-field" />
                         </div>
                     </div>
                 </div>
@@ -162,7 +162,7 @@ const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).
 
 const form = useForm({
     systolic: '', diastolic: '', heart_rate: '', blood_sugar: '',
-    weight: '', height: '', temperature: '', oxygen_saturation: '',
+    weight: '', height: '', temperature: '', respiratory_rate: '',
     notes: '', recorded_at: localDatetime,
 });
 

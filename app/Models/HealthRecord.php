@@ -20,7 +20,7 @@ class HealthRecord extends Model
         'weight',
         'height',
         'temperature',
-        'oxygen_saturation',
+        'respiratory_rate',
         'notes',
         'recorded_at',
     ];

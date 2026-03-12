@@ -4,7 +4,7 @@
 
         <!-- Back button -->
         <div class="mb-5 animate-fade-in-down">
-            <Link href="/admin/users"
+            <Link href="/admin/patients"
                 class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-primary transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>

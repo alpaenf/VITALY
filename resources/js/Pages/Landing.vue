@@ -126,7 +126,7 @@
         </section>
 
         <!-- â”€â”€ AI SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <section class="relative py-20 px-6 bg-gradient-to-br from-[#FFF5F5] to-[#EFDBDC] overflow-hidden">
+        <section class="relative py-20 px-6 bg-gradient-to-br from-[#FEF2F2] to-[#FECACA] overflow-hidden">
             <!-- Wave top -->
             <div class="absolute top-0 left-0 right-0 pointer-events-none">
                 <svg viewBox="0 0 1440 50" fill="none" class="w-full" preserveAspectRatio="none">
@@ -177,7 +177,7 @@
                     <!-- Fake analysis card preview -->
                     <div class="reveal from-right" data-delay="200">
                     <div class="relative">
-                        <div class="bg-white rounded-3xl shadow-xl shadow-primary/10 p-6 border border-[#EFDBDC]">
+                        <div class="bg-white rounded-3xl shadow-xl shadow-primary/10 p-6 border border-[#FECACA]">
                             <div class="flex items-center gap-3 mb-5">
                                 <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
@@ -534,14 +534,14 @@ const ClipIcon  = { render: () => h('svg', { fill: 'none', stroke: 'currentColor
 
 const features = [
     { title: 'Monitoring Harian', desc: 'Catat dan pantau data vital kesehatan Anda setiap hari dengan mudah dan terstruktur.', bg: 'bg-primary/10', color: 'text-primary', icon: HeartIcon },
-    { title: 'Riwayat Data Lengkap', desc: 'Semua data tersimpan rapi dengan visualisasi tren sehingga Anda bisa melihat perkembangan dari waktu ke waktu.', bg: 'bg-[#EFDBDC]', color: 'text-[#B74443]', icon: ChartIcon },
-    { title: 'Analisis AI', desc: 'Engine AI menganalisis data Anda dan memberikan laporan kondisi kesehatan yang mudah dipahami.', bg: 'bg-[#FDD3CF]', color: 'text-[#B92521]', icon: BrainIcon },
+    { title: 'Riwayat Data Lengkap', desc: 'Semua data tersimpan rapi dengan visualisasi tren sehingga Anda bisa melihat perkembangan dari waktu ke waktu.', bg: 'bg-[#FECACA]', color: 'text-[#B92521]', icon: ChartIcon },
+    { title: 'Analisis AI', desc: 'Engine AI menganalisis data Anda dan memberikan laporan kondisi kesehatan yang mudah dipahami.', bg: 'bg-[#FCA5A5]', color: 'text-[#B92521]', icon: BrainIcon },
     { title: 'Chat AI Kesehatan', desc: 'Tanya langsung ke AI seputar kondisi kesehatan Anda. Jawaban berbasis pedoman Kemenkes RI.', bg: 'bg-primary/10', color: 'text-primary', icon: ChatIcon },
-    { title: 'Edukasi Kesehatan', desc: 'Video edukasi dari Kemenkes, WHO, PERKENI, dan sumber medis terpercaya lainnya.', bg: 'bg-[#EFDBDC]', color: 'text-[#B74443]', icon: BookIcon },
-    { title: 'Standar Normal Pemeriksaan', desc: 'Referensi nilai normal tekanan darah, gula darah, BMI, SpO2, dan parameter lainnya berbasis WHO.', bg: 'bg-[#FDD3CF]', color: 'text-[#B92521]', icon: ClipIcon },
+    { title: 'Edukasi Kesehatan', desc: 'Video edukasi dari Kemenkes, WHO, PERKENI, dan sumber medis terpercaya lainnya.', bg: 'bg-[#FECACA]', color: 'text-[#B92521]', icon: BookIcon },
+    { title: 'Standar Normal Pemeriksaan', desc: 'Referensi nilai normal tekanan darah, gula darah, BMI, SpO2, dan parameter lainnya berbasis WHO.', bg: 'bg-[#FCA5A5]', color: 'text-[#B92521]', icon: ClipIcon },
     { title: 'Privasi Terjaga', desc: 'Data kesehatan Anda bersifat pribadi dan hanya dapat diakses oleh Anda sendiri.', bg: 'bg-primary/10', color: 'text-primary', icon: ShieldIcon },
-    { title: 'Unduh PDF & Bagikan WA', desc: 'Ekspor laporan analisis AI ke PDF atau kirim langsung ke WhatsApp untuk konsultasi dokter.', bg: 'bg-[#EFDBDC]', color: 'text-[#B74443]', icon: PhoneIcon },
-    { title: 'Akses Kapan Saja', desc: 'Tersedia di semua perangkat â€” smartphone, tablet, maupun komputer.', bg: 'bg-[#FDD3CF]', color: 'text-[#B92521]', icon: BellIcon },
+    { title: 'Unduh PDF & Bagikan WA', desc: 'Ekspor laporan analisis AI ke PDF atau kirim langsung ke WhatsApp untuk konsultasi dokter.', bg: 'bg-[#FECACA]', color: 'text-[#B92521]', icon: PhoneIcon },
+    { title: 'Akses Kapan Saja', desc: 'Tersedia di semua perangkat — smartphone, tablet, maupun komputer.', bg: 'bg-[#FCA5A5]', color: 'text-[#B92521]', icon: BellIcon },
 ];
 
 const aiPoints = [
@@ -552,14 +552,14 @@ const aiPoints = [
 ];
 
 const previewResults = [
-    { title: 'Tekanan Darah', text: 'Tekanan darah dalam rentang normal. Pertahankan pola hidup sehat saat ini.', style: 'border-[#F0404B] bg-[#FFF5F5]', titleColor: 'text-[#B92521]' },
-    { title: 'Gula Darah', text: 'Kadar gula darah sedikit di atas normal. Kurangi konsumsi karbohidrat sederhana.', style: 'border-[#E48888] bg-[#FDF4F4]', titleColor: 'text-[#B92521]' },
-    { title: 'Rekomendasi', text: 'Olahraga ringan 30 menit per hari dan perbanyak konsumsi sayuran hijau.', style: 'border-[#F18E8C] bg-[#FDF2F2]', titleColor: 'text-[#B92521]' },
+    { title: 'Tekanan Darah', text: 'Tekanan darah dalam rentang normal. Pertahankan pola hidup sehat saat ini.', style: 'border-[#F0404B] bg-[#FEF2F2]', titleColor: 'text-[#B92521]' },
+    { title: 'Gula Darah', text: 'Kadar gula darah sedikit di atas normal. Kurangi konsumsi karbohidrat sederhana.', style: 'border-[#E48888] bg-[#FEE2E2]', titleColor: 'text-[#B92521]' },
+    { title: 'Rekomendasi', text: 'Olahraga ringan 30 menit per hari dan perbanyak konsumsi sayuran hijau.', style: 'border-[#F18E8C] bg-[#FEE2E2]', titleColor: 'text-[#B92521]' },
 ];
 
 const steps = [
     { title: 'Buat Akun', desc: 'Daftar gratis dengan email atau akun Google Anda hanya dalam beberapa detik.', bg: 'bg-primary', numColor: 'text-white' },
-    { title: 'Input Data Kesehatan', desc: 'Masukkan data vital seperti tekanan darah, gula darah, berat badan, dan lainnya.', bg: 'bg-[#EFDBDC]', numColor: 'text-[#B92521]' },
+    { title: 'Input Data Kesehatan', desc: 'Masukkan data vital seperti tekanan darah, gula darah, berat badan, dan lainnya.', bg: 'bg-[#FECACA]', numColor: 'text-[#B92521]' },
     { title: 'Dapatkan Analisis AI', desc: 'Jalankan analisis dan terima laporan kondisi kesehatan yang lengkap dan mudah dipahami.', bg: 'bg-primary/10', numColor: 'text-primary' },
 ];
 

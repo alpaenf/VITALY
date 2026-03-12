@@ -21,7 +21,7 @@
             {{ $page.props.flash.success }}
         </div>
         <div v-if="$page.props.flash?.error"
-            class="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm mb-4">
+            class="bg-red-100 border border-red-400 text-red-800 rounded-xl px-4 py-3 text-sm mb-4">
             {{ $page.props.flash.error }}
         </div>
 
@@ -51,7 +51,7 @@
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-2">
                                     <button @click="confirmDelete(kader.id, kader.name)"
-                                        class="text-xs text-red-500 hover:text-red-700 px-2 py-1 border border-red-100 hover:border-red-200 rounded-lg transition">
+                                        class="text-xs text-red-600 hover:text-red-800 px-2 py-1 border border-red-300 hover:border-red-500 rounded-lg transition">
                                         Hapus
                                     </button>
                                 </div>
@@ -83,12 +83,12 @@
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Lengkap</label>
                         <input v-model="addForm.name" type="text" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="Nama kader" required />
-                        <p v-if="addErrors.name" class="text-xs text-red-500 mt-1">{{ addErrors.name }}</p>
+                        <p v-if="addErrors.name" class="text-xs text-red-600 mt-1">{{ addErrors.name }}</p>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Email Google</label>
                         <input v-model="addForm.email" type="email" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="email@gmail.com" required />
-                        <p v-if="addErrors.email" class="text-xs text-red-500 mt-1">{{ addErrors.email }}</p>
+                        <p v-if="addErrors.email" class="text-xs text-red-600 mt-1">{{ addErrors.email }}</p>
                     </div>
                     <!-- Google login info -->
                     <div class="flex items-start gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2.5">
@@ -122,7 +122,7 @@
                         Batal
                     </button>
                     <button @click="doDelete"
-                        class="flex-1 py-2.5 bg-red-500 hover:bg-red-600 rounded-xl text-sm font-medium text-white transition">
+                        class="flex-1 py-2.5 bg-red-600 hover:bg-red-700 rounded-xl text-sm font-medium text-white transition">
                         Hapus
                     </button>
                 </div>
