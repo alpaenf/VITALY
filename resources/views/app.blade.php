@@ -121,7 +121,7 @@
     @inertia
 
     <script>
-        // Hide splash after page load or max 2.2s (whichever first)
+        // Simulasi Native App Splash Screen (Menahan animasi untuk unjuk kerja LKTI)
         (function() {
             var splash = document.getElementById('splash');
             function hideSplash() {
@@ -134,10 +134,13 @@
                     }, 500);
                 }
             }
-            var timer = setTimeout(hideSplash, 2200);
+            // Batas maksimal loading jika jaringan ngadat (3.5 detik)
+            var timer = setTimeout(hideSplash, 3500); 
             window.addEventListener('load', function() {
-                clearTimeout(timer);
-                setTimeout(hideSplash, 400); // small delay after load for smoothness
+                // Jangan langsung mematikan timer, paksa tampil minimal 1.5 detik
+                setTimeout(function() {
+                    hideSplash();
+                }, 1500); 
             });
         })();
     </script>

@@ -1,20 +1,20 @@
 @import 'tailwindcss';
 
 @theme {
-    --color-primary: #F0404B;
-    --color-primary-dark: #B92521;
-    --color-primary-support: #B74443;
-    --color-secondary: #F18E8C;
-    --color-secondary-light: #E48888;
-    --color-bg-app: #F2E9EE;
-    --color-bg-card: #FECACA;
+    --color-primary: #E63946; /* Merah menyala modern ala Medis */
+    --color-primary-dark: #C1121F;
+    --color-primary-support: #A8201A;
+    --color-secondary: #D90429; /* Merah pekat kuat, bukan pink */
+    --color-secondary-light: #FF4D4D; /* Merah cerah */
+    --color-bg-app: #F8F9FA; /* Latar belakang abu-abu netral sangat bersih */
+    --color-bg-card: #FFE2E5; /* Merah soft pucat elegan */
 
     --font-family-poppins: 'Poppins', sans-serif;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #F2E9EE;
+    background-color: var(--color-bg-app);
 }
 
 .font-poppins {
@@ -22,7 +22,7 @@ body {
 }
 
 .bg-app {
-    background-color: #F2E9EE;
+    background-color: var(--color-bg-app);
 }
 
 /* Markdown prose for AI analysis results */
@@ -76,11 +76,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #F2E9EE;
+    background: var(--color-bg-app);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #F18E8C;
+    background: var(--color-secondary);
     border-radius: 4px;
 }
 
