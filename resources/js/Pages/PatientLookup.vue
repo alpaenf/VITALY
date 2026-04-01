@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-primary via-[#C63632] to-primary-dark flex items-center justify-center p-4 font-poppins">
+    <div class="min-h-screen bg-gradient-to-br from-primary via-[#C63632] to-primary-dark flex items-start sm:items-center justify-center p-4 py-6 sm:py-4 font-poppins">
         <Head title="Masuk - Cek Data Kesehatan" />
 
         <!-- Background decoration -->
@@ -10,22 +10,31 @@
 
         <div class="relative w-full max-w-sm">
             <!-- Logo -->
-            <div class="text-center mb-8">
+            <div class="text-center mb-6 sm:mb-8">
                 <img src="/images/logo.png" alt="Healtiva" class="h-20 w-auto mx-auto brightness-0 invert" />
                 <p class="text-white/70 text-sm mt-2">Sistem Informasi Kesehatan Posyandu</p>
             </div>
 
             <!-- Card -->
-            <div class="bg-white rounded-3xl shadow-2xl p-7">
+            <div class="bg-white rounded-3xl shadow-2xl p-5 sm:p-7">
                 <h2 class="text-lg font-bold text-gray-800 mb-0.5">Cek Data Kesehatan</h2>
                 <p class="text-xs text-gray-500 mb-5">Masukkan NIK Anda untuk melihat data kesehatan</p>
 
                 <!-- Google welcome banner -->
-                <div v-if="googleName" class="mb-4 bg-green-50 border border-green-200 text-green-700 rounded-xl px-4 py-3 text-sm flex items-center gap-2">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Login Google berhasil! Halo, <strong>{{ googleName }}</strong>.
+                <div v-if="googleName" class="mb-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-green-800">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-green-100">
+                            <svg class="h-4 w-4 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-5">Login Google berhasil</p>
+                            <p class="mt-0.5 text-sm leading-5 text-green-700">
+                                Halo, <span class="font-semibold break-words">{{ googleName }}</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Error -->

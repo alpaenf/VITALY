@@ -14,7 +14,7 @@
         </div>
 
         <!-- Profile Header Card -->
-        <div class="card-medix p-5 mb-5 animate-fade-in-up">
+        <div class="card-Healtiva p-5 mb-5 animate-fade-in-up">
             <div class="flex items-center gap-4">
                 <div class="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 shadow-md">
                     <img v-if="user.avatar"
@@ -51,7 +51,7 @@
         </div>
 
         <!-- Health Trend Chart -->
-        <div v-if="records.length >= 2" class="card-medix p-5 mb-5 animate-fade-in-up delay-50">
+        <div v-if="records.length >= 2" class="card-Healtiva p-5 mb-5 animate-fade-in-up delay-50">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold text-gray-700">Tren Kesehatan</h2>
                 <span class="text-xs text-gray-400">{{ records.length }} data terakhir</span>
@@ -77,7 +77,7 @@
         </div>
 
         <!-- Health Records -->
-        <div class="card-medix mb-5 overflow-hidden animate-fade-in-up delay-75">
+        <div class="card-Healtiva mb-5 overflow-hidden animate-fade-in-up delay-75">
             <div class="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-700">Riwayat Data Kesehatan</h2>
                 <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-medium">{{ records.length }} data</span>
@@ -94,6 +94,7 @@
                             <th class="px-4 py-2.5 text-left text-xs font-semibold text-gray-400 uppercase">BB/TB</th>
                             <th class="px-4 py-2.5 text-left text-xs font-semibold text-gray-400 uppercase">Suhu</th>
                             <th class="px-4 py-2.5 text-left text-xs font-semibold text-gray-400 uppercase">SpO2</th>
+                            <th class="px-4 py-2.5 text-right text-xs font-semibold text-gray-400 uppercase">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -108,22 +109,31 @@
                                     class="text-xs font-medium px-2 py-0.5 rounded-lg">
                                     {{ r.systolic }}/{{ r.diastolic }}
                                 </span>
-                                <span v-else class="text-gray-300 text-xs">â€”</span>
+                                <span v-else class="text-gray-300 text-xs">-</span>
                             </td>
                             <td class="px-4 py-2.5 text-xs text-gray-600">
-                                {{ r.heart_rate ? `${r.heart_rate} bpm` : 'â€”' }}
+                                {{ r.heart_rate ? `${r.heart_rate} bpm` : '-' }}
                             </td>
                             <td class="px-4 py-2.5 text-xs text-gray-600">
-                                {{ r.blood_sugar ? `${r.blood_sugar} mg/dL` : 'â€”' }}
+                                {{ r.blood_sugar ? `${r.blood_sugar} mg/dL` : '-' }}
                             </td>
                             <td class="px-4 py-2.5 text-xs text-gray-600">
-                                {{ r.weight && r.height ? `${r.weight}kg / ${r.height}cm` : 'â€”' }}
+                                {{ r.weight && r.height ? `${r.weight}kg / ${r.height}cm` : '-' }}
                             </td>
                             <td class="px-4 py-2.5 text-xs text-gray-600">
-                                {{ r.temperature ? `${r.temperature}°C` : 'â€”' }}
+                                {{ r.temperature ? `${r.temperature} C` : '-' }}
                             </td>
                             <td class="px-4 py-2.5 text-xs text-gray-600">
-                                {{ r.oxygen_saturation ? `${r.oxygen_saturation}%` : 'â€”' }}
+                                {{ r.oxygen_saturation ? `${r.oxygen_saturation}%` : '-' }}
+                            </td>
+                            <td class="px-4 py-2.5 text-right">
+                                <button
+                                    @click="deleteRecord(r)"
+                                    :disabled="deletingRecordId === r.id"
+                                    class="inline-flex items-center justify-center text-xs font-medium px-3 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {{ deletingRecordId === r.id ? 'Menghapus...' : 'Hapus' }}
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -135,7 +145,7 @@
         </div>
 
         <!-- AI Analyses -->
-        <div class="card-medix overflow-hidden animate-fade-in-up delay-150">
+        <div class="card-Healtiva overflow-hidden animate-fade-in-up delay-150">
             <div class="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-700">Riwayat Analisis AI</h2>
                 <span class="text-xs bg-violet-50 text-violet-600 px-2 py-1 rounded-full font-medium">{{ analyses.length }} analisis</span>
@@ -158,7 +168,7 @@
                                 <p class="text-sm font-medium text-gray-700">
                                     {{ index === 0 ? 'Analisis Terbaru' : `Analisis #${analyses.length - index}` }}
                                 </p>
-                                <p class="text-xs text-gray-400">{{ formatDateFull(a.created_at) }} Â· {{ a.records_analyzed }} data</p>
+                                <p class="text-xs text-gray-400">{{ formatDateFull(a.created_at) }} | {{ a.records_analyzed }} data</p>
                             </div>
                         </div>
                         <svg class="w-4 h-4 text-gray-400 transition-transform duration-300"
@@ -170,6 +180,43 @@
                     <transition name="accordion">
                         <div v-if="openAi === index" class="border-t border-gray-100">
                             <div class="analysis-result p-4" v-html="renderMarkdown(a.result)"></div>
+                            <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 px-4 pb-4 pt-1">
+                                <button @click="downloadPdf(a)"
+                                    class="flex-1 md:flex-none flex items-center justify-center gap-1.5 text-sm font-medium px-4 py-2.5 rounded-xl bg-[#FDD3CF] text-[#B92521] hover:bg-[#F18E8C]/40 transition w-full md:w-auto">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                    Cetak PDF
+                                </button>
+                                <button @click="shareWhatsApp(a)"
+                                    class="flex-1 md:flex-none flex items-center justify-center gap-1.5 text-sm font-medium px-4 py-2.5 rounded-xl bg-green-50 text-green-700 hover:bg-green-100 transition w-full md:w-auto">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.673.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                                    Kirim WA
+                                </button>
+                            </div>
+
+                            <div v-if="getRelatedVideos(a.result).length" class="px-5 pb-5 border-t border-gray-50 pt-4">
+                                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-[#FF0000]" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                                    Video Edukasi Rekomendasi
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <a v-for="vid in getRelatedVideos(a.result).slice(0, 2)" :key="vid.id"
+                                        :href="`https://www.youtube.com/watch?v=${vid.youtubeId}`" target="_blank" rel="noopener noreferrer"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-100 hover:border-[#FF0000]/30 hover:bg-red-50/40 transition-all group">
+                                        <div class="relative w-20 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 shadow-sm">
+                                            <img :src="`https://i.ytimg.com/vi/${vid.youtubeId}/hqdefault.jpg`" :alt="vid.title" class="w-full h-full object-cover" />
+                                            <div class="absolute inset-0 flex items-center justify-center group-hover:bg-black/10 transition">
+                                                <div class="w-6 h-6 bg-white/90 rounded-full flex items-center justify-center shadow-sm">
+                                                    <svg class="w-3 h-3 text-[#FF0000] ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-[12px] font-semibold text-gray-700 truncate">{{ vid.title }}</p>
+                                            <p class="text-[11px] text-gray-400 mt-0.5 truncate">{{ vid.channel }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </transition>
                 </div>
@@ -178,12 +225,56 @@
                 Belum ada analisis AI
             </div>
         </div>
+
+        <transition name="modal-fade">
+            <div
+                v-if="showDeleteModal && pendingDeleteRecord"
+                class="fixed inset-0 z-50 flex items-center justify-center p-4"
+            >
+                <div class="absolute inset-0 bg-black/40" @click="closeDeleteModal"></div>
+
+                <div class="relative w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-100 p-5">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="text-base font-semibold text-gray-800">Hapus Riwayat Kesehatan?</h3>
+                            <p class="text-sm text-gray-500 mt-1">
+                                Data tanggal {{ pendingDeleteDate }} akan dihapus permanen dan tidak bisa dibatalkan.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 flex items-center justify-end gap-2.5">
+                        <button
+                            type="button"
+                            class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition"
+                            :disabled="deletingRecordId !== null"
+                            @click="closeDeleteModal"
+                        >
+                            Batal
+                        </button>
+                        <button
+                            type="button"
+                            class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            :disabled="deletingRecordId !== null"
+                            @click="confirmDeleteRecord"
+                        >
+                            {{ deletingRecordId !== null ? 'Menghapus...' : 'Ya, Hapus' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </AdminLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler } from 'chart.js';
@@ -194,9 +285,14 @@ const props = defineProps({
     user: Object,
     records: Array,
     analyses: Array,
+    eduVideos: { type: Array, default: () => [] },
 });
 
 const openAi = ref(0);
+const deletingRecordId = ref(null);
+const showDeleteModal = ref(false);
+const pendingDeleteRecord = ref(null);
+const pendingDeleteDate = ref('');
 
 // Chart dari records (urut dari lama ke baru)
 const chartRecords = computed(() => [...props.records].reverse().slice(-10));
@@ -304,6 +400,183 @@ const renderMarkdown = (text) => {
     closeUl(); closeSection();
     return html;
 };
+
+const formatAge = (dob) => {
+    const diff = Date.now() - new Date(dob).getTime();
+    const ageYears = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+    return `${ageYears}`;
+};
+
+const downloadPdf = async (analysis) => {
+    const date = formatDateFull(analysis.created_at);
+    let logoHtml = '<div class="logo-text">HEALTIVA</div>';
+    try {
+        const resp = await fetch('/images/logo.png');
+        if (resp.ok) {
+            const blob = await resp.blob();
+            const b64 = await new Promise((res) => {
+                const r = new FileReader();
+                r.onload = () => res(r.result);
+                r.readAsDataURL(blob);
+            });
+            logoHtml = `<img src="${b64}" alt="HEALTIVA" class="logo-img">`;
+        }
+    } catch (_) {}
+
+    const ageStr = props.user.date_of_birth ? `${formatAge(props.user.date_of_birth)} tahun` : '-';
+    const genderStr = props.user.gender === 'male' ? 'Laki-laki' : props.user.gender === 'female' ? 'Perempuan' : '-';
+
+    const identityHtml = `
+    <table class="identity-table">
+        <tr>
+            <td class="id-label">Nama</td><td class="id-sep">:</td><td class="id-val">${props.user.name}</td>
+            <td class="id-label">Usia</td><td class="id-sep">:</td><td class="id-val">${ageStr}</td>
+        </tr>
+        <tr>
+            <td class="id-label">Tanggal Cetak</td><td class="id-sep">:</td><td class="id-val">${date}</td>
+            <td class="id-label">Jenis Kelamin</td><td class="id-sep">:</td><td class="id-val">${genderStr}</td>
+        </tr>
+    </table><div class="id-divider"></div>`;
+
+    const lines = (analysis.result ?? '').split('\n');
+    let html = '<table class="analysis-table">';
+    for (const raw of lines) {
+        const line = raw.trim();
+        if (!line) continue;
+        const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>');
+        if (line.match(/^(#+|(?:\d+\.)?\s*(?:Ringkasan|Analisis|Rekomendasi|Kesimpulan|Status|Evaluasi|Parameter|Tindakan))/i) && !line.includes(': ')) {
+            const title = formatted.replace(/^[#\s]+/, '');
+            html += `<tr><th colspan="2" class="main-header">${title}</th></tr>`;
+        } else if (line.includes(': ')) {
+            const parts = formatted.split(': ');
+            const key = parts[0];
+            const val = parts.slice(1).join(': ');
+            html += `<tr><td class="key-cell">${key}</td><td class="val-cell">${val}</td></tr>`;
+        } else {
+            html += `<tr><td colspan="2" class="text-cell">${formatted}</td></tr>`;
+        }
+    }
+    html += '</table>';
+
+    const content = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Laporan Analisis Kesehatan - HEALTIVA</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 18px 30px 30px; color: #1f2937; font-size: 13px; line-height: 1.6; }
+  .header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 3px solid #B92521; }
+  .logo-img { height: 88px; width: auto; object-fit: contain; }
+  .logo-text { color: #B92521; font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+  .header-right { text-align: right; }
+  .header-title { font-weight: 700; font-size: 13px; color: #374151; }
+  .header-sub { font-size: 11px; color: #6b7280; margin-top: 2px; }
+  .identity-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 13px; }
+  .id-label { color: #6b7280; width: 18%; font-weight: 600; padding: 4px 6px 4px 0; }
+  .id-sep { color: #6b7280; width: 2%; padding: 4px 6px; }
+  .id-val { color: #111827; font-weight: 500; width: 30%; padding: 4px 6px; }
+  .id-divider { border-top: 1px solid #e5e7eb; margin-bottom: 18px; }
+  .analysis-table { width: 100%; border-collapse: collapse; border: 2px solid #111827; margin-bottom: 20px; }
+  .analysis-table th, .analysis-table td { border: 1px solid #6b7280; padding: 10px 14px; vertical-align: top; }
+  .main-header { background-color: #FEF0F0; color: #A91127; text-align: left; font-size: 14px; border-bottom: 2px solid #111827; border-top: 2px solid #111827; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .key-cell { width: 35%; font-weight: 700; color: #374151; background-color: #f9fafb; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .val-cell { width: 65%; color: #111827; }
+  .text-cell { color: #374151; padding: 12px 14px; }
+  strong { color: #000; font-weight: 700; }
+  .footer { margin-top: 30px; text-align: center; font-size: 11px; color: #6b7280; padding-top: 15px; border-top: 1px dashed #d1d5db; }
+  @media print { body { padding: 0; } .analysis-table { border: 2px solid #000; } .analysis-table th, .analysis-table td { border: 1pt solid #000; } .main-header { border-bottom: 2pt solid #000; border-top: 2pt solid #000; } }
+</style></head><body>
+<div class="header-box"><div>${logoHtml}</div><div class="header-right"><div class="header-title">Laporan Analisis Kesehatan</div><div class="header-sub">${date}</div></div></div>
+${identityHtml}
+${html}
+<p class="footer">Dihasilkan oleh HEALTIVA AI. Data diproses oleh Admin Posbindu.</p>
+<script>window.onload = () => { window.print(); };<\/script>
+</body></html>`;
+
+    const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank');
+    if (!win) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.click();
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+};
+
+const shareWhatsApp = (analysis) => {
+    const phone = props.user.phone;
+    const date = formatDateFull(analysis.created_at);
+    const plain = (analysis.result ?? '')
+        .replace(/\*\*(.+?)\*\*/g, '*$1*')
+        .replace(/\*(.+?)\*/g, '_$1_')
+        .replace(/#{1,3}\s/g, '');
+    const msg = `*Laporan Analisis Kesehatan Bapak/Ibu ${props.user.name}*\n${date}\n\n${plain.trim()}\n\n_Dihasilkan oleh HEALTIVA Health Monitor dari Admin Posbindu._`;
+    window.open(`https://wa.me/${phone ? phone.replace(/[^0-9]/g, '') : ''}?text=${encodeURIComponent(msg)}`, '_blank');
+};
+
+const deleteRecord = (record) => {
+    pendingDeleteRecord.value = record;
+    pendingDeleteDate.value = formatDate(record.recorded_at || record.created_at);
+    showDeleteModal.value = true;
+};
+
+const closeDeleteModal = () => {
+    if (deletingRecordId.value !== null) return;
+    showDeleteModal.value = false;
+    pendingDeleteRecord.value = null;
+    pendingDeleteDate.value = '';
+};
+
+const confirmDeleteRecord = () => {
+    if (!pendingDeleteRecord.value) return;
+
+    deletingRecordId.value = pendingDeleteRecord.value.id;
+    router.delete(`/admin/patients/${props.user.id}/records/${pendingDeleteRecord.value.id}`, {
+        preserveScroll: true,
+        onFinish: () => {
+            deletingRecordId.value = null;
+            closeDeleteModal();
+        },
+    });
+};
+
+const staticEduVideos = [
+    { id: 1, youtubeId: 'b2iSH4VKpXo', keywords: ['hipertensi', 'tekanan darah', 'sistolik', 'diastolik', 'tensi'], title: 'Hipertensi: Penyebab, Gejala dan Penanganannya', channel: 'Kemenkes RI' },
+    { id: 2, youtubeId: 'l0C_GsEINHs', keywords: ['jantung', 'koroner', 'kardio', 'angina', 'pembuluh darah'], title: 'Penyakit Jantung Koroner: Kenali dan Cegah Sejak Dini', channel: 'PERKI Indonesia' },
+    { id: 3, youtubeId: 'fIAB4vdqYaQ', keywords: ['diabetes', 'gula darah', 'glukosa', 'hiperglikemia', 'pradiabetes'], title: 'Diabetes Melitus Tipe 2: Gejala dan Pencegahan', channel: 'Kemenkes RI' },
+    { id: 4, youtubeId: 'wuU1TGqV6IU', keywords: ['gula darah', 'diabetes', 'pola makan', 'diet', 'nutrisi'], title: 'Pola Makan Sehat untuk Penderita Diabetes', channel: 'PERKENI' },
+    { id: 5, youtubeId: 'tFnFDFNITKs', keywords: ['bmi', 'berat badan', 'imt', 'overweight', 'obesitas'], title: 'Cara Menghitung IMT dan Kategori Berat Badan', channel: 'Kemenkes RI' },
+];
+
+const getRelatedVideos = (text) => {
+    if (!text) return [];
+    const t = text.toLowerCase();
+
+    const scored = staticEduVideos.map((v) => {
+        let score = 0;
+        for (const kw of v.keywords ?? []) {
+            const matches = (t.match(new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length;
+            score += matches * 2;
+        }
+        return { ...v, score };
+    });
+
+    const matched = scored
+        .filter((v) => v.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 2);
+    const candidates = matched.length > 0 ? matched : staticEduVideos.slice(0, 2);
+
+    const liveVideos = props.eduVideos && props.eduVideos.length > 0 ? props.eduVideos : null;
+    if (!liveVideos) return candidates;
+
+    return candidates.map((sv) => {
+        const liveMatch = liveVideos.find((lv) =>
+            (sv.keywords ?? []).some((kw) => (lv.title ?? '').toLowerCase().includes(kw)),
+        );
+        return liveMatch
+            ? { ...sv, youtubeId: liveMatch.youtubeId, channel: liveMatch.channel, title: liveMatch.title }
+            : sv;
+    });
+};
 </script>
 
 <style scoped>
@@ -338,4 +611,14 @@ const renderMarkdown = (text) => {
 :deep(.ar-teal) { border-color: #F18E8C; background: #FDF2F2; }
 :deep(.ar-teal .ar-heading) { color: #B92521; }
 :deep(.ar-teal .ar-list li::before) { background: #F18E8C; }
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+    opacity: 0;
+}
 </style>

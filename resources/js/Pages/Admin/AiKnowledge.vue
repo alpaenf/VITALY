@@ -6,7 +6,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 animate-fade-in-down">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Knowledge Base AI</h1>
-                <p class="text-sm text-gray-500">{{ items.total }} pengetahuan tersimpan â€” AI belajar dari sini</p>
+                <p class="text-sm text-gray-500">{{ items.total }} pengetahuan tersimpan - AI belajar dari sini</p>
             </div>
             <button @click="openAdd"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition shadow-sm shadow-primary/30">

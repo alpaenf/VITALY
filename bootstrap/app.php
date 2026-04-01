@@ -19,6 +19,16 @@ return Application::configure(basePath: dirname(__DIR__))
             'kader'          => \App\Http\Middleware\KaderMiddleware::class,
             'patient.session'=> \App\Http\Middleware\PatientSessionMiddleware::class,
         ]);
+
+        $middleware->redirectUsersTo(function () {
+            if (auth()->check()) {
+                if (auth()->user()->isAdmin()) {
+                    return '/admin/dashboard';
+                }
+                return '/kader/dashboard';
+            }
+            return '/';
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

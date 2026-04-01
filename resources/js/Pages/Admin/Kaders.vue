@@ -2,17 +2,18 @@
     <AdminLayout>
         <Head title="Kelola Kader" />
 
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 animate-fade-in-down">
+        <div class="flex items-center justify-between gap-3 mb-5 animate-fade-in-down">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">Kelola Kader</h1>
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Kelola Kader</h1>
                 <p class="text-sm text-gray-500">{{ kaders.total }} kader terdaftar</p>
             </div>
             <button @click="showAddModal = true"
-                class="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-primary hover:bg-primary-dark text-white rounded-xl transition shadow-sm shadow-primary/20">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="flex items-center gap-1.5 px-3 py-2 sm:px-4 text-xs sm:text-sm font-semibold bg-primary hover:bg-primary-dark text-white rounded-xl transition shadow-sm shadow-primary/20">
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Tambah Kader
+                <span class="hidden xs:inline">Tambah Kader</span>
+                <span class="xs:hidden">Tambah</span>
             </button>
         </div>
 
@@ -26,7 +27,29 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in-up delay-75">
-            <div class="overflow-x-auto">
+
+            <!-- Mobile card list -->
+            <div class="divide-y divide-gray-50 sm:hidden">
+                <div v-if="!kaders.data.length" class="px-4 py-8 text-center text-gray-400 text-sm">Belum ada kader</div>
+                <div v-for="kader in kaders.data" :key="kader.id"
+                    class="px-4 py-3.5 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                        {{ kader.name.charAt(0).toUpperCase() }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-medium text-gray-800 text-sm truncate">{{ kader.name }}</p>
+                        <p class="text-xs text-gray-400 truncate">{{ kader.email }}</p>
+                        <p class="text-xs text-gray-300 mt-0.5">{{ formatDate(kader.created_at) }}</p>
+                    </div>
+                    <button @click="confirmDelete(kader.id, kader.name)"
+                        class="text-xs text-red-400 hover:text-red-600 px-2 py-1 border border-red-100 hover:border-red-200 rounded-lg transition flex-shrink-0">
+                        Hapus
+                    </button>
+                </div>
+            </div>
+
+            <!-- Desktop table -->
+            <div class="hidden sm:block overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead class="bg-gray-50 border-b border-gray-100">
                         <tr>

@@ -24,7 +24,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
                 <!-- Tekanan Darah -->
-                <div class="card-medix p-5">
+                <div class="card-Healtiva p-4 sm:p-5 lg:p-6">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
                             <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,15 +33,15 @@
                         </div>
                         <h3 class="font-semibold text-gray-700">Tekanan Darah</h3>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Sistolik (mmHg)</label>
-                            <input v-model="form.systolic" type="number" placeholder="120" class="input-field" />
+                            <input v-model="form.systolic" type="number" placeholder="120" class="input-field w-full" />
                             <p v-if="form.errors.systolic" class="text-red-500 text-xs mt-1">{{ form.errors.systolic }}</p>
                         </div>
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Diastolik (mmHg)</label>
-                            <input v-model="form.diastolic" type="number" placeholder="80" class="input-field" />
+                            <input v-model="form.diastolic" type="number" placeholder="80" class="input-field w-full" />
                         </div>
                     </div>
                     <transition name="badge">
@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- Detak Jantung -->
-                <div class="card-medix p-5">
+                <div class="card-Healtiva p-4 sm:p-5 lg:p-6">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded-lg bg-secondary/20 flex items-center justify-center">
                             <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,11 +62,11 @@
                         <h3 class="font-semibold text-gray-700">Detak Jantung</h3>
                     </div>
                     <label class="text-xs text-gray-500 mb-1 block">BPM (denyut per menit)</label>
-                    <input v-model="form.heart_rate" type="number" placeholder="72" class="input-field" />
+                    <input v-model="form.heart_rate" type="number" placeholder="72" class="input-field w-full" />
                 </div>
 
                 <!-- Berat & Tinggi -->
-                <div class="card-medix p-5">
+                <div class="card-Healtiva p-4 sm:p-5 lg:p-6">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded-lg bg-[#EFDBDC] flex items-center justify-center">
                             <svg class="w-4 h-4 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,14 +75,14 @@
                         </div>
                         <h3 class="font-semibold text-gray-700">Berat & Tinggi Badan</h3>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Berat (kg)</label>
-                            <input v-model="form.weight" type="number" step="0.1" placeholder="60" class="input-field" />
+                            <input v-model="form.weight" type="number" step="0.1" placeholder="60" class="input-field w-full" />
                         </div>
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Tinggi (cm)</label>
-                            <input v-model="form.height" type="number" step="0.1" placeholder="165" class="input-field" />
+                            <input v-model="form.height" type="number" step="0.1" placeholder="165" class="input-field w-full" />
                         </div>
                     </div>
                     <div v-if="bmi" class="mt-3 text-xs px-3 py-1.5 rounded-lg inline-block font-medium bg-blue-50 text-blue-700">
@@ -91,7 +91,7 @@
                 </div>
 
                 <!-- Gula Darah -->
-                <div class="card-medix p-5">
+                <div class="card-Healtiva p-4 sm:p-5 lg:p-6">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded-lg bg-yellow-50 flex items-center justify-center">
                             <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,11 +101,11 @@
                         <h3 class="font-semibold text-gray-700">Gula Darah</h3>
                     </div>
                     <label class="text-xs text-gray-500 mb-1 block">Kadar Gula Darah (mg/dL)</label>
-                    <input v-model="form.blood_sugar" type="number" step="0.1" placeholder="100" class="input-field" />
+                    <input v-model="form.blood_sugar" type="number" step="0.1" placeholder="100" class="input-field w-full" />
                 </div>
 
                 <!-- Suhu & RR -->
-                <div class="card-medix p-5">
+                <div class="card-Healtiva p-4 sm:p-5 lg:p-6">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center">
                             <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,20 +114,20 @@
                         </div>
                         <h3 class="font-semibold text-gray-700">Suhu & Laju Nafas</h3>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Suhu (°C)</label>
-                            <input v-model="form.temperature" type="number" step="0.1" placeholder="36.5" class="input-field" />
+                            <input v-model="form.temperature" type="number" step="0.1" placeholder="36.5" class="input-field w-full" />
                         </div>
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">RR (x/menit)</label>
-                            <input v-model="form.respiratory_rate" type="number" placeholder="20" class="input-field" />
+                            <input v-model="form.respiratory_rate" type="number" placeholder="20" class="input-field w-full" />
                         </div>
                     </div>
                 </div>
 
                 <!-- Tanggal & Catatan -->
-                <div class="card-medix p-5">
+                <div class="card-Healtiva p-4 sm:p-5 lg:p-6">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
                             <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,25 +139,25 @@
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Tanggal Pemeriksaan</label>
-                            <input v-model="form.recorded_at" type="datetime-local" class="input-field" />
+                            <input v-model="form.recorded_at" type="datetime-local" class="input-field w-full" />
                         </div>
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Catatan</label>
                             <textarea v-model="form.notes" rows="3" placeholder="Catatan tambahan..."
-                                class="input-field resize-none"></textarea>
+                                class="input-field w-full resize-none"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Submit -->
-            <div class="mt-6 flex gap-3">
+            <div class="mt-6 flex flex-col md:flex-row gap-3 md:gap-4">
                 <Link :href="`/kader/pasien/${patient.id}`"
-                    class="flex-1 text-center border border-gray-200 text-gray-600 py-3 rounded-xl font-medium text-sm hover:bg-gray-50 transition">
+                    class="flex-1 text-center border border-gray-200 text-gray-600 py-3 rounded-xl font-medium text-sm hover:bg-gray-50 transition order-2 md:order-1">
                     Batal
                 </Link>
                 <button type="submit" :disabled="form.processing"
-                    class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold text-sm hover:bg-primary-dark transition shadow-lg shadow-primary/20 disabled:opacity-50">
+                    class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold text-sm hover:bg-primary-dark transition shadow-lg shadow-primary/20 disabled:opacity-50 order-1 md:order-2">
                     <span v-if="form.processing">Menyimpan...</span>
                     <span v-else>Simpan Data</span>
                 </button>

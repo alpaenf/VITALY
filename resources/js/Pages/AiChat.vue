@@ -2,12 +2,12 @@
     <AppLayout>
         <Head title="Chat AI Kesehatan" />
 
-        <div class="flex flex-col h-[calc(100dvh-192px)] lg:h-[calc(100vh-120px)]">
+        <div class="flex flex-col h-[calc(100dvh-186px)] lg:h-[calc(100vh-120px)]">
             <!-- Header Full -->
             <div v-if="showHeader" class="flex-none relative overflow-hidden rounded-xl bg-gradient-to-br from-primary via-primary to-primary-dark text-white p-3 px-4 mb-3 animate-fade-in-down shadow-sm">
                 <div class="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full pointer-events-none"></div>
                 <div class="absolute -bottom-6 -left-2 w-16 h-16 bg-white/5 rounded-full pointer-events-none"></div>
-                <div class="relative flex items-center gap-3">
+                <div class="relative flex flex-col sm:flex-row sm:items-center gap-3">
                     <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
@@ -17,7 +17,7 @@
                         <h1 class="text-base font-bold leading-tight">Chat AI Kesehatan</h1>
                         <p class="text-white/80 text-[10px] mt-0.5 leading-tight">Berbasis Kemenkes RI</p>
                     </div>
-                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <div class="flex items-center gap-1.5 flex-shrink-0 self-end sm:self-auto">
                         <button @click="clearChat"
                             class="w-7 h-7 bg-white/20 hover:bg-red-400 rounded-lg flex items-center justify-center transition" title="Hapus Chat">
                             <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@
             <div class="flex flex-col flex-1 min-h-0">
 
             <!-- Messages -->
-            <div ref="messagesEl" class="flex-1 overflow-y-auto space-y-3 pr-1 pb-3 scroll-smooth overscroll-contain">
+            <div ref="messagesEl" class="flex-1 overflow-y-auto space-y-3 pr-0 sm:pr-1 pb-3 scroll-smooth overscroll-contain">
 
                 <!-- Welcome message -->
                 <div v-if="messages.length === 0" class="flex flex-col items-center justify-center h-full text-center py-8 gap-4">
@@ -104,7 +104,7 @@
 
                         <!-- Bubble -->
                         <div :class="[
-                            'max-w-[82%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm',
+                            'max-w-[88%] sm:max-w-[82%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm',
                             msg.role === 'user'
                                 ? 'bg-primary text-white rounded-br-sm'
                                 : 'bg-white border border-gray-100 text-gray-800 rounded-bl-sm'
@@ -160,7 +160,7 @@
             </div>
 
             <!-- Disclaimer bar -->
-            <div class="flex-none flex items-center gap-1.5 text-[10px] text-gray-400 mb-2 px-1 justify-between">
+            <div class="flex-none flex flex-col sm:flex-row sm:items-center gap-2 text-[10px] text-gray-400 mb-2 px-1 justify-between">
                 <div class="flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -168,7 +168,7 @@
                     <span>Bukan pengganti dokter jaga.</span>
                 </div>
                 <!-- Toggle Input Button -->
-                <button @click="showInput = !showInput" class="text-primary hover:text-primary-dark font-medium px-2 py-0.5 bg-primary/5 rounded-full border border-primary/20 flex items-center gap-1 transition-all">
+                <button @click="showInput = !showInput" class="text-primary hover:text-primary-dark font-medium px-2 py-0.5 bg-primary/5 rounded-full border border-primary/20 inline-flex items-center gap-1 transition-all">
                     {{ showInput ? 'Sembunyikan Papan' : 'Tulis Pesan' }}
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" :class="{'rotate-180': !showInput}">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -178,13 +178,13 @@
 
             <!-- Input (Bisa disembunyikan/ciut) -->
             <Transition name="fade-slide" mode="out-in">
-                <div v-show="showInput" class="flex-none flex items-end gap-2 bg-white rounded-2xl border border-gray-200 px-4 py-3 shadow-sm focus-within:border-primary/40 focus-within:shadow-primary/10 transition-all">
+                <div v-show="showInput" class="flex-none flex items-end gap-2 bg-white rounded-2xl border border-gray-200 px-3 sm:px-4 py-3 shadow-sm focus-within:border-primary/40 focus-within:shadow-primary/10 transition-all">
                     <textarea
                         ref="inputEl"
                         v-model="inputText"
                         @keydown.enter.exact.prevent="send"
                         rows="1"
-                        placeholder="Tanyakan seputar kesehatan Andaâ€¦"
+                        placeholder="Tanyakan seputar kesehatan Anda..."
                         class="flex-1 resize-none text-sm outline-none text-gray-700 placeholder-gray-400 bg-transparent max-h-24 md:max-h-32"
                         style="min-height:24px"
                         @input="autoResize"
@@ -345,7 +345,7 @@ const renderMd = (text) => {
         // Numbered lists
         .replace(/^(\d+)\.\s(.+)$/gm, '<li class="ml-4 list-decimal my-0.5">$2</li>')
         // Bullet lists
-        .replace(/^[-â€¢]\s(.+)$/gm, '<li class="ml-4 list-disc my-0.5">$1</li>')
+        .replace(/^[-*]\s(.+)$/gm, '<li class="ml-4 list-disc my-0.5">$1</li>')
         // Wrap consecutive <li> in <ul>/<ol>
         .replace(/(<li[^>]*>.*?<\/li>\n?)+/gs, (m) => `<ul class="my-1.5">${m}</ul>`)
         // Paragraphs

@@ -51,7 +51,6 @@ Route::post('/keluar', [PatientController::class, 'logout'])->name('patient.logo
 Route::middleware('patient.session')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/history', [HealthRecordController::class, 'index'])->name('history');
-    Route::delete('/history/{healthRecord}', [HealthRecordController::class, 'destroy'])->name('history.destroy');
     Route::get('/ai-analysis', [AiAnalysisController::class, 'index'])->name('ai-analysis');
     Route::post('/ai-analysis', [AiAnalysisController::class, 'analyze'])->name('ai-analysis.run');
     Route::delete('/ai-analysis/{aiAnalysis}', [AiAnalysisController::class, 'destroy'])->name('ai-analysis.destroy');
@@ -82,6 +81,10 @@ Route::middleware(['auth', 'kader'])->prefix('kader')->name('kader.')->group(fun
     // Input health data for a patient
     Route::get('/pasien/{patient}/input', [KaderPatientController::class, 'showInput'])->name('patients.input');
     Route::post('/pasien/{patient}/input', [KaderPatientController::class, 'storeInput'])->name('patients.input.store');
+
+    // AI Analysis management for patient
+    Route::post('/pasien/{patient}/analyze', [KaderPatientController::class, 'analyze'])->name('patients.analyze');
+    Route::delete('/pasien/{patient}/analyze/{aiAnalysis}', [KaderPatientController::class, 'destroyAnalysis'])->name('patients.analyze.destroy');
 });
 
 // ─────────────────────────────────────────────────────────────
@@ -93,6 +96,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Patients
     Route::get('/patients', [AdminUserController::class, 'index'])->name('patients');
     Route::get('/patients/export', [AdminUserController::class, 'export'])->name('patients.export');
+    Route::get('/patients/{patient}/edit', [AdminUserController::class, 'edit'])->name('patients.edit');
+    Route::put('/patients/{patient}', [AdminUserController::class, 'update'])->name('patients.update');
+    Route::delete('/patients/{patient}/records/{healthRecord}', [AdminUserController::class, 'destroyRecord'])->name('patients.records.destroy');
     Route::get('/patients/{patient}', [AdminUserController::class, 'show'])->name('patients.show');
     Route::delete('/patients/{patient}', [AdminUserController::class, 'destroy'])->name('patients.destroy');
 

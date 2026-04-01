@@ -15,7 +15,7 @@
                 <div class="flex items-center gap-2">
                     <a href="/login"
                         class="text-sm font-semibold bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-2 rounded-full transition-all duration-300 shadow-md shadow-primary/30 hover:shadow-primary/50 hover:shadow-lg hover:-translate-y-0.5 hover:scale-105 active:translate-y-0 active:scale-95">
-                        Masuk
+                        Masuk 
                     </a>
                 </div>
             </nav>
@@ -50,15 +50,15 @@
             <!-- TOP TEXT -->
             <div class="relative z-10 text-center px-5 max-w-3xl mx-auto w-full">
                 <h1 class="hero-anim-1 text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 tracking-tight">
-                    Pencegahan PTM,<br>
-                    <span class="text-white/70">Cerdas Mengawal Usia Produktif</span>
+                    Kesehatan Anda,<br>
+                    <span class="text-white/70">Lebih Terkontrol</span>
                 </h1>
                 <p class="hero-anim-2 text-sm sm:text-base leading-relaxed mb-7 max-w-xl mx-auto min-h-[4rem] sm:min-h-[3rem]">
                     <span class="text-white/80 font-medium whitespace-pre-line">{{ typewriterText }}<span class="animate-pulse inline-block align-baseline text-white">|</span></span>
                 </p>
                 <div class="hero-anim-3 flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <a href="/register" class="w-full sm:w-auto bg-white text-primary font-bold px-9 py-3.5 rounded-full hover:bg-white/90 transition-all shadow-2xl shadow-black/20 text-sm hover:scale-105 active:scale-100">
-                        Mulai Gratis Sekarang
+                    <a href="/masuk" class="w-full sm:w-auto bg-white text-primary font-bold px-9 py-3.5 rounded-full hover:bg-white/90 transition-all shadow-2xl shadow-black/20 text-sm hover:scale-105 active:scale-100">
+                        Masuk Pasien
                     </a>
                     <a href="#features" class="w-full sm:w-auto border border-white/40 text-white font-semibold px-9 py-3.5 rounded-full hover:bg-white/10 transition text-sm">
                         Pelajari Lebih Lanjut
@@ -105,9 +105,9 @@
             <svg class="absolute bottom-24 right-[12%] text-primary/6 w-6 h-6 svg-drift-1 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>
             <div class="max-w-5xl mx-auto">
                 <div class="reveal text-center mb-14" data-delay="0">
-                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Solusi Terpadu PTM</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Skrining Dini Cerdas Berbasis AI</h2>
-                    <p class="text-gray-500 mt-3 max-w-xl mx-auto text-sm leading-relaxed">HEALTIVA hadir merangkum metodologi pemeriksaan terpadu guna menangkal timbulnya penyakit degeneratif kronis asimtomatik.</p>
+                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Fitur Unggulan</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Semua yang Anda Butuhkan</h2>
+                    <p class="text-gray-500 mt-3 max-w-xl mx-auto text-sm leading-relaxed">HEALTIVA hadir dengan fitur lengkap untuk memantau dan memahami kondisi kesehatan Anda secara menyeluruh</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -150,10 +150,10 @@
             <div class="max-w-5xl mx-auto">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div class="reveal from-left" data-delay="100">
-                        <span class="text-xs font-bold text-primary uppercase tracking-widest">Kecerdasan Buatan (LLM)</span>
-                        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2 mb-4">Mendeteksi Risiko PTM<br>Lebih Presisi</h2>
+                        <span class="text-xs font-bold text-primary uppercase tracking-widest">Kecerdasan Buatan</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2 mb-4">Analisis Kesehatan<br>yang Lebih Cerdas</h2>
                         <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                            Modul AI HEALTIVA menganalisis lanskap data vital warga secara menyeluruh — mulai dari tekanan tensi, kadar gula, angka BMI — untuk memberikan peringatan indikasi pre-diagnosis Penyakit Tidak Menular pada populasi usia produktif.
+                            Engine AI HEALTIVA membantu kader membaca data kesehatan warga secara menyeluruh, mulai dari tekanan darah, gula darah, BMI, hingga tren dari riwayat pemeriksaan, lalu menyajikannya dalam laporan yang jelas.
                         </p>
                         <ul class="space-y-3">
                             <li v-for="(p, i) in aiPoints" :key="i" class="flex items-start gap-3">
@@ -165,9 +165,9 @@
                                 <span class="text-sm text-gray-600">{{ p }}</span>
                             </li>
                         </ul>
-                        <a href="/register"
+                        <a href="/login"
                             class="inline-flex items-center gap-2 mt-8 bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-full transition text-sm shadow-md shadow-primary/30">
-                            Coba Sekarang
+                            Masuk Dashboard Kader
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>
@@ -217,8 +217,8 @@
             </div>
             <div class="max-w-4xl mx-auto">
                 <div class="reveal text-center mb-12" data-delay="0">
-                    <h2 class="text-3xl font-bold text-white">Parameter Tanda Vital PTM</h2>
-                    <p class="text-white/60 mt-2 text-sm">Metrik primer rujukan untuk estimasi kebugaran metabolik penduduk</p>
+                    <h2 class="text-3xl font-bold text-white">Metrik yang Dipantau</h2>
+                    <p class="text-white/60 mt-2 text-sm">Data lengkap untuk gambaran kesehatan yang menyeluruh</p>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div v-for="(m, i) in metrics" :key="i"
@@ -234,87 +234,82 @@
             </div>
         </section>
 
-        <!-- â”€â”€ CARA KERJA (3 ROLES) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+        <!-- â”€â”€ CARA KERJA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <section class="relative py-24 px-6 bg-white overflow-hidden">
             <div class="absolute top-0 right-0 w-96 h-96 bg-primary/3 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute bottom-0 left-0 w-72 h-72 bg-primary/3 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div class="max-w-6xl mx-auto">
-                <div class="reveal text-center mb-16" data-delay="0">
-                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Digitalisasi Posbindu</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Sistem Ekosistem Tripartase</h2>
-                    <p class="text-gray-500 mt-3 max-w-xl mx-auto text-sm leading-relaxed">
-                        Arsitektur ini merangkul kekuatan kolaborasi dari Populasi Ter-Skrining, Kader Kesehatan Garda Depan, dan Regulator Kebijakan Medis.
+            <div class="max-w-5xl mx-auto">
+                <div class="reveal text-center mb-20" data-delay="0">
+                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Cara Kerja</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Alur 3 Langkah Kader</h2>
+                    <p class="text-gray-500 mt-3 max-w-md mx-auto text-sm leading-relaxed">
+                        Dirancang untuk alur kerja posyandu: data pasien rapi, pemeriksaan cepat, dan analisis AI langsung terbaca.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Role: Pasien -->
-                    <div class="reveal group relative bg-white rounded-3xl p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300" data-delay="100">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary-dark opacity-0 group-hover:opacity-100 transition-opacity rounded-t-3xl"></div>
-                        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 text-primary">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Usia Produktif (15-64 Th)</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed mb-6">Sebagai agen sadar-skrining mandiri maupun tertaut pada entri Kader Posbindu. Mendapat intervensi promotif dan preventif Penyakit Tidak Menular harian secara proaktif.</p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-2 text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Pantau Riwayat Mandiri
-                            </li>
-                            <li class="flex items-start gap-2 text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Analisis AI dan Unduh PDF
-                            </li>
-                        </ul>
+                <div class="relative grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-6">
+                    <!-- Connector line desktop -->
+                    <div class="hidden sm:block absolute top-14 left-[22%] right-[22%] pointer-events-none">
+                        <svg viewBox="0 0 400 4" fill="none" class="w-full" preserveAspectRatio="none">
+                            <line x1="0" y1="2" x2="400" y2="2" stroke="#F0404B" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.25"/>
+                        </svg>
                     </div>
 
-                    <!-- Role: Kader -->
-                    <div class="reveal group relative bg-white rounded-3xl p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300" data-delay="250">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary-dark opacity-0 group-hover:opacity-100 transition-opacity rounded-t-3xl"></div>
-                        <div class="w-16 h-16 bg-[#FECACA]/50 rounded-2xl flex items-center justify-center mb-6 text-[#B92521]">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <!-- Step 1 -->
+                    <div class="reveal text-center" data-delay="100">
+                        <div class="relative inline-block mb-6">
+                            <span class="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full text-white text-xs font-black flex items-center justify-center z-10 shadow-md shadow-primary/40">1</span>
+                            <div class="w-28 h-28 bg-primary/8 rounded-3xl flex items-center justify-center mx-auto border border-primary/10">
+                                <svg class="w-14 h-14 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Kader Posbindu PTM</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed mb-6">Ujung tombak layanan lapangan yang mensanitasi birokrasi input kertas Posyandu (Digital-Driven), memastikan himpunan data skala luas terkirim langsung ke EMR target yang bersangkutan secara rahasia dan utuh.</p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-2 text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-[#B92521] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Pencatatan Data Massal
-                            </li>
-                            <li class="flex items-start gap-2 text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-[#B92521] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Sinkronisasi Akun Warga Langsung
-                            </li>
-                        </ul>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Pendataan Pasien</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed max-w-[200px] mx-auto">
+                            Cari atau tambahkan data pasien agar setiap pemeriksaan tersimpan pada profil yang tepat.
+                        </p>
                     </div>
 
-                    <!-- Role: Admin -->
-                    <div class="reveal group relative bg-white rounded-3xl p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300" data-delay="400">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary-dark opacity-0 group-hover:opacity-100 transition-opacity rounded-t-3xl"></div>
-                        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 text-primary">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <!-- Step 2 -->
+                    <div class="reveal text-center" data-delay="250">
+                        <div class="relative inline-block mb-6">
+                            <span class="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full text-white text-xs font-black flex items-center justify-center z-10 shadow-md shadow-primary/40">2</span>
+                            <div class="w-28 h-28 bg-primary/8 rounded-3xl flex items-center justify-center mx-auto border border-primary/10">
+                                <svg class="w-14 h-14 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                                </svg>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Regulator Administrator</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed mb-6">Memegang mandat penyetelan batas algoritma Modul NLP-RAG berdasarkan petunjuk klinis standar nasional. Merawat sentralisasi artikel gaya hidup agar sinkron dan aman bagi penyuluh pengguna baru.</p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-2 text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Manajemen Pengguna & Data
-                            </li>
-                            <li class="flex items-start gap-2 text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Pengaturan Basis Pengetahuan AI
-                            </li>
-                        </ul>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Input Pemeriksaan</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed max-w-[200px] mx-auto">
+                            Masukkan data vital pasien seperti tekanan darah, gula darah, BMI, dan metrik penting lain.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="reveal text-center" data-delay="400">
+                        <div class="relative inline-block mb-6">
+                            <span class="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full text-white text-xs font-black flex items-center justify-center z-10 shadow-md shadow-primary/40">3</span>
+                            <div class="w-28 h-28 bg-primary/8 rounded-3xl flex items-center justify-center mx-auto border border-primary/10">
+                                <svg class="w-14 h-14 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Analisis & Tindak Lanjut</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed max-w-[200px] mx-auto">
+                            Sistem AI membantu ringkasan kondisi pasien sehingga kader lebih cepat menentukan tindak lanjut.
+                        </p>
                     </div>
                 </div>
 
                 <!-- CTA mini -->
-                <div class="reveal text-center mt-12" data-delay="500">
-                    <a href="/register"
+                <div class="reveal text-center mt-16" data-delay="500">
+                    <a href="/login"
                         class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-3.5 rounded-full transition-all shadow-lg shadow-primary/30 text-sm hover:scale-105 active:scale-100">
-                        Bergabung Sekarang
+                        Mulai dari Dashboard Kader
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
@@ -434,15 +429,15 @@
                     </svg>
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Mulai Jaga Kesehatan Anda</h2>
-                <p class="text-white/70 text-sm mb-8 leading-relaxed">Bergabung dan pantau kondisi kesehatan Anda dengan mudah, kapan saja dan di mana saja.</p>
+                <p class="text-white/70 text-sm mb-8 leading-relaxed">Akses untuk pasien dan kader sudah dipisah agar alur layanan lebih rapi dan tidak membingungkan.</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <a href="/register"
+                    <a href="/masuk"
                         class="w-full sm:w-auto bg-white text-primary font-bold px-8 py-3.5 rounded-full hover:bg-white/90 transition shadow-xl shadow-black/20 text-sm hover:scale-105 active:scale-100">
-                        Buat Akun Gratis
+                        Masuk sebagai Pasien
                     </a>
                     <a href="/login"
                         class="w-full sm:w-auto border border-white/40 text-white font-semibold px-8 py-3.5 rounded-full hover:bg-white/10 transition text-sm">
-                        Sudah Punya Akun
+                        Masuk sebagai Kader
                     </a>
                 </div>
             </div>
@@ -458,10 +453,10 @@
             </svg>
             <div class="relative z-10 max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                 <img src="/images/logo.png" alt="HEALTIVA" class="h-16 w-auto" />
-                <p class="text-xs text-gray-400">Â© 2026 HEALTIVA Â· Sistem Monitor Kesehatan Cerdas</p>
+                <p class="text-xs text-gray-400">(c) 2026 HEALTIVA | Sistem Monitor Kesehatan Cerdas</p>
                 <div class="flex gap-4 text-xs text-gray-400">
                     <a href="/login" class="hover:text-primary transition">Masuk</a>
-                    <a href="/register" class="hover:text-primary transition">Daftar</a>
+                    <a href="/masuk" class="hover:text-primary transition">Masuk Pasien</a>
                 </div>
             </div>
         </footer>
@@ -474,7 +469,7 @@ import { h, ref, onMounted, onUnmounted } from 'vue';
 const navScrolled = ref(false);
 
 const typewriterText = ref('');
-const fullText = "Sistem digitalisasi lini depan Posbindu yang tersinkronisasi.\nDiperkuat kecerdasan buatan dalam skrining anomali & memutus rantai\nPenyakit Tidak Menular (PTM) spesifik kategori Usia Produktif.";
+const fullText = "Pantau tekanan darah, gula darah, BMI, dan kondisi vital lainnya setiap hari.\nDapatkan analisis cerdas berbasis AI untuk menjaga kesehatan optimal.";
 let typewriterTimer = null;
 
 onMounted(() => {
@@ -550,10 +545,10 @@ const features = [
 ];
 
 const aiPoints = [
-    'Ekstraksi Komorbid: Kalkulasi simultan Tensi, Gula, & Obesitas',
-    'Analisis Proaktif mitigasi lonjakan Penyakit Tidak Menular pada fase Dini',
-    'Manajemen Perubahan Gaya Hidup hasil sintesis LLM Generatif (Generative AI)',
-    'Pembentukan PDF Laporan Cetak Resmi demi akselerasi Telemedisin lanjutan',
+    'Analisis tekanan darah, gula darah, dan BMI secara bersamaan',
+    'Deteksi risiko berdasarkan data terkini dan tren historis',
+    'Rekomendasi gaya hidup yang dipersonalisasi',
+    'Laporan mudah dipahami tanpa istilah medis yang rumit',
 ];
 
 const previewResults = [
@@ -573,7 +568,7 @@ const metrics = [
     { name: 'Gula Darah', unit: 'mg/dL', icon: DropIcon },
     { name: 'Detak Jantung', unit: 'BPM', icon: HeartIcon },
     { name: 'Suhu Tubuh', unit: '°C', icon: ThermIcon },
-    { name: 'BMI & Berat Badan', unit: 'kg / mÂ²', icon: ScaleIcon },
+    { name: 'BMI & Berat Badan', unit: 'kg / m²', icon: ScaleIcon },
     { name: 'Saturasi Oksigen', unit: 'SpO2 (%)', icon: ChartIcon },
 ];
 

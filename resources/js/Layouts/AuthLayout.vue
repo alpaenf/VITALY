@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <p class="relative z-10 text-white/40 text-xs">© 2026 Medix · Sistem Monitor Kesehatan</p>
+            <p class="relative z-10 text-white/40 text-xs">© 2026 Healtiva · Sistem Monitor Kesehatan</p>
         </div>
 
         <!-- RIGHT PANEL (auth card) -->

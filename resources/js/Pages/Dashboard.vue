@@ -3,18 +3,18 @@
         <Head title="Dashboard" />
 
         <!-- Greeting Banner -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-[#C63632] to-primary-dark text-white p-6 mb-5 animate-fade-in-down shadow-xl shadow-primary/20">
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-[#C63632] to-primary-dark text-white p-4 sm:p-6 mb-5 animate-fade-in-down shadow-xl shadow-primary/20">
             <!-- Modern subtle abstract decorations (White/Glassy glows instead of hard circles) -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
             <div class="absolute bottom-0 left-0 w-48 h-48 bg-black/10 blur-2xl rounded-full translate-y-1/2 -translate-x-1/4"></div>
             
-            <div class="relative flex items-center justify-between z-10">
+            <div class="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between z-10">
                 <div>
                     <p class="text-white/80 text-sm font-medium tracking-wide uppercase">{{ greeting }}</p>
-                    <h1 class="text-3xl font-bold mt-1 tracking-tight text-white">{{ patient?.name?.split(' ')[0] }}</h1>
+                    <h1 class="text-2xl sm:text-3xl font-bold mt-1 tracking-tight text-white break-words">{{ patient?.name?.split(' ')[0] }}</h1>
                     <p class="text-white/70 text-xs mt-1.5 font-medium">{{ currentDate }}</p>
                 </div>
-                <div class="text-right flex flex-col items-end">
+                <div class="text-left sm:text-right flex flex-col items-start sm:items-end">
                     <div class="relative w-20 h-20 mb-1">
                         <!-- Redesigned professional ring -->
                         <svg class="w-20 h-20 -rotate-90 drop-shadow-md" viewBox="0 0 80 80">
@@ -35,8 +35,8 @@
         </div>
 
         <!-- Quick Stats Row -->
-        <div class="grid grid-cols-3 gap-3 mb-5">
-            <div class="card-medix p-3.5 text-center hover-lift animate-fade-in-up delay-75"
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+            <div class="card-Healtiva p-3.5 text-center hover-lift animate-fade-in-up delay-75"
                 :class="latestRecord?.systolic ? '' : 'opacity-60'">
                 <div class="w-8 h-8 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-1.5">
                     <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
@@ -44,7 +44,7 @@
                 <p class="text-sm font-bold text-gray-800">{{ latestRecord?.systolic ? `${latestRecord.systolic}/${latestRecord.diastolic}` : '—' }}</p>
                 <p class="text-[10px] text-gray-400 mt-0.5">Tekanan</p>
             </div>
-            <div class="card-medix p-3.5 text-center hover-lift animate-fade-in-up delay-100"
+            <div class="card-Healtiva p-3.5 text-center hover-lift animate-fade-in-up delay-100"
                 :class="latestRecord?.heart_rate ? '' : 'opacity-60'">
                 <div class="w-8 h-8 rounded-xl bg-secondary/20 flex items-center justify-center mx-auto mb-1.5">
                     <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
@@ -52,7 +52,7 @@
                 <p class="text-sm font-bold text-gray-800">{{ latestRecord?.heart_rate ? `${latestRecord.heart_rate}` : '—' }}</p>
                 <p class="text-[10px] text-gray-400 mt-0.5">BPM</p>
             </div>
-            <div class="card-medix p-3.5 text-center hover-lift animate-fade-in-up delay-150">
+            <div class="card-Healtiva p-3.5 text-center hover-lift animate-fade-in-up delay-150">
                 <div class="w-8 h-8 rounded-xl bg-[#EFDBDC] flex items-center justify-center mx-auto mb-1.5">
                     <svg class="w-4 h-4 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 </div>
@@ -64,10 +64,10 @@
         <!-- Chart + Latest Record -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
             <!-- Chart -->
-            <div v-if="chartData.length > 1" class="card-medix p-5 animate-fade-in-left delay-150">
-                <div class="flex items-center justify-between mb-4">
+            <div v-if="chartData.length > 1" class="card-Healtiva p-4 sm:p-5 animate-fade-in-left delay-150">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                     <h3 class="font-semibold text-gray-700 text-sm">Tren Tekanan Darah</h3>
-                    <div class="flex items-center gap-3 text-[10px] text-gray-400">
+                    <div class="flex flex-wrap items-center gap-3 text-[10px] text-gray-400">
                         <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary inline-block"></span>Sistolik</span>
                         <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary inline-block"></span>Diastolik</span>
                     </div>
@@ -78,13 +78,13 @@
             </div>
 
             <!-- Latest record metrics -->
-            <div v-if="latestRecord" class="card-medix p-5 animate-fade-in-right delay-150"
+            <div v-if="latestRecord" class="card-Healtiva p-4 sm:p-5 animate-fade-in-right delay-150"
                 :class="chartData.length <= 1 ? 'lg:col-span-2' : ''">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                     <h3 class="font-semibold text-gray-700 text-sm">Data Terkini</h3>
                     <span class="text-[10px] text-gray-400 bg-gray-100 px-2 py-1 rounded-full">{{ formatDate(latestRecord.recorded_at) }}</span>
                 </div>
-                <div class="grid grid-cols-2 gap-2.5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <MetricCard v-if="latestRecord.systolic"
                         label="Tekanan Darah"
                         :value="`${latestRecord.systolic}/${latestRecord.diastolic} mmHg`"
@@ -113,7 +113,7 @@
             </div>
 
             <!-- No data -->
-            <div v-if="!latestRecord" class="card-medix p-8 text-center animate-scale-in delay-150 lg:col-span-2">
+            <div v-if="!latestRecord" class="card-Healtiva p-6 sm:p-8 text-center animate-scale-in delay-150 lg:col-span-2">
                 <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
                     <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 </div>
@@ -146,7 +146,7 @@
             </div>
 
             <!-- Latest Analysis preview OR quick navigation -->
-            <div v-if="latestAnalysis" class="card-medix p-5 hover-lift animate-fade-in-up delay-300 flex flex-col justify-between">
+            <div v-if="latestAnalysis" class="card-Healtiva p-5 hover-lift animate-fade-in-up delay-300 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="font-semibold text-gray-700 text-sm">Analisis Terakhir</h3>
@@ -154,18 +154,18 @@
                     </div>
                     <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-4">{{ truncateAnalysis(latestAnalysis.result) }}</p>
                 </div>
-                <div class="flex items-center justify-between border-t border-gray-50 pt-3 mt-auto">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-t border-gray-50 pt-3 mt-auto">
                     <Link href="/ai-analysis" class="text-primary text-xs font-semibold inline-flex items-center gap-1 hover:gap-2 transition-all">
                         Lihat selengkapnya
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </Link>
-                    <Link href="/standar-normal" class="text-xs font-medium bg-[#FDD3CF]/50 text-[#B92521] px-3 py-1.5 rounded-lg hover:bg-[#FDD3CF] transition flex items-center gap-1.5">
+                    <Link href="/standar-normal" class="text-xs font-medium bg-[#FDD3CF]/50 text-[#B92521] px-3 py-1.5 rounded-lg hover:bg-[#FDD3CF] transition inline-flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                         Kalkulator BMI
                     </Link>
                 </div>
             </div>
-            <div v-else class="card-medix p-5 animate-fade-in-up delay-300">
+            <div v-else class="card-Healtiva p-5 animate-fade-in-up delay-300">
                 <h3 class="font-semibold text-gray-700 text-sm mb-3">Aksi Cepat</h3>
                 <div class="space-y-2">
                     <Link href="/ai-analysis" class="flex items-center gap-3 p-2.5 rounded-xl bg-red-50 hover:bg-red-100 transition">
@@ -191,7 +191,7 @@
         </div>
 
         <!-- Health Tips -->
-        <div v-if="healthTip" class="card-medix p-4 border-l-4 animate-fade-in-up delay-400"
+        <div v-if="healthTip" class="card-Healtiva p-4 border-l-4 animate-fade-in-up delay-400"
             :class="healthTip.border">
             <div class="flex items-start gap-3">
                 <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"

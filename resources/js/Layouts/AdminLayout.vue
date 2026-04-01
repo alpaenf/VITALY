@@ -52,7 +52,7 @@
                     <span :class="isActive('/admin/kaders') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
                         class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
                         <svg class="w-4 h-4" :class="isActive('/admin/kaders') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                     </span>
                     Kelola Kader

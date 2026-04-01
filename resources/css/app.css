@@ -1,20 +1,20 @@
 @import 'tailwindcss';
 
 @theme {
-    --color-primary: #E63946; /* Merah menyala modern ala Medis */
-    --color-primary-dark: #C1121F;
-    --color-primary-support: #A8201A;
-    --color-secondary: #D90429; /* Merah pekat kuat, bukan pink */
-    --color-secondary-light: #FF4D4D; /* Merah cerah */
-    --color-bg-app: #F8F9FA; /* Latar belakang abu-abu netral sangat bersih */
-    --color-bg-card: #FFE2E5; /* Merah soft pucat elegan */
+    --color-primary: #F0404B;
+    --color-primary-dark: #B92521;
+    --color-primary-support: #B74443;
+    --color-secondary: #F18E8C;
+    --color-secondary-light: #E48888;
+    --color-bg-app: #F2E9EE;
+    --color-bg-card: #FECACA;
 
     --font-family-poppins: 'Poppins', sans-serif;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--color-bg-app);
+    background-color: #F2E9EE;
 }
 
 .font-poppins {
@@ -22,49 +22,49 @@ body {
 }
 
 .bg-app {
-    background-color: var(--color-bg-app);
+    background-color: #F2E9EE;
 }
 
 /* Markdown prose for AI analysis results */
-.prose-medix h1,
-.prose-medix h2,
-.prose-medix h3 {
+.prose-Healtiva h1,
+.prose-Healtiva h2,
+.prose-Healtiva h3 {
     color: #B92521;
     font-weight: 600;
     margin-top: 1rem;
     margin-bottom: 0.5rem;
 }
 
-.prose-medix h1 {
+.prose-Healtiva h1 {
     font-size: 1.25rem;
 }
 
-.prose-medix h2 {
+.prose-Healtiva h2 {
     font-size: 1.1rem;
 }
 
-.prose-medix h3 {
+.prose-Healtiva h3 {
     font-size: 1rem;
 }
 
-.prose-medix p {
+.prose-Healtiva p {
     margin-bottom: 0.75rem;
     line-height: 1.6;
     color: #374151;
 }
 
-.prose-medix ul,
-.prose-medix ol {
+.prose-Healtiva ul,
+.prose-Healtiva ol {
     padding-left: 1.5rem;
     margin-bottom: 0.75rem;
 }
 
-.prose-medix li {
+.prose-Healtiva li {
     margin-bottom: 0.25rem;
     color: #374151;
 }
 
-.prose-medix strong {
+.prose-Healtiva strong {
     color: #B92521;
     font-weight: 600;
 }
@@ -76,11 +76,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--color-bg-app);
+    background: #F2E9EE;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--color-secondary);
+    background: #F18E8C;
     border-radius: 4px;
 }
 
@@ -90,7 +90,7 @@ body {
 }
 
 /* Card styles */
-.card-medix {
+.card-Healtiva {
     background-color: white;
     border-radius: 1rem;
     box-shadow: 0 2px 12px rgba(240, 64, 75, 0.08);

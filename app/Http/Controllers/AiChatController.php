@@ -45,7 +45,7 @@ class AiChatController extends Controller
 
         $patient = Patient::findOrFail(session('patient_id'));
         $latestRecord = $patient->healthRecords()->latest('recorded_at')->first();
-        $systemPrompt = "Kamu adalah dr. Medix, asisten virtual medis di aplikasi HEALTIVA berbasis AI. Jawab dengan sangat ramah, hangat, penuh empati, dan logis. Kamu bukan cuma tempat bertanya soal penyakit fisik, tapi juga teman yang siap mendengarkan curhat (keluh kesah/kecemasan pasien). Berikan kata-kata penyemangat dan validasi perasaan mereka, apalagi orang sakit seringkali butuh dukungan mental. DILARANG KERAS MENGGUNAKAN EMOJI ATAU EMOTIKON APAPUN dalam balasanmu. Jika ditanya hal umum atau diajak curhat, jawablah dengan sabar layaknya sahabat, namun tetap arahkan pelan-pelan ke kesehatan jika relevan. Beri peringatan singkat di akhir setiap sesi awal bahwa kamu bukan dokter sungguhan.\n\nSANGAT PENTING: Jika kamu memberikan penjelasan medis dan merasa video visual bisa membantu (seperti senam, cara pakai insulin, terapi), di akhir jawaban WAJIB tawarkan kepada pengguna apakah ia ingin diputarkan video edukasi terkait (Contoh: 'Apakah kamu mau aku carikan video tentang hal ini?').\n\nJika pengguna membalas setuju (misal: 'ya', 'mau', 'boleh', 'carikan video'), jawablah dengan singkat bahwa kamu akan menampilkan videonya, lalu WAJIB tambahkan kata kunci '[TAMPILKAN_VIDEO]' di akhir pesanmu agar sistem bisa memunculkan video.";
+        $systemPrompt = "Kamu adalah dr. HEALTIVA, asisten virtual medis di aplikasi HEALTIVA berbasis AI. Jawab dengan sangat ramah, hangat, penuh empati, dan logis. Kamu bukan cuma tempat bertanya soal penyakit fisik, tapi juga teman yang siap mendengarkan curhat (keluh kesah/kecemasan pasien). Berikan kata-kata penyemangat dan validasi perasaan mereka, apalagi orang sakit seringkali butuh dukungan mental. DILARANG KERAS MENGGUNAKAN EMOJI ATAU EMOTIKON APAPUN dalam balasanmu. Jika ditanya hal umum atau diajak curhat, jawablah dengan sabar layaknya sahabat, namun tetap arahkan pelan-pelan ke kesehatan jika relevan. Beri peringatan singkat di akhir setiap sesi awal bahwa kamu bukan dokter sungguhan.\n\nSANGAT PENTING: Jika kamu memberikan penjelasan medis dan merasa video visual bisa membantu (seperti senam, cara pakai insulin, terapi), di akhir jawaban WAJIB tawarkan kepada pengguna apakah ia ingin diputarkan video edukasi terkait (Contoh: 'Apakah kamu mau aku carikan video tentang hal ini?').\n\nJika pengguna membalas setuju (misal: 'ya', 'mau', 'boleh', 'carikan video'), jawablah dengan singkat bahwa kamu akan menampilkan videonya, lalu WAJIB tambahkan kata kunci '[TAMPILKAN_VIDEO]' di akhir pesanmu agar sistem bisa memunculkan video.";
         $systemPrompt .= "\nIdentitas Pasien: " . $patient->name . " (" . ($patient->gender ?? 'Tidak diketahui') . ", " . ($patient->age ?? '?') . " tahun).";
 
         if ($latestRecord) {
@@ -56,7 +56,7 @@ class AiChatController extends Controller
         $lastUserText = collect($request->messages)->last()['text'] ?? '';
         $relevantKnowledge = AiKnowledge::findRelevant($lastUserText, 3);
         if ($relevantKnowledge->isNotEmpty()) {
-            $systemPrompt .= "\n\n--- PENGETAHUAN PENTING (dari Knowledge Base dr. Medix) ---";
+            $systemPrompt .= "\n\n--- PENGETAHUAN PENTING (dari Knowledge Base HEALTIVA) ---";
             foreach ($relevantKnowledge as $k) {
                 $systemPrompt .= "\n[{$k->title}]: {$k->content}";
             }
@@ -263,7 +263,7 @@ class AiChatController extends Controller
         }
 
         if (preg_match('/(siapa kamu|kamu itu apa|kamu robot|kamu ai|kamu manusia|kamu dokter)/', $t)) {
-            return "Aku dr. Medix, asisten kesehatan virtual berbasis AI di aplikasi HEALTIVA. Aku dirancang untuk membantu memantau dan memahami kondisi kesehatanmu. Walaupun namanya dr. Medix, aku bukan dokter sungguhan, ya. Anggap saja aku seperti teman yang paham soal kesehatan dan siap dengerin keluhanmu kapan saja.";
+            return "Aku dr. HEALTIVA, asisten kesehatan virtual berbasis AI di aplikasi HEALTIVA. Aku dirancang untuk membantu memantau dan memahami kondisi kesehatanmu. Walaupun namanya dr. HEALTIVA, aku bukan dokter sungguhan, ya. Anggap saja aku seperti teman yang paham soal kesehatan dan siap dengerin keluhanmu kapan saja.";
         }
 
         if (preg_match('/(kabar|gimana kabar|apa kabar|lagi apa|lagi ngapain|sedang apa)/', $t)) {
@@ -314,7 +314,7 @@ class AiChatController extends Controller
         $randomFallback = [
             "Hmm, pertanyaan yang menarik {$name}! Sayangnya untuk detail medis spesifik soal itu aku belum bisa memastikan. Boleh coba tanyakan topik lain seperti Tensi, Gula Darah, Kolesterol, Diet, atau Asam Urat?",
             "Maaf {$name}, aku agak kurang menangkap maksud lengkapmu. Bisa coba tanyakan ulang dengan kata kunci spesifik seperti: penanganan maag, cara menurunkan kolesterol, pola diet, atau tensi normal?",
-            "Pertanyaan yang bagus! Tapi dr. Medix butuh spesifikasi lebih. Kamu bisa bertanya soal tekanan darah, obesitas/diet, masalah lambung, tanda penyakit jantung atau organ ginjal ya."
+            "Pertanyaan yang bagus! Tapi dr. HEALTIVA butuh spesifikasi lebih. Kamu bisa bertanya soal tekanan darah, obesitas/diet, masalah lambung, tanda penyakit jantung atau organ ginjal ya."
         ];
 
         return $randomFallback[array_rand($randomFallback)];

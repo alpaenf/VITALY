@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Kader;
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Models\HealthRecord;
+use App\Models\AiAnalysis;
+use App\Services\GeminiService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class KaderPatientController extends Controller
@@ -56,10 +60,17 @@ class KaderPatientController extends Controller
             ->latest('recorded_at')
             ->first();
 
+        $analyses = $patient->aiAnalyses()->latest()->take(5)->get();
+
+        // Cached youtube videos so it has identical frontend function
+        $eduVideos = Cache::get('edukasi_videos_all', []);
+
         return Inertia::render('Kader/PatientDetail', [
             'patient'      => $patient,
             'records'      => $records,
             'latestRecord' => $latestRecord,
+            'analyses'     => $analyses,
+            'eduVideos'    => $eduVideos,
         ]);
     }
 
@@ -127,5 +138,58 @@ class KaderPatientController extends Controller
         }
 
         return response()->json(['patient' => $patient]);
+    }
+
+    public function analyze(Request $request, Patient $patient, GeminiService $gemini)
+    {
+        $records = $patient->healthRecords()
+            ->latest('recorded_at')
+            ->take(5)
+            ->get();
+
+        if ($records->isEmpty()) {
+            return back()->withErrors(['error' => 'Belum ada data kesehatan untuk dianalisis.']);
+        }
+
+        $age = $patient->age;
+
+        $userData = [
+            'name'   => $patient->name,
+            'gender' => $patient->gender ?? 'male',
+            'age'    => $age,
+        ];
+
+        $recordsData = $records->map(fn($r) => [
+            'systolic' => $r->systolic,
+            'diastolic' => $r->diastolic,
+            'heart_rate' => $r->heart_rate,
+            'blood_sugar' => $r->blood_sugar,
+            'weight' => $r->weight,
+            'height' => $r->height,
+            'temperature' => $r->temperature,
+            'oxygen_saturation' => $r->oxygen_saturation,
+            'recorded_at' => $r->recorded_at->format('d M Y'),
+        ])->toArray();
+
+        try {
+            $result = $gemini->analyzeHealth($userData, $recordsData);
+
+            AiAnalysis::create([
+                'patient_id'       => $patient->id,
+                'prompt'           => json_encode(['user' => $userData, 'records_count' => count($recordsData)]),
+                'result'           => $result,
+                'records_analyzed' => $records->count(),
+            ]);
+
+            return back()->with('success', 'Analisis AI berhasil dilakukan!');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Gagal melakukan analisis: ' . $e->getMessage()]);
+        }
+    }
+
+    public function destroyAnalysis(Patient $patient, AiAnalysis $aiAnalysis)
+    {
+        $aiAnalysis->delete();
+        return back()->with('success', 'Analisis berhasil dihapus.');
     }
 }

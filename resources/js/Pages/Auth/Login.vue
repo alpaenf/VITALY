@@ -43,6 +43,15 @@
                 </svg>
             </button>
         </div>
+
+        <div class="mt-6 text-center">
+            <a href="/" class="inline-flex items-center justify-center gap-1.5 text-xs text-gray-400 hover:text-primary transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Kembali ke Landing Page
+            </a>
+        </div>
     </template>
 
     <!-- ② Tamu / Pasien panel -->
