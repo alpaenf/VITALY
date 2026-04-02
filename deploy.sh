@@ -21,6 +21,24 @@ if [ $? -ne 0 ]; then
     echo "❌ Gagal melakukan git pull. Cek koneksi atau konflik. (Lanjut proses...)"
 fi
 
+# 1.2 Build frontend assets (public/build tidak disimpan di git)
+echo "🛠️  1.2. Build aset frontend (Vite)..."
+if command -v npm >/dev/null 2>&1; then
+    if [ -f package-lock.json ]; then
+        npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+    else
+        npm install --no-audit --no-fund
+    fi
+    npm run build
+    if [ $? -ne 0 ]; then
+        echo "❌ Build frontend gagal. Proses deploy dihentikan."
+        exit 1
+    fi
+else
+    echo "❌ npm tidak ditemukan di server. Install Node.js/npm atau build di pipeline CI."
+    exit 1
+fi
+
 # 1.5 Check .env configuration
 echo "🔧 1.5. Memeriksa konfigurasi .env..."
 if ! grep -q "SESSION_SECURE_COOKIE=true" .env 2>/dev/null; then
@@ -95,6 +113,10 @@ rm -rf "$PUBLIC_HTML_PATH/storage"
 # Dari: public_html/storage
 # Ke:   ../MEDIX/storage/app/public
 ln -s "../$PROJECT_FOLDER/storage/app/public" "$PUBLIC_HTML_PATH/storage"
+
+# 5. Clear Laravel caches
+echo "🧹 5. Membersihkan cache Laravel..."
+php artisan optimize:clear
 
 echo "========================================"
 echo "✅ Deployment MEDIX Selesai!"
