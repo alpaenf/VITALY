@@ -166,7 +166,12 @@
     $printedAt = optional($analysis->created_at)->format('j M Y H:i') ?? '-';
 
     $raw = (string) ($analysis->result ?? '-');
-    $normalized = str_replace(['BMI (', '**BMI (', 'BMI:'], ['IMT (', '**IMT (', 'IMT:'], $raw);
+    $normalized = str_replace(['BMI (', 'BMI:'], ['IMT (', 'IMT:'], $raw);
+    
+    // Hilangkan tanda ** (bold markdown) 
+    $normalized = str_replace('**', '', $normalized);
+    // Ubah bullet list * (jika ada) menjadi -
+    $normalized = preg_replace('/^\s*\*\s/m', '- ', $normalized);
 
     $lines = preg_split('/\r\n|\r|\n/', $normalized);
 
