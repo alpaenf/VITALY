@@ -97,17 +97,17 @@ class KaderPatientController extends Controller
             // Add BOM for UTF-8 Excel compatibility
             fputs($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
             
-            // CSV Header
+            // CSV Header with ';' delimiter for Indonesian Excel
             fputcsv($file, [
                 'Tanggal', 'Sistolik (mmHg)', 'Diastolik (mmHg)', 'Detak Jantung (bpm)', 
                 'Gula Darah (mg/dL)', 'Berat Badan (kg)', 'Tinggi Badan (cm)', 
                 'Suhu Tubuh (C)', 'Saturasi Oksigen (%)', 'Catatan'
-            ]);
+            ], ';');
 
             // CSV Data
             foreach ($records as $record) {
                 fputcsv($file, [
-                    $record->recorded_at->format('Y-m-d H:i'),
+                    $record->recorded_at ? $record->recorded_at->format('Y-m-d H:i') : '-',
                     $record->systolic ?? '-',
                     $record->diastolic ?? '-',
                     $record->heart_rate ?? '-',
@@ -117,13 +117,13 @@ class KaderPatientController extends Controller
                     $record->temperature ?? '-',
                     $record->oxygen_saturation ?? '-',
                     $record->notes ?? '-'
-                ]);
+                ], ';');
             }
 
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        return response()->streamDownload($callback, $csvFileName, $headers);
     }
 
     public function update(Request $request, Patient $patient)
