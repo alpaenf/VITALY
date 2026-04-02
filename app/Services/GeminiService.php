@@ -167,22 +167,22 @@ class GeminiService
             }
         }
 
-        // â”€â”€ 4. BMI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // â”€â”€ 4. IMT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if (!empty($latest['weight']) && !empty($latest['height'])) {
             $bmi = round($latest['weight'] / pow($latest['height'] / 100, 2), 1);
             if ($bmi < 18.5) {
-                $fragments[] = "- **BMI ({$bmi}):** Kekurangan berat badan (Underweight).";
+                $fragments[] = "- **IMT ({$bmi}):** Kekurangan berat badan (Underweight).";
                 $recs[]      = "Tingkatkan asupan kalori berkualitas: protein hewani (telur, ayam, ikan) dan lemak baik (alpukat, kacang). Target kenaikan 0.5 kg/minggu.";
                 $riskScore  += 1;
             } elseif ($bmi <= 22.9) {
-                $fragments[] = "- **BMI ({$bmi}):** Ideal (Normal WHO Asia-Pacific).";
+                $fragments[] = "- **IMT ({$bmi}):** Ideal (Normal WHO Asia-Pacific).";
             } elseif ($bmi <= 27.4) {
-                $fragments[] = "- **BMI ({$bmi}):** Kelebihan berat badan (Overweight). Perlu perhatian.";
+                $fragments[] = "- **IMT ({$bmi}):** Kelebihan berat badan (Overweight). Perlu perhatian.";
                 $recs[]      = "Terapkan defisit kalori sedang (250-500 kkal/hari). Prioritaskan protein agar tidak mudah lapar.";
                 $riskScore  += 1;
                 $combinedRisks[] = 'overweight';
             } else {
-                $fragments[] = "- **BMI ({$bmi}):** Obesitas. Meningkatkan risiko jantung, diabetes, dan sendi.";
+                $fragments[] = "- **IMT ({$bmi}):** Obesitas. Meningkatkan risiko jantung, diabetes, dan sendi.";
                 $recs[]      = "Konsultasikan program penurunan berat badan ke dokter atau ahli gizi. Mulai dari olahraga low-impact (jalan kaki, renang) dan porsi makan terstruktur.";
                 $riskScore  += 3;
                 $combinedRisks[] = 'obesitas';
@@ -285,7 +285,7 @@ class GeminiService
             }
             if (!empty($record['weight']) && !empty($record['height'])) {
                 $bmi = round($record['weight'] / pow($record['height'] / 100, 2), 1);
-                $parts[] = "Berat: {$record['weight']} kg, Tinggi: {$record['height']} cm (BMI: {$bmi})";
+                $parts[] = "Berat: {$record['weight']} kg, Tinggi: {$record['height']} cm (IMT: {$bmi})";
             }
             if (!empty($record['temperature'])) {
                 $parts[] = "Suhu tubuh: {$record['temperature']}°C";

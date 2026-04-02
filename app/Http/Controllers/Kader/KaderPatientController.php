@@ -10,6 +10,7 @@ use App\Services\GeminiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 
 class KaderPatientController extends Controller
@@ -60,7 +61,14 @@ class KaderPatientController extends Controller
             ->latest('recorded_at')
             ->first();
 
-        $analyses = $patient->aiAnalyses()->latest()->take(5)->get();
+        $analyses = $patient->aiAnalyses()->latest()->take(5)->get()->map(function ($analysis) {
+            $analysis->share_url = URL::temporarySignedRoute(
+                'analysis.share',
+                now()->addDays(30),
+                ['aiAnalysis' => $analysis->id]
+            );
+            return $analysis;
+        });
 
         // Cached youtube videos so it has identical frontend function
         $eduVideos = Cache::get('edukasi_videos_all', []);

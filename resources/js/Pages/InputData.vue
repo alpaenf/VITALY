@@ -71,7 +71,7 @@
                     </div>
                     <transition name="badge">
                         <div v-if="bmi" class="mt-3 text-xs px-3 py-1.5 rounded-lg inline-block font-medium" :class="bmiStatusClass">
-                            BMI: {{ bmi }} - {{ bmiStatus }}
+                            IMT: {{ bmi }} - {{ bmiStatus }}
                         </div>
                     </transition>
                 </div>

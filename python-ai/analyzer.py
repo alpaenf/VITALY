@@ -47,7 +47,7 @@ class HealthAnalyzer:
         else:
             return "Potensi Diabetes (konsultasi dokter)", "danger"
 
-    # â”€â”€â”€ BMI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # â”€â”€â”€ IMT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     def calculate_bmi(self, weight: float, height: float) -> float:
         return round(weight / (height / 100) ** 2, 1)
@@ -151,7 +151,7 @@ class HealthAnalyzer:
             bmi = self.calculate_bmi(w, h)
             label, sev = self.classify_bmi(bmi)
             if sev != "normal":
-                status_list.append(f"BMI: **{label}** ({bmi})")
+                status_list.append(f"IMT: **{label}** ({bmi})")
 
         temp = latest.get("temperature")
         if temp:
@@ -233,9 +233,9 @@ class HealthAnalyzer:
                 weights = [r.get("weight") for r in self.records]
                 trend = self.analyze_trend(weights)
                 bmi_trend = f" Berat badan {trend}."
-            params_section += f"\n### Indeks Massa Tubuh (BMI)\n- Berat: **{w} kg** | Tinggi: **{h} cm** | BMI: **{bmi}**\n- Klasifikasi: **{label}**{bmi_trend}\n"
+            params_section += f"\n### Indeks Massa Tubuh (IMT)\n- Berat: **{w} kg** | Tinggi: **{h} cm** | IMT: **{bmi}**\n- Klasifikasi: **{label}**{bmi_trend}\n"
             if sev == "normal":
-                params_section += "- BMI Anda ideal. Pertahankan dengan pola makan seimbang dan olahraga rutin.\n"
+                params_section += "- IMT Anda ideal. Pertahankan dengan pola makan seimbang dan olahraga rutin.\n"
             elif "Kurus" in label:
                 params_section += "- Tingkatkan asupan kalori berkualitas (protein, lemak sehat). Hindari makanan olahan berlebihan.\n"
             elif "Overweight" in label:

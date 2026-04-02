@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('ai_knowledge', function (Blueprint $table) {
             $table->id();
             $table->string('title');              // Judul topik, contoh: "Hipertensi"
-            $table->string('category')->default('umum'); // Kategori: umum, tensi, gula, jantung, bmi, dll
+            $table->string('category')->default('umum'); // Kategori: umum, tensi, gula, jantung, imt, dll
             $table->text('keywords');             // Kata kunci CSV, contoh: "hipertensi,tensi,tekanan darah"
             $table->longText('content');          // Isi pengetahuan (bisa panjang)
             $table->boolean('is_active')->default(true);

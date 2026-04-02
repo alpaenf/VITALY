@@ -484,7 +484,8 @@ const shareWhatsApp = (analysis) => {
     const phone = props.patient.phone;
     const date = formatDate(analysis.created_at);
     const plain = (analysis.result ?? '').replace(/\*\*(.+?)\*\*/g, '*$1*').replace(/\*(.+?)\*/g, '_$1_').replace(/#{1,3}\s/g, '');
-    const msg = `*Laporan Analisis Kesehatan Bapak/Ibu ${props.patient.name}*\n${date}\n\n${plain.trim()}\n\n_Dihasilkan oleh HEALTIVA Health Monitor dari Kader Posbindu._`;
+    const shareLink = analysis.share_url ? `\n\nLink PDF laporan:\n${analysis.share_url}` : '';
+    const msg = `*Laporan Analisis Kesehatan Bapak/Ibu ${props.patient.name}*\n${date}\n\n${plain.trim()}${shareLink}\n\n_Dihasilkan oleh HEALTIVA Health Monitor dari Kader Posbindu._`;
     window.open(`https://wa.me/${phone ? phone.replace(/[^0-9]/g, '') : ''}?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
@@ -493,7 +494,7 @@ const staticEduVideos = [
     { id: 2,  youtubeId: 'l0C_GsEINHs', keywords: ['jantung','koroner','kardio','angina','pembuluh darah'], title: 'Penyakit Jantung Koroner: Kenali dan Cegah Sejak Dini', channel: 'PERKI Indonesia' },
     { id: 3,  youtubeId: 'fIAB4vdqYaQ', keywords: ['diabetes','gula darah','glukosa','hiperglikemia','pradiabetes'], title: 'Diabetes Melitus Tipe 2: Gejala dan Pencegahan', channel: 'Kemenkes RI' },
     { id: 4,  youtubeId: 'wuU1TGqV6IU', keywords: ['gula darah','diabetes','pola makan','diet','nutrisi'], title: 'Pola Makan Sehat untuk Penderita Diabetes', channel: 'PERKENI' },
-    { id: 5,  youtubeId: 'tFnFDFNITKs', keywords: ['bmi','berat badan','imt','overweight','obesitas'], title: 'Cara Menghitung IMT dan Kategori Berat Badan', channel: 'Kemenkes RI' }
+    { id: 5,  youtubeId: 'tFnFDFNITKs', keywords: ['imt','berat badan','bmi','overweight','obesitas'], title: 'Cara Menghitung IMT dan Kategori Berat Badan', channel: 'Kemenkes RI' }
 ];
 
 const getRelatedVideos = (text) => {

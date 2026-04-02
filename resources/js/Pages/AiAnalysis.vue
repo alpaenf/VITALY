@@ -102,7 +102,7 @@
                             <div class="w-5 h-5 rounded-md bg-[#E48888]/40 flex items-center justify-center flex-shrink-0">
                                 <svg class="w-3 h-3 text-[#B92521]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
                             </div>
-                            <span class="text-xs text-gray-600">BMI &amp; status berat badan</span>
+                            <span class="text-xs text-gray-600">IMT &amp; status berat badan</span>
                         </div>
                         <div class="flex items-center gap-2.5 bg-[#FDD3CF] rounded-lg px-3 py-2">
                             <div class="w-5 h-5 rounded-md bg-primary/20 flex items-center justify-center flex-shrink-0">
@@ -252,7 +252,7 @@ const analysisPoints = [
     'Tekanan darah (sistolik & diastolik)',
     'Detak jantung & ritme',
     'Gula darah & risiko diabetes',
-    'BMI & status berat badan',
+    'IMT & status berat badan',
     'Suhu tubuh & SpO2',
     'Tren dari riwayat data',
 ];
@@ -403,7 +403,8 @@ const shareWhatsApp = (analysis) => {
         .replace(/\*\*(.+?)\*\*/g, '*$1*')
         .replace(/\*(.+?)\*/g, '_$1_')
         .replace(/#{1,3}\s/g, '');
-    const msg = `*Laporan Analisis Kesehatan HEALTIVA*\n${date}\n\n${plain.trim()}\n\n_Dihasilkan oleh HEALTIVA Health Monitor. Bukan pengganti konsultasi dokter._`;
+    const shareLink = analysis.share_url ? `\n\nLink PDF laporan:\n${analysis.share_url}` : '';
+    const msg = `*Laporan Analisis Kesehatan HEALTIVA*\n${date}\n\n${plain.trim()}${shareLink}\n\n_Dihasilkan oleh HEALTIVA Health Monitor. Bukan pengganti konsultasi dokter._`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
@@ -413,7 +414,7 @@ const staticEduVideos = [
     { id: 2,  youtubeId: 'l0C_GsEINHs', keywords: ['jantung','koroner','kardio','angina','pembuluh darah'],            title: 'Penyakit Jantung Koroner: Kenali dan Cegah Sejak Dini',      channel: 'PERKI Indonesia' },
     { id: 3,  youtubeId: 'fIAB4vdqYaQ', keywords: ['diabetes','gula darah','glukosa','hiperglikemia','pradiabetes'],   title: 'Diabetes Melitus Tipe 2: Gejala dan Pencegahan',             channel: 'Kemenkes RI' },
     { id: 4,  youtubeId: 'wuU1TGqV6IU', keywords: ['gula darah','diabetes','pola makan','diet','nutrisi'],             title: 'Pola Makan Sehat untuk Penderita Diabetes',                 channel: 'PERKENI' },
-    { id: 5,  youtubeId: 'tFnFDFNITKs', keywords: ['bmi','berat badan','imt','overweight','obesitas','kegemukan'],     title: 'Cara Menghitung IMT dan Kategori Berat Badan',               channel: 'Kemenkes RI' },
+    { id: 5,  youtubeId: 'tFnFDFNITKs', keywords: ['imt','berat badan','bmi','overweight','obesitas','kegemukan'],     title: 'Cara Menghitung IMT dan Kategori Berat Badan',               channel: 'Kemenkes RI' },
     { id: 6,  youtubeId: 'Yt59GKQ7oN8', keywords: ['gizi','nutrisi','makan','diet','pola makan','kalori'],             title: 'Pedoman Gizi Seimbang Isi Piringku',                        channel: 'Kemenkes RI' },
     { id: 7,  youtubeId: 'gHbYJfwFgOU', keywords: ['olahraga','aktivitas fisik','latihan','aerobik','jantung'],        title: 'Manfaat Olahraga Rutin bagi Kesehatan Jantung',             channel: 'WHO Indonesia' },
     { id: 8,  youtubeId: 'MXuSCKuHe7I', keywords: ['rokok','merokok','nikotin','paru','jantung'],                      title: 'Bahaya Rokok bagi Kesehatan Jantung dan Paru',              channel: 'Kemenkes RI' },
@@ -423,7 +424,7 @@ const staticEduVideos = [
     { id: 12, youtubeId: 'nm1TxQj9IsQ', keywords: ['tidur','insomnia','istirahat','kualitas tidur','sleep'],           title: 'Tips Tidur Berkualitas untuk Kesehatan Optimal',            channel: 'Kemenkes RI' },
     { id: 13, youtubeId: 'wOOYS3KDVKY', keywords: ['kolesterol','ldl','hdl','trigliserida','lemak darah'],             title: 'Kolesterol Tinggi: Bahaya dan Cara Mengatasinya',           channel: 'Kemenkes RI' },
     { id: 14, youtubeId: 'b0c-FhNdBnk', keywords: ['spo2','saturasi','oksigen','sesak','pernapasan','paru'],           title: 'Saturasi Oksigen Normal dan Cara Menjaganya',               channel: 'Kemenkes RI' },
-    { id: 15, youtubeId: 'fL2NI1Nj0Pk', keywords: ['obesitas','berat badan','overweight','diet','kegemukan','bmi'],   title: 'Cara Menurunkan Berat Badan secara Sehat',                  channel: 'Kemenkes RI' },
+    { id: 15, youtubeId: 'fL2NI1Nj0Pk', keywords: ['obesitas','berat badan','overweight','diet','kegemukan','imt'],   title: 'Cara Menurunkan Berat Badan secara Sehat',                  channel: 'Kemenkes RI' },
 ];
 
 // Use live YouTube videos from cache (populated when user visits Edukasi), else static

@@ -173,7 +173,7 @@ const categories = [
     { value: 'tensi',      label: 'Tekanan Darah' },
     { value: 'gula',       label: 'Gula Darah / Diabetes' },
     { value: 'jantung',    label: 'Jantung & Nadi' },
-    { value: 'bmi',        label: 'BMI & Berat Badan' },
+    { value: 'bmi',        label: 'IMT & Berat Badan' },
     { value: 'kolesterol', label: 'Kolesterol' },
     { value: 'pernapasan', label: 'Pernapasan & SpO2' },
     { value: 'ginjal',     label: 'Ginjal' },

@@ -42,7 +42,7 @@
                         <svg v-else-if="std.id === 'hr'" class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
                         <!-- Gula Darah -->
                         <svg v-else-if="std.id === 'sugar'" class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-                        <!-- BMI -->
+                        <!-- IMT -->
                         <svg v-else-if="std.id === 'bmi'" class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
                         <!-- Suhu Tubuh -->
                         <svg v-else-if="std.id === 'temp'" class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3a3 3 0 00-3 3v8.17A4 4 0 1015 14.17V6a3 3 0 00-3-3H9z"/></svg>
@@ -187,9 +187,9 @@ const standards = [
         ],
     },
     {
-        id: 'bmi', title: 'Indeks Massa Tubuh (BMI)', subtitle: 'Klasifikasi WHO Asia-Pacific',
+        id: 'bmi', title: 'Indeks Massa Tubuh (IMT)', subtitle: 'Klasifikasi WHO Asia-Pacific',
         source: 'WHO 2000 / Kemenkes', bgFrom: '#FFF5F5', bgTo: '#FEF2F2', iconBg: '#EFDBDC',
-        note: 'Cutoff BMI untuk populasi Asia berbeda dari Kaukasia. Indonesia menggunakan klasifikasi WHO Asia-Pacific.',
+        note: 'Cutoff IMT untuk populasi Asia berbeda dari Kaukasia. Indonesia menggunakan klasifikasi WHO Asia-Pacific.',
         rows: [
             { label: 'Kurus (Underweight)', value: '< 18.5',     status: 'warning' },
             { label: 'Normal',              value: '18.5 - 22.9',status: 'normal'  },

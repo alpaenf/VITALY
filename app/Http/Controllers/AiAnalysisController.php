@@ -8,6 +8,7 @@ use App\Services\GeminiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 
 class AiAnalysisController extends Controller
@@ -17,7 +18,14 @@ class AiAnalysisController extends Controller
     public function index()
     {
         $patient  = Patient::findOrFail(session('patient_id'));
-        $analyses = $patient->aiAnalyses()->latest()->take(5)->get();
+        $analyses = $patient->aiAnalyses()->latest()->take(5)->get()->map(function ($analysis) {
+            $analysis->share_url = URL::temporarySignedRoute(
+                'analysis.share',
+                now()->addDays(30),
+                ['aiAnalysis' => $analysis->id]
+            );
+            return $analysis;
+        });
         $latestAnalysis = $analyses->first();
         $hasRecords     = $patient->healthRecords()->exists();
 
@@ -31,7 +39,7 @@ class AiAnalysisController extends Controller
                     $queries = [
                         'heart'     => 'hipertensi tekanan darah jantung koroner kemenkes',
                         'diabetes'  => 'diabetes mellitus gula darah perkeni kemenkes',
-                        'nutrition' => 'gizi seimbang IMT BMI nutrisi kemenkes',
+                        'nutrition' => 'gizi seimbang IMT nutrisi kemenkes',
                         'lifestyle' => 'gaya hidup sehat olahraga kesehatan indonesia',
                         'mental'    => 'kesehatan mental stres kecemasan indonesia',
                     ];
@@ -147,5 +155,15 @@ class AiAnalysisController extends Controller
         }
         $aiAnalysis->delete();
         return redirect()->route('ai-analysis');
+    }
+
+    public function sharedReport(AiAnalysis $aiAnalysis)
+    {
+        $patient = $aiAnalysis->patient;
+
+        return view('shared.analysis-report', [
+            'analysis' => $aiAnalysis,
+            'patient'  => $patient,
+        ]);
     }
 }

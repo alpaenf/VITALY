@@ -112,8 +112,8 @@ def detect_youtube_query(text: str) -> Optional[str]:
         return "diabetes mellitus gula darah perkeni indonesia"
     if any(w in t for w in ["jantung", "kardio", "koroner", "angina"]):
         return "penyakit jantung koroner pencegahan perki indonesia"
-    if any(w in t for w in ["bmi", "berat badan", "obesitas", "overweight", "kurus", "kegemukan", "diet"]):
-        return "bmi indeks massa tubuh gizi seimbang kemenkes"
+    if any(w in t for w in ["imt", "bmi", "berat badan", "obesitas", "overweight", "kurus", "kegemukan", "diet"]):
+        return "imt indeks massa tubuh gizi seimbang kemenkes"
     if any(w in t for w in ["kolesterol", "ldl", "hdl", "trigliserida"]):
         return "kolesterol tinggi pencegahan makanan sehat"
     if any(w in t for w in ["stroke", "serangan otak"]):
@@ -163,7 +163,7 @@ Cara menjawab:
 - Panjang jawaban sesuai konteks: ringan singkat, serius detail
 
 Topik yang dikuasai: tekanan darah, hipertensi, jantung (PERKI/AHA), gula darah & diabetes (PERKENI 2021),
-BMI & gizi (WHO Asia-Pacific), kolesterol, stroke, ginjal, olahraga, tidur, stres, gaya hidup sehat.
+IMT & gizi (WHO Asia-Pacific), kolesterol, stroke, ginjal, olahraga, tidur, stres, gaya hidup sehat.
 
 Batasan:
 - Jangan mendiagnosis penyakit secara pasti
@@ -189,7 +189,7 @@ def rule_based_reply(last_msg: str, record: Optional[Record], user: Optional[Use
     def d_bmi():
         if record and record.weight and record.height:
             bmi = round(record.weight / (record.height / 100) ** 2, 1)
-            return f" *(BMI kamu: {bmi})*"
+            return f" *(IMT kamu: {bmi})*"
         return ""
     def d_hr():
         if record and record.heart_rate:
@@ -228,15 +228,15 @@ def rule_based_reply(last_msg: str, record: Optional[Record], user: Optional[Use
             "hindari stres. HbA1c dianjurkan tiap 3 bulan untuk yang berisiko."
         )
 
-    if any(w in t for w in ["bmi", "berat badan", "obesitas", "overweight", "kurus", "kegemukan", "diet", "tubuh ideal"]):
+    if any(w in t for w in ["imt", "bmi", "berat badan", "obesitas", "overweight", "kurus", "kegemukan", "diet", "tubuh ideal"]):
         return (
-            f"BMI = berat (kg) / tinggi (m){d_bmi()}.\n\n"
+            f"IMT = berat (kg) / tinggi (m){d_bmi()}.\n\n"
             "Standar WHO Asia-Pacific:\n"
             "- **<18.5** Kurus\n"
             "- **18.5-22.9** Normal\n"
             "- **23.0-27.4** Overweight\n"
             "- **>=27.5** Obesitas\n\n"
-            "BMI bukan satu-satunya indikator — lingkar pinggang juga penting (pria <90cm, wanita <80cm). "
+            "IMT bukan satu-satunya indikator — lingkar pinggang juga penting (pria <90cm, wanita <80cm). "
             "Target ideal: makan bergizi seimbang + aktivitas fisik 150 menit/minggu + tidur 7-9 jam."
         )
 
@@ -391,7 +391,7 @@ def rule_based_reply(last_msg: str, record: Optional[Record], user: Optional[Use
 
     return (
         f"Hei {name}! Aku HEALTIVA, asisten kesehatan kamu. "
-        "Bisa bantu soal tekanan darah, gula darah, BMI, jantung, olahraga, tidur, dan masih banyak lagi. "
+        "Bisa bantu soal tekanan darah, gula darah, IMT, jantung, olahraga, tidur, dan masih banyak lagi. "
         "Mau tanya apa nih?"
     )
 
@@ -417,7 +417,7 @@ def chat(request: ChatRequest):
             parts.append(f"Gula darah: {r.blood_sugar} mg/dL")
         if r.weight and r.height:
             bmi = round(r.weight / (r.height / 100) ** 2, 1)
-            parts.append(f"BMI: {bmi} (BB {r.weight}kg, TB {r.height}cm)")
+            parts.append(f"IMT: {bmi} (BB {r.weight}kg, TB {r.height}cm)")
         if r.temperature:
             parts.append(f"Suhu: {r.temperature}C")
         if r.oxygen_saturation:

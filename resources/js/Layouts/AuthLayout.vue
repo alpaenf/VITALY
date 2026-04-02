@@ -43,7 +43,7 @@
 
 <script setup>
 const features = [
-    'Pantau tekanan darah, gula darah & BMI',
+    'Pantau tekanan darah, gula darah & IMT',
     'Analisis kondisi kesehatan berbasis AI',
     'Riwayat data lengkap & terstruktur',
 ];

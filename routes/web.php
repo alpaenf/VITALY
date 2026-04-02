@@ -58,6 +58,11 @@ Route::middleware('patient.session')->group(function () {
     Route::post('/ai-chat/message', [AiChatController::class, 'message'])->name('ai-chat.message');
 });
 
+// Public signed report link for WhatsApp sharing (no auth, signature-protected)
+Route::get('/share/analysis/{aiAnalysis}', [AiAnalysisController::class, 'sharedReport'])
+    ->middleware('signed')
+    ->name('analysis.share');
+
 // ─────────────────────────────────────────────────────────────
 // Shared info routes (patient session OR kader/admin — no guard needed)
 // ─────────────────────────────────────────────────────────────

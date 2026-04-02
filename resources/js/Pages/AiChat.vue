@@ -238,7 +238,7 @@ const inputEl = ref(null);
 const quickQuestions = [
     'Tensi 130/85 itu bahaya?',
     'Cara cepat turunin gula darah?',
-    'BMI 27 harus diet ketat nggak?',
+    'IMT 27 harus diet ketat nggak?',
     'Detak jantung 95 bpm normal?',
     'Tanda-tanda harus ke dokter?',
     'Olahraga terbaik untuk jantung?',

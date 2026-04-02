@@ -8,6 +8,7 @@ use App\Models\HealthRecord;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 
 class AdminUserController extends Controller
 {
@@ -36,6 +37,15 @@ class AdminUserController extends Controller
             'healthRecords' => fn($q) => $q->latest('recorded_at')->take(50),
             'aiAnalyses'    => fn($q) => $q->latest()->take(10),
         ]);
+
+        $patient->setRelation('aiAnalyses', $patient->aiAnalyses->map(function ($analysis) {
+            $analysis->share_url = URL::temporarySignedRoute(
+                'analysis.share',
+                now()->addDays(30),
+                ['aiAnalysis' => $analysis->id]
+            );
+            return $analysis;
+        }));
 
         $eduVideos = Cache::get('edukasi_videos_all', []);
 

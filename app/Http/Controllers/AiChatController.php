@@ -168,7 +168,7 @@ class AiChatController extends Controller
             if (preg_match('/(jantung|kardio|koroner|angina)/', $t)) return "penyakit jantung koroner pencegahan perki indonesia";
             if (preg_match('/(hipertensi|tekanan darah|tensi|sistolik|diastolik)/', $t)) return "hipertensi tekanan darah pencegahan kemenkes";
             if (preg_match('/(diabetes|gula darah|glukosa|pradiabetes)/', $t)) return "diabetes mellitus gula darah perkeni indonesia";
-            if (preg_match('/(bmi|berat badan|obesitas|overweight|kurus|kegemukan|diet|kalori)/', $t)) return "diet defisit kalori tips panduan cara menurunkan berat badan obesitas pemula";
+            if (preg_match('/(imt|bmi|berat badan|obesitas|overweight|kurus|kegemukan|diet|kalori)/', $t)) return "diet defisit kalori tips panduan cara menurunkan berat badan obesitas pemula";
             if (preg_match('/(kolesterol|ldl|hdl|trigliserida)/', $t)) return "kolesterol tinggi pencegahan makanan sehat";
             if (preg_match('/(ginjal|cuci darah|kreatinin)/', $t)) return "penyakit ginjal kronis pencegahan indonesia";
             if (preg_match('/(asam urat|gout)/', $t)) return "asam urat gout pencegahan makanan indonesia";
@@ -258,8 +258,8 @@ class AiChatController extends Controller
             return "Nutrisi utama itu harus dari makanan asli (Sayur, Lauk, Buah), bukan obat pil vitamin lho.\n\nTapi kalau merasa kurang bugar, pertimbangkan:\n- Vitamin C (buat imun)\n- Vitamin D & Kalsium (untuk tulang â€” seringlah berjemur jam 8 pagi)\n- Minyak Ikan / Omega 3 (bagus ngebersihin lemak di jantung).\n\nApakah mau lihat video soal gizi seimbang?";
         }
 
-        if (preg_match('/(bmi|berat badan|obesitas|overweight|kurus|kegemukan|diet|kalori)/', $t)) {
-            return "Untuk menjaga berat badan ideal (BMI Normal: 18.5 - 24.9), kuncinya ada pada pola makan (Defisit kalori jika ingin kurus, Surplus kalori jika ingin gemuk).\n\nHindari **Gula dan Tepung berlebih**. Perbanyak Protein (ayam, ikan, telur) supaya kamu kenyang lebih lama, dan barengi olahraga 30 menit sehari agar otot terbentuk dan tidak gelambir.\n\nApakah kamu mau aku carikan video edukasi diet yang aman?";
+        if (preg_match('/(imt|bmi|berat badan|obesitas|overweight|kurus|kegemukan|diet|kalori)/', $t)) {
+            return "Untuk menjaga berat badan ideal (IMT Normal: 18.5 - 24.9), kuncinya ada pada pola makan (Defisit kalori jika ingin kurus, Surplus kalori jika ingin gemuk).\n\nHindari **Gula dan Tepung berlebih**. Perbanyak Protein (ayam, ikan, telur) supaya kamu kenyang lebih lama, dan barengi olahraga 30 menit sehari agar otot terbentuk dan tidak gelambir.\n\nApakah kamu mau aku carikan video edukasi diet yang aman?";
         }
 
         if (preg_match('/(siapa kamu|kamu itu apa|kamu robot|kamu ai|kamu manusia|kamu dokter)/', $t)) {

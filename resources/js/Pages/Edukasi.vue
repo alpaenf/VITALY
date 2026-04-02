@@ -173,7 +173,7 @@ const categories = [
     { id: 'all',        label: 'Semua' },
     { id: 'heart',      label: 'Jantung & TD' },
     { id: 'diabetes',   label: 'Gula Darah' },
-    { id: 'nutrition',  label: 'Gizi & BMI' },
+    { id: 'nutrition',  label: 'Gizi & IMT' },
     { id: 'lifestyle',  label: 'Gaya Hidup' },
     { id: 'mental',     label: 'Kesehatan Mental' },
 ];

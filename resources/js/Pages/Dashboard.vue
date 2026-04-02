@@ -98,7 +98,7 @@
                         :value="`${latestRecord.blood_sugar} mg/dL`"
                         status="info" icon="drop" />
                     <MetricCard v-if="bmi"
-                        label="BMI"
+                        label="IMT"
                         :value="`${bmi} — ${bmiLabel}`"
                         :status="bmiStatus" icon="weight" />
                     <MetricCard v-if="latestRecord.temperature"
@@ -161,7 +161,7 @@
                     </Link>
                     <Link href="/standar-normal" class="text-xs font-medium bg-[#FDD3CF]/50 text-[#B92521] px-3 py-1.5 rounded-lg hover:bg-[#FDD3CF] transition inline-flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-                        Kalkulator BMI
+                        Kalkulator IMT
                     </Link>
                 </div>
             </div>
