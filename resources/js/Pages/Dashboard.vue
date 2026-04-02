@@ -87,27 +87,27 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <MetricCard v-if="latestRecord.systolic"
                         label="Tekanan Darah"
-                        :value="`${latestRecord.systolic}/${latestRecord.diastolic} mmHg`"
+                        :value="`${latestRecord.systolic}/${latestRecord.diastolic} mmHg — ${bpLabel}`"
                         :status="bpStatus" icon="heart" />
                     <MetricCard v-if="latestRecord.heart_rate"
                         label="Detak Jantung"
-                        :value="`${latestRecord.heart_rate} bpm`"
+                        :value="`${latestRecord.heart_rate} bpm — ${hrLabel}`"
                         :status="hrStatus" icon="pulse" />
                     <MetricCard v-if="latestRecord.blood_sugar"
                         label="Gula Darah"
-                        :value="`${latestRecord.blood_sugar} mg/dL`"
-                        status="info" icon="drop" />
+                        :value="`${latestRecord.blood_sugar} mg/dL — ${sugarLabel}`"
+                        :status="latestRecord.blood_sugar >= 126 ? 'warn' : 'info'" icon="drop" />
                     <MetricCard v-if="bmi"
                         label="IMT"
                         :value="`${bmi} — ${bmiLabel}`"
                         :status="bmiStatus" icon="weight" />
                     <MetricCard v-if="latestRecord.temperature"
                         label="Suhu Tubuh"
-                        :value="`${latestRecord.temperature}°C`"
-                        status="info" icon="temp" />
+                        :value="`${latestRecord.temperature}°C — ${tempLabel}`"
+                        :status="latestRecord.temperature > 37.5 ? 'warn' : 'info'" icon="temp" />
                     <MetricCard v-if="latestRecord.oxygen_saturation"
                         label="SpO2"
-                        :value="`${latestRecord.oxygen_saturation}%`"
+                        :value="`${latestRecord.oxygen_saturation}% — ${spo2Label}`"
                         :status="latestRecord.oxygen_saturation >= 95 ? 'good' : 'warn'" icon="lungs" />
                 </div>
             </div>
@@ -286,6 +286,47 @@ const bpStatus = computed(() => {
     if (s >= 130 || d >= 80) return 'warn';
     if (s < 90 || d < 60) return 'info';
     return 'good';
+});
+
+const bpLabel = computed(() => {
+    const s = props.latestRecord?.systolic, d = props.latestRecord?.diastolic;
+    if (!s) return '';
+    if (s >= 140 || d >= 90) return 'Tinggi (Hipertensi)';
+    if (s >= 130 || d >= 80) return 'Sedikit Tinggi';
+    if (s < 90 || d < 60) return 'Rendah (Hipotensi)';
+    return 'Normal';
+});
+
+const hrLabel = computed(() => {
+    const hr = props.latestRecord?.heart_rate;
+    if (!hr) return '';
+    if (hr < 60) return 'Lambat';
+    if (hr > 100) return 'Cepat';
+    return 'Normal';
+});
+
+const sugarLabel = computed(() => {
+    const bs = props.latestRecord?.blood_sugar;
+    if (!bs) return '';
+    if (bs >= 200) return 'Risiko Diabetes';
+    if (bs >= 126) return 'Pradiabetes';
+    if (bs < 70) return 'Terlalu Rendah';
+    return 'Normal';
+});
+
+const tempLabel = computed(() => {
+    const t = props.latestRecord?.temperature;
+    if (!t) return '';
+    if (t > 37.5) return 'Demam';
+    if (t < 36.0) return 'Rendah';
+    return 'Normal';
+});
+
+const spo2Label = computed(() => {
+    const sp = props.latestRecord?.oxygen_saturation;
+    if (!sp) return '';
+    if (sp < 95) return 'Rendah (Hipoksia)';
+    return 'Normal';
 });
 
 const hrStatus = computed(() => {

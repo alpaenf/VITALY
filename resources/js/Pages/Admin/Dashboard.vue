@@ -8,11 +8,17 @@
         </div>
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <StatCard :value="stats.totalPatients" label="Total Pasien" color="blue" class="animate-fade-in-up delay-75" />
             <StatCard :value="stats.totalKaders" label="Total Kader" color="green" class="animate-fade-in-up delay-150" />
             <StatCard :value="stats.totalRecords" label="Total Data" color="purple" class="animate-fade-in-up delay-200" />
             <StatCard :value="stats.newPatientsThisMonth" label="Pasien Baru (Bulan Ini)" color="orange" class="animate-fade-in-up delay-300" />
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <StatCard :value="stats.pctHighBp + '%'" label="Risiko Hipertensi" color="red" class="animate-fade-in-up delay-400" />
+            <StatCard :value="stats.pctHighSugar + '%'" label="Risiko Gula Tinggi" color="orange" class="animate-fade-in-up delay-500" />
+            <StatCard :value="stats.pctObesity + '%'" label="Risiko Obesitas" color="purple" class="animate-fade-in-up delay-600" />
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
@@ -103,6 +109,7 @@ const StatCard = {
             green: 'from-green-500 to-green-600',
             purple: 'from-violet-500 to-violet-600',
             orange: 'from-orange-400 to-orange-500',
+            red: 'from-red-500 to-red-600',
         };
         return () => h('div', { class: 'bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover-lift' }, [
             h('div', { class: `w-3 h-3 bg-gradient-to-br ${colorMap[props.color]} rounded-full mb-3` }),

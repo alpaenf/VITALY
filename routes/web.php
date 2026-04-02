@@ -84,6 +84,7 @@ Route::middleware(['auth', 'kader'])->prefix('kader')->name('kader.')->group(fun
     Route::post('/pasien', [KaderPatientController::class, 'store'])->name('patients.store');
     Route::get('/pasien/cari', [KaderPatientController::class, 'search'])->name('patients.search');
     Route::get('/pasien/{patient}', [KaderPatientController::class, 'show'])->name('patients.show');
+    Route::get('/pasien/{patient}/export', [KaderPatientController::class, 'export'])->name('patients.export');
     Route::put('/pasien/{patient}', [KaderPatientController::class, 'update'])->name('patients.update');
     Route::delete('/pasien/{patient}', [KaderPatientController::class, 'destroy'])->name('patients.destroy');
 

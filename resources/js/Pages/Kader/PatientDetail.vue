@@ -99,8 +99,14 @@
         <!-- Records Section -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                <h3 class="font-semibold text-gray-800 text-sm">Riwayat Pemeriksaan</h3>
-                <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">{{ records.total }} data</span>
+                <div class="flex items-center gap-2">
+                    <h3 class="font-semibold text-gray-800 text-sm">Riwayat Pemeriksaan</h3>
+                    <span class="text-[10px] text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">{{ records.total }} data</span>
+                </div>
+                <a :href="`/kader/pasien/${patient.id}/export`" class="text-xs font-semibold text-primary hover:bg-primary/5 transition border border-primary/20 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Unduh Excel
+                </a>
             </div>
 
             <!-- Empty state -->
