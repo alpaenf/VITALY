@@ -172,12 +172,8 @@ const rippling  = ref(null);
 const showMore  = ref(false);
 const collapsed = ref(false);
 
-const logout = () => {
-    if (confirm('Apakah Anda yakin ingin mengakhiri sesi kesehatan ini?')) {
-        showMore.value = false;
-        router.post('/keluar');
-    }
-};
+const emit = defineEmits(['logout']);
+const logout = () => emit('logout');
 
 const isActive = (href) => {
     const p = window.location.pathname;

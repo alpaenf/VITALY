@@ -149,16 +149,31 @@
         </div>
 
         <!-- â”€â”€ BOTTOM NAV (Mobile only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <AdminBottomNavBar class="lg:hidden" />
+        <!-- Logout Modal -->
+        <LogoutModal
+            :show="showLogoutModal"
+            @confirm="doLogout"
+            @cancel="showLogoutModal = false"
+        />
+
+        <!-- ── BOTTOM NAV (Mobile only) ──────────────────────────── -->
+        <AdminBottomNavBar class="lg:hidden" @logout="showLogoutModal = true" />
     </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { router, Link, usePage } from '@inertiajs/vue3';
 import AdminBottomNavBar from '@/Components/AdminBottomNavBar.vue';
+import LogoutModal from '@/Components/LogoutModal.vue';
 
 const page = usePage();
+const showLogoutModal = ref(false);
+
+const doLogout = () => {
+    showLogoutModal.value = false;
+    router.post('/logout');
+};
 
 const isActive = (href) => {
     const p = window.location.pathname;
@@ -166,9 +181,7 @@ const isActive = (href) => {
 };
 
 const logout = () => {
-    if (confirm('Apakah Anda yakin ingin keluar dari aplikasi?')) {
-        router.post('/logout');
-    }
+    showLogoutModal.value = true;
 };
 
 const pageTitle = computed(() => {

@@ -82,11 +82,8 @@ const navigate = (item) => {
     setTimeout(() => { router.visit(item.href); }, 120);
 };
 
-const logout = () => {
-    if (confirm('Apakah Anda yakin ingin keluar dari aplikasi?')) {
-        router.post('/logout');
-    }
-};
+const emit = defineEmits(['logout']);
+const logout = () => emit('logout');
 
 const DashboardIcon = {
     render: () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [

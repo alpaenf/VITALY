@@ -279,11 +279,19 @@
             </main>
         </div>
     </div>
+
+    <!-- Logout Modal -->
+    <LogoutModal
+        :show="showLogoutModal"
+        @confirm="doLogout"
+        @cancel="showLogoutModal = false"
+    />
 </template>
 
 <script setup>
 import { ref, computed, h } from 'vue';
 import { usePage, Link, router } from '@inertiajs/vue3';
+import LogoutModal from '@/Components/LogoutModal.vue';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
@@ -291,6 +299,12 @@ const showMore = ref(false);
 const tapping  = ref(null);
 const rippling  = ref(null);
 const collapsed = ref(false);
+const showLogoutModal = ref(false);
+
+const doLogout = () => {
+    showLogoutModal.value = false;
+    router.post('/logout');
+};
 
 const isActive = (href) => {
     const p = window.location.pathname;
@@ -298,9 +312,7 @@ const isActive = (href) => {
 };
 
 const logout = () => {
-    if (confirm('Apakah Anda yakin ingin keluar dari aplikasi?')) {
-        router.post('/logout');
-    }
+    showLogoutModal.value = true;
 };
 
 const mobileNav = (name, href) => {

@@ -66,7 +66,7 @@
 
             <!-- Bottom logout -->
             <div class="px-3 py-4 border-t border-gray-100">
-                <form @submit.prevent="logout">
+                <form @submit.prevent="showLogoutModal = true">
                     <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-500 hover:bg-red-50 hover:text-red-500 transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -122,20 +122,35 @@
             </Transition>
         </main>
 
+        <!-- Logout Modal -->
+        <LogoutModal
+            :show="showLogoutModal"
+            message="Apakah Anda yakin ingin mengakhiri sesi kesehatan ini?"
+            @confirm="doLogout"
+            @cancel="showLogoutModal = false"
+        />
+
         <!-- ─── MOBILE BOTTOM NAV ──────────────────────────────────── -->
-        <BottomNavBar class="lg:hidden" />
+        <BottomNavBar class="lg:hidden" @logout="showLogoutModal = true" />
     </div>
 </template>
 
 <script setup>
-import { computed, h } from 'vue';
+import { computed, h, ref } from 'vue';
 import { usePage, Link, router } from '@inertiajs/vue3';
 import BottomNavBar from '@/Components/BottomNavBar.vue';
+import LogoutModal from '@/Components/LogoutModal.vue';
 
 const page = usePage();
 const patient = computed(() => page.props.patient);
 const patientInitial = computed(() => patient.value?.name?.charAt(0)?.toUpperCase() || 'P');
 const isActive = (href) => window.location.pathname === href;
+const showLogoutModal = ref(false);
+
+const doLogout = () => {
+    showLogoutModal.value = false;
+    router.post('/keluar');
+};
 
 const greeting = computed(() => {
     const h = new Date().getHours();
@@ -150,9 +165,7 @@ const currentDate = computed(() =>
 );
 
 const logout = () => {
-    if (confirm('Apakah Anda yakin ingin mengakhiri sesi kesehatan ini?')) {
-        router.post('/keluar');
-    }
+    showLogoutModal.value = true;
 };
 
 const SidebarLink = {
