@@ -69,14 +69,59 @@
                     </span>
                     Knowledge Base AI
                 </Link>
+
+                <div class="my-2 border-t border-gray-100"></div>
+                <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Informasi Tambahan</p>
+
+                <Link href="/edukasi"
+                    :class="isActive('/edukasi') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 group">
+                    <span :class="isActive('/edukasi') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4" :class="isActive('/edukasi') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </span>
+                    Edukasi Kesehatan
+                </Link>
+
+                <Link href="/standar-normal"
+                    :class="isActive('/standar-normal') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 group">
+                    <span :class="isActive('/standar-normal') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4" :class="isActive('/standar-normal') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </span>
+                    Standar Normal
+                </Link>
             </nav>
 
             <!-- Bottom: user info + logout -->
-            <div class="px-3 py-4 border-t border-gray-100">
+            <div class="px-3 py-4 border-t border-gray-100 flex flex-col gap-1">
+                <div class="px-3 py-2.5 border border-gray-100 bg-gray-50 rounded-xl mb-1.5">
+                    <p class="text-xs font-bold text-gray-800 truncate">{{ $page.props.auth?.user?.name }}</p>
+                    <p class="text-[10px] text-gray-400 truncate">{{ $page.props.auth?.user?.email }}</p>
+                    <div class="mt-1.5 flex items-center">
+                        <span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[9px] font-bold uppercase tracking-widest">Administrator</span>
+                    </div>
+                </div>
+
+                <a href="/"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-500 hover:bg-gray-100 transition-all duration-200 group">
+                    <span class="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-white flex items-center justify-center transition-colors flex-shrink-0 shadow-sm">
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                    </span>
+                    Website Utama
+                </a>
+
                 <button @click="logout"
-                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all duration-200 group">
-                    <span class="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center transition-colors flex-shrink-0">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group">
+                    <span class="w-8 h-8 rounded-lg bg-red-50 group-hover:bg-red-100 flex items-center justify-center transition-colors flex-shrink-0 shadow-sm">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
                     </span>
