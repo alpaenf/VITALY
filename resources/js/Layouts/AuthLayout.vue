@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-primary to-primary-dark flex font-poppins">
+    <div class="min-h-[100dvh] bg-gradient-to-br from-primary to-primary-dark flex font-poppins">
 
         <!-- LEFT PANEL (desktop only) -->
         <div class="hidden lg:flex flex-col justify-between w-1/2 xl:w-5/12 p-12 relative overflow-hidden">
@@ -32,9 +32,9 @@
         </div>
 
         <!-- RIGHT PANEL (auth card) -->
-        <div class="flex-1 flex flex-col items-center justify-center px-4 lg:px-16 py-8">
+        <div class="flex-1 flex flex-col items-center justify-center px-5 lg:px-16 py-10">
             <!-- Card -->
-            <div class="w-full max-w-xs sm:max-w-sm lg:max-w-md bg-white rounded-2xl shadow-2xl p-4 lg:p-6 animate-scale-in">
+            <div class="w-full max-w-sm lg:max-w-md bg-white rounded-[24px] shadow-2xl p-6 sm:p-8 animate-scale-in">
                 <slot />
             </div>
         </div>

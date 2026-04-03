@@ -8,13 +8,13 @@
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
             <div class="absolute bottom-0 left-0 w-48 h-48 bg-black/10 blur-2xl rounded-full translate-y-1/2 -translate-x-1/4"></div>
             
-            <div class="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between z-10">
-                <div>
-                    <p class="text-white/80 text-sm font-medium tracking-wide uppercase">{{ greeting }}</p>
+            <div class="relative flex items-center justify-between gap-4 z-10">
+                <div class="flex-1">
+                    <p class="text-white/80 text-xs sm:text-sm font-medium tracking-wide uppercase">{{ greeting }}</p>
                     <h1 class="text-2xl sm:text-3xl font-bold mt-1 tracking-tight text-white break-words">{{ patient?.name?.split(' ')[0] }}</h1>
-                    <p class="text-white/70 text-xs mt-1.5 font-medium">{{ currentDate }}</p>
+                    <p class="text-white/70 text-[10px] sm:text-xs mt-1.5 font-medium">{{ currentDate }}</p>
                 </div>
-                <div class="text-left sm:text-right flex flex-col items-start sm:items-end">
+                <div class="text-right flex flex-col items-end shrink-0">
                     <div class="relative w-20 h-20 mb-1">
                         <!-- Redesigned professional ring -->
                         <svg class="w-20 h-20 -rotate-90 drop-shadow-md" viewBox="0 0 80 80">
