@@ -230,12 +230,24 @@
             </div>
         </div>
     </AppLayout>
+
+    <!-- Confirm Delete Modal -->
+    <ConfirmModal
+        :show="confirmDeleteModal"
+        title="Hapus Laporan Analisis"
+        subtitle="Tindakan ini tidak dapat dibatalkan"
+        message="Laporan analisis ini akan dihapus permanen. Apakah Anda yakin ingin menghapusnya?"
+        confirm-label="Ya, Hapus"
+        @confirm="doDelete"
+        @cancel="confirmDeleteModal = false"
+    />
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import ConfirmModal from '@/Components/ConfirmModal.vue';
 
 const props = defineProps({
     analyses:       Array,
@@ -247,6 +259,8 @@ const props = defineProps({
 
 const analyzing = ref(false);
 const openAnalysis = ref(0);
+const confirmDeleteModal = ref(false);
+const deleteTargetId = ref(null);
 
 const analysisPoints = [
     'Tekanan darah (sistolik & diastolik)',
@@ -270,9 +284,13 @@ const toggleAnalysis = (index) => {
 };
 
 const confirmDelete = (id) => {
-    if (confirm('Hapus laporan analisis ini?')) {
-        router.delete(`/ai-analysis/${id}`);
-    }
+    deleteTargetId.value = id;
+    confirmDeleteModal.value = true;
+};
+
+const doDelete = () => {
+    confirmDeleteModal.value = false;
+    router.delete(`/ai-analysis/${deleteTargetId.value}`);
 };
 
 const downloadPdf = async (analysis) => {

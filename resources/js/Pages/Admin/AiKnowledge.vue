@@ -150,12 +150,24 @@
             </div>
         </div>
     </AdminLayout>
+
+    <!-- Confirm Delete Modal -->
+    <ConfirmModal
+        :show="confirmDeleteModal"
+        title="Hapus Pengetahuan AI"
+        subtitle="AI tidak akan lagi menggunakan data ini"
+        message="Pengetahuan ini akan dihapus permanen dari Knowledge Base. AI tidak akan lagi menggunakannya saat menjawab pertanyaan. Yakin?"
+        confirm-label="Ya, Hapus"
+        @confirm="doDelete"
+        @cancel="confirmDeleteModal = false"
+    />
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
+import ConfirmModal from '@/Components/ConfirmModal.vue';
 
 const props = defineProps({ items: Object, filters: Object });
 
@@ -198,8 +210,22 @@ const showModal = ref(false);
 const isEditing = ref(false);
 const editId = ref(null);
 
+const confirmDeleteModal = ref(false);
+const deleteTargetId = ref(null);
+
+const deleteItem = (id) => {
+    deleteTargetId.value = id;
+    confirmDeleteModal.value = true;
+};
+
+const doDelete = () => {
+    confirmDeleteModal.value = false;
+    router.delete(`/admin/knowledge/${deleteTargetId.value}`);
+};
+
 const emptyForm = { title: '', category: 'umum', keywords: '', content: '', is_active: true };
 const form = ref({ ...emptyForm });
+
 
 const openAdd = () => {
     isEditing.value = false;
@@ -233,8 +259,5 @@ const submitForm = () => {
     }
 };
 
-const deleteItem = (id) => {
-    if (!confirm('Hapus pengetahuan ini? AI tidak akan lagi menggunakannya.')) return;
-    router.delete(`/admin/knowledge/${id}`);
-};
+
 </script>

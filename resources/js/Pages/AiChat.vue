@@ -205,12 +205,24 @@
         </div>
 
     </AppLayout>
+
+    <!-- Confirm Clear Chat Modal -->
+    <ConfirmModal
+        :show="confirmClearModal"
+        title="Hapus Semua Percakapan"
+        subtitle="Riwayat chat akan dikosongkan"
+        message="Semua percakapan dengan dr. HEALTIVA akan dihapus dari perangkat ini. Apakah Anda yakin?"
+        confirm-label="Ya, Hapus Semua"
+        @confirm="doClear"
+        @cancel="confirmClearModal = false"
+    />
 </template>
 
 <script setup>
 import { ref, nextTick, computed, onMounted, watch } from 'vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import ConfirmModal from '@/Components/ConfirmModal.vue';
 import axios from 'axios';
 
 const props = defineProps({
@@ -233,7 +245,7 @@ const showHeader = ref(true);
 const showInput = ref(true);
 const typing = ref(false);
 const messagesEl = ref(null);
-const inputEl = ref(null);
+const confirmClearModal = ref(false);
 
 const quickQuestions = [
     'Tensi 130/85 itu bahaya?',
@@ -297,11 +309,16 @@ const send = async () => {
     }
 };
 
+const inputEl = ref(null);
+
 const clearChat = () => {
-    if (messages.value.length && confirm('Hapus semua percakapan?')) {
-        messages.value = [];
-        localStorage.removeItem('HEALTIVA_chat_history');
-    }
+    if (messages.value.length) confirmClearModal.value = true;
+};
+
+const doClear = () => {
+    messages.value = [];
+    localStorage.removeItem('HEALTIVA_chat_history');
+    confirmClearModal.value = false;
 };
 
 // SIMPAN OTO BILA ADA PERUBAHAN
