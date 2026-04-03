@@ -47,7 +47,7 @@
             <div class="card-Healtiva p-3.5 text-center hover-lift animate-fade-in-up delay-100"
                 :class="latestRecord?.heart_rate ? '' : 'opacity-60'">
                 <div class="w-8 h-8 rounded-xl bg-secondary/20 flex items-center justify-center mx-auto mb-1.5">
-                    <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                    <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                 </div>
                 <p class="text-sm font-bold text-gray-800">{{ latestRecord?.heart_rate ? `${latestRecord.heart_rate}` : '—' }}</p>
                 <p class="text-[10px] text-gray-400 mt-0.5">BPM</p>

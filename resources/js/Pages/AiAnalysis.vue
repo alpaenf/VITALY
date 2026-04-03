@@ -88,7 +88,7 @@
                         </div>
                         <div class="flex items-center gap-2.5 bg-[#EFDBDC] rounded-lg px-3 py-2">
                             <div class="w-5 h-5 rounded-md bg-[#E48888]/40 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-3 h-3 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                                <svg class="w-3 h-3 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                             </div>
                             <span class="text-xs text-gray-600">Detak jantung &amp; ritme</span>
                         </div>
