@@ -81,49 +81,37 @@ class KaderPatientController extends Controller
     {
         $records = $patient->healthRecords()->latest('recorded_at')->get();
 
-        $csvFileName = 'Riwayat_Pemeriksaan_' . str_replace(' ', '_', $patient->name) . '_' . date('Ymd_His') . '.csv';
+        $excelFileName = 'Riwayat_Pemeriksaan_' . str_replace(' ', '_', $patient->name) . '_' . date('Ymd_His') . '.xlsx';
 
-        $headers = [
-            "Content-type"        => "text/csv; charset=UTF-8",
-            "Content-Disposition" => "attachment; filename=$csvFileName",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
+        $data = [
+            [
+                '<b>Tanggal</b>', '<b>Sistolik (mmHg)</b>', '<b>Diastolik (mmHg)</b>', '<b>Detak Jantung (bpm)</b>', 
+                '<b>Gula Darah (mg/dL)</b>', '<b>Berat Badan (kg)</b>', '<b>Tinggi Badan (cm)</b>', 
+                '<b>Suhu Tubuh (C)</b>', '<b>Saturasi Oksigen (%)</b>', '<b>Catatan</b>'
+            ]
         ];
 
-        $callback = function () use ($records) {
-            $file = fopen('php://output', 'w');
-            
-            // Add BOM for UTF-8 Excel compatibility
-            fputs($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
-            
-            // CSV Header with ';' delimiter for Indonesian Excel
-            fputcsv($file, [
-                'Tanggal', 'Sistolik (mmHg)', 'Diastolik (mmHg)', 'Detak Jantung (bpm)', 
-                'Gula Darah (mg/dL)', 'Berat Badan (kg)', 'Tinggi Badan (cm)', 
-                'Suhu Tubuh (C)', 'Saturasi Oksigen (%)', 'Catatan'
-            ], ';');
+        foreach ($records as $record) {
+            $data[] = [
+                $record->recorded_at ? $record->recorded_at->format('Y-m-d H:i') : '-',
+                $record->systolic ?? '-',
+                $record->diastolic ?? '-',
+                $record->heart_rate ?? '-',
+                $record->blood_sugar ?? '-',
+                $record->weight ?? '-',
+                $record->height ?? '-',
+                $record->temperature ?? '-',
+                $record->oxygen_saturation ?? '-',
+                $record->notes ?? '-'
+            ];
+        }
 
-            // CSV Data
-            foreach ($records as $record) {
-                fputcsv($file, [
-                    $record->recorded_at ? $record->recorded_at->format('Y-m-d H:i') : '-',
-                    $record->systolic ?? '-',
-                    $record->diastolic ?? '-',
-                    $record->heart_rate ?? '-',
-                    $record->blood_sugar ?? '-',
-                    $record->weight ?? '-',
-                    $record->height ?? '-',
-                    $record->temperature ?? '-',
-                    $record->oxygen_saturation ?? '-',
-                    $record->notes ?? '-'
-                ], ';');
-            }
-
-            fclose($file);
-        };
-
-        return response()->streamDownload($callback, $csvFileName, $headers);
+        return response()->streamDownload(function () use ($data) {
+            $xlsx = \Shuchkin\SimpleXLSXGen::fromArray($data);
+            $xlsx->saveAs('php://output');
+        }, $excelFileName, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
     }
 
     public function update(Request $request, Patient $patient)

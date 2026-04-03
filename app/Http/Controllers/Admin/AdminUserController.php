@@ -108,60 +108,55 @@ class AdminUserController extends Controller
             ->latest()
             ->get();
 
-        $filename = 'pasien_pemeriksaan_terbaru_' . now()->format('Ymd_His') . '.csv';
+        $excelFileName = 'pasien_pemeriksaan_terbaru_' . now()->format('Ymd_His') . '.xlsx';
 
-        $headers = [
-            'Content-Type'        => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        $data = [
+            [
+                '<b>ID</b>', '<b>NIK</b>', '<b>Nama</b>', '<b>Gender</b>', '<b>Tanggal Lahir</b>', '<b>No HP</b>', 
+                '<b>Total Data</b>', '<b>Terdaftar</b>',
+                '<b>Tanggal Pemeriksaan Terakhir</b>',
+                '<b>Berat Badan (kg)</b>', '<b>Tinggi Badan (cm)</b>', '<b>IMT</b>', '<b>Hasil IMT</b>',
+                '<b>Sistolik (mmHg)</b>', '<b>Diastolik (mmHg)</b>', '<b>Hasil Sistolik/Diastolik</b>',
+                '<b>Gula Darah (mg/dL)</b>',
+                '<b>Suhu Tubuh (°C)</b>', '<b>Detak Jantung (bpm)</b>',
+                '<b>Catatan</b>'
+            ]
         ];
 
-        $callback = function () use ($patients) {
-            $file = fopen('php://output', 'w');
-            fwrite($file, "\xEF\xBB\xBF");
+        foreach ($patients as $p) {
+            $latestRecord = $p->healthRecords->first();
             
-            // Kolom Data Pasien + Data Pemeriksaan Terakhir + Status/Hasil
-            fputcsv($file, [
-                'ID', 'NIK', 'Nama', 'Gender', 'Tanggal Lahir', 'No HP', 
-                'Total Data', 'Terdaftar',
-                'Tanggal Pemeriksaan Terakhir',
-                'Berat Badan (kg)', 'Tinggi Badan (cm)', 'IMT', 'Hasil IMT',
-                'Sistolik (mmHg)', 'Diastolik (mmHg)', 'Hasil Sistolik/Diastolik',
-                'Gula Darah (mg/dL)',
-                'Suhu Tubuh (°C)', 'Detak Jantung (bpm)',
-                'Catatan'
-            ], ';');
-            
-            foreach ($patients as $p) {
-                $latestRecord = $p->healthRecords->first();
+            $data[] = [
+                $p->id,
+                $p->nik,
+                $p->name,
+                $p->gender ?? '-',
+                $p->date_of_birth?->format('d/m/Y') ?? '-',
+                $p->phone ?? '-',
+                $p->health_records_count,
+                $p->created_at->format('d/m/Y'),
                 
-                fputcsv($file, [
-                    $p->id,
-                    $p->nik,
-                    $p->name,
-                    $p->gender ?? '-',
-                    $p->date_of_birth?->format('d/m/Y') ?? '-',
-                    $p->phone ?? '-',
-                    $p->health_records_count,
-                    $p->created_at->format('d/m/Y'),
-                    
-                    // Detail Pemeriksaan Terakhir
-                    $latestRecord ? ($latestRecord->recorded_at?->format('d/m/Y H:i') ?? '-') : 'Belum Ada Data',
-                    $latestRecord->weight ?? '-',
-                    $latestRecord->height ?? '-',
-                    $latestRecord ? $latestRecord->bmi : '-',
-                    $latestRecord ? $latestRecord->bmi_status : '-',
-                    $latestRecord->systolic ?? '-',
-                    $latestRecord->diastolic ?? '-',
-                    $latestRecord ? $latestRecord->blood_pressure_status : '-',
-                    $latestRecord->blood_sugar ?? '-',
-                    $latestRecord->temperature ?? '-',
-                    $latestRecord->heart_rate ?? '-',
-                    $latestRecord->notes ?? '-',
-                ], ';');
-            }
-            fclose($file);
-        };
+                // Detail Pemeriksaan Terakhir
+                $latestRecord ? ($latestRecord->recorded_at?->format('d/m/Y H:i') ?? '-') : 'Belum Ada Data',
+                $latestRecord->weight ?? '-',
+                $latestRecord->height ?? '-',
+                $latestRecord ? $latestRecord->bmi : '-',
+                $latestRecord ? $latestRecord->bmi_status : '-',
+                $latestRecord->systolic ?? '-',
+                $latestRecord->diastolic ?? '-',
+                $latestRecord ? $latestRecord->blood_pressure_status : '-',
+                $latestRecord->blood_sugar ?? '-',
+                $latestRecord->temperature ?? '-',
+                $latestRecord->heart_rate ?? '-',
+                $latestRecord->notes ?? '-'
+            ];
+        }
 
-        return response()->stream($callback, 200, $headers);
+        return response()->streamDownload(function () use ($data) {
+            $xlsx = \Shuchkin\SimpleXLSXGen::fromArray($data);
+            $xlsx->saveAs('php://output');
+        }, $excelFileName, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
     }
 }
