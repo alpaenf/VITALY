@@ -102,10 +102,13 @@ class AdminUserController extends Controller
                   ->orWhere('nik', 'like', "%{$search}%");
             })
             ->withCount('healthRecords', 'aiAnalyses')
+            ->with(['healthRecords' => function ($query) {
+                $query->latest('recorded_at')->take(1);
+            }])
             ->latest()
             ->get();
 
-        $filename = 'pasien_' . now()->format('Ymd_His') . '.csv';
+        $filename = 'pasien_pemeriksaan_terbaru_' . now()->format('Ymd_His') . '.csv';
 
         $headers = [
             'Content-Type'        => 'text/csv; charset=UTF-8',
@@ -115,8 +118,22 @@ class AdminUserController extends Controller
         $callback = function () use ($patients) {
             $file = fopen('php://output', 'w');
             fwrite($file, "\xEF\xBB\xBF");
-            fputcsv($file, ['ID', 'NIK', 'Nama', 'Gender', 'Tanggal Lahir', 'No HP', 'Total Data', 'Total Analisis', 'Terdaftar']);
+            
+            // Kolom Data Pasien + Data Pemeriksaan Terakhir + Status/Hasil
+            fputcsv($file, [
+                'ID', 'NIK', 'Nama', 'Gender', 'Tanggal Lahir', 'No HP', 
+                'Total Data', 'Terdaftar',
+                'Tanggal Pemeriksaan Terakhir',
+                'Berat Badan (kg)', 'Tinggi Badan (cm)', 'IMT', 'Hasil IMT',
+                'Sistolik (mmHg)', 'Diastolik (mmHg)', 'Hasil Sistolik/Diastolik',
+                'Gula Darah (mg/dL)',
+                'Suhu Tubuh (°C)', 'Detak Jantung (bpm)',
+                'Catatan'
+            ], ';');
+            
             foreach ($patients as $p) {
+                $latestRecord = $p->healthRecords->first();
+                
                 fputcsv($file, [
                     $p->id,
                     $p->nik,
@@ -125,9 +142,22 @@ class AdminUserController extends Controller
                     $p->date_of_birth?->format('d/m/Y') ?? '-',
                     $p->phone ?? '-',
                     $p->health_records_count,
-                    $p->ai_analyses_count,
                     $p->created_at->format('d/m/Y'),
-                ]);
+                    
+                    // Detail Pemeriksaan Terakhir
+                    $latestRecord ? ($latestRecord->recorded_at?->format('d/m/Y H:i') ?? '-') : 'Belum Ada Data',
+                    $latestRecord->weight ?? '-',
+                    $latestRecord->height ?? '-',
+                    $latestRecord ? $latestRecord->bmi : '-',
+                    $latestRecord ? $latestRecord->bmi_status : '-',
+                    $latestRecord->systolic ?? '-',
+                    $latestRecord->diastolic ?? '-',
+                    $latestRecord ? $latestRecord->blood_pressure_status : '-',
+                    $latestRecord->blood_sugar ?? '-',
+                    $latestRecord->temperature ?? '-',
+                    $latestRecord->heart_rate ?? '-',
+                    $latestRecord->notes ?? '-',
+                ], ';');
             }
             fclose($file);
         };
