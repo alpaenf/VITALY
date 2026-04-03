@@ -1,6 +1,9 @@
 <template>
     <!-- ① Role selection -->
     <template v-if="!selectedRole">
+        <div class="flex items-center justify-center mb-5 lg:hidden">
+            <img src="/images/logo.png" alt="Healtiva" class="h-10 w-auto" />
+        </div>
         <h2 class="text-lg font-bold text-gray-800 mb-0.5">Selamat Datang</h2>
         <p class="text-xs text-gray-500 mb-5">Silakan pilih akses Anda</p>
 
