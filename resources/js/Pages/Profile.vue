@@ -171,6 +171,18 @@
             </div>
         </div>
 
+    <!-- Toast Notifikasi -->
+    <Transition name="toast">
+        <div v-if="toastMsg"
+            class="fixed bottom-24 lg:bottom-8 left-1/2 -translate-x-1/2 z-[998] flex items-center gap-2.5 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-2xl shadow-xl whitespace-nowrap">
+            <svg class="w-4 h-4 flex-shrink-0" :class="toastType === 'error' ? 'text-red-400' : 'text-green-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path v-if="toastType === 'error'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            {{ toastMsg }}
+        </div>
+    </Transition>
+
     </AppLayout>
 </template>
 
@@ -180,6 +192,14 @@ import { Head, Link, useForm, router } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
+
+const toastMsg  = ref('');
+const toastType = ref('error');
+const showToast = (msg, type = 'error') => {
+    toastMsg.value = msg;
+    toastType.value = type;
+    setTimeout(() => { toastMsg.value = ''; }, 3000);
+};
 
 const props = defineProps({
     user: Object,
@@ -205,7 +225,7 @@ const onFileChange = (e) => {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-        alert('File harus berupa gambar');
+        showToast('Format file tidak didukung. Harap pilih file gambar (JPG, PNG, dll).');
         return;
     }
 
@@ -326,4 +346,6 @@ const logout = () => router.post('/logout');
     border-color: #F0404B;
     box-shadow: 0 0 0 3px rgba(240, 64, 75, 0.1);
 }
+.toast-enter-active, .toast-leave-active { transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
+.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateX(-50%) translateY(12px); }
 </style>

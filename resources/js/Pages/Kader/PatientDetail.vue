@@ -291,6 +291,28 @@
             </div>
         </div>
     </KaderLayout>
+
+    <!-- Confirm Delete Analisis Modal -->
+    <ConfirmModal
+        :show="confirmDeleteModal"
+        title="Hapus Laporan Analisis"
+        subtitle="Data tidak bisa dikembalikan"
+        message="Laporan analisis AI ini akan dihapus permanen. Apakah Anda yakin?"
+        confirm-label="Ya, Hapus"
+        @confirm="doDelete"
+        @cancel="confirmDeleteModal = false"
+    />
+
+    <!-- Toast Notifikasi -->
+    <Transition name="toast">
+        <div v-if="toastMsg"
+            class="fixed bottom-24 lg:bottom-8 left-1/2 -translate-x-1/2 z-[998] flex items-center gap-2.5 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-2xl shadow-xl whitespace-nowrap">
+            <svg class="w-4 h-4 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            {{ toastMsg }}
+        </div>
+    </Transition>
 </template>
 
 <script setup>
@@ -298,6 +320,7 @@ import { ref, computed } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import axios from 'axios';
 import KaderLayout from '@/Layouts/KaderLayout.vue';
+import ConfirmModal from '@/Components/ConfirmModal.vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler } from 'chart.js';
 
@@ -313,6 +336,10 @@ const props = defineProps({
 
 const analyzing = ref(false);
 const openAnalysis = ref(0);
+const confirmDeleteModal = ref(false);
+const deleteTargetId = ref(null);
+const toastMsg = ref('');
+const showToast = (msg) => { toastMsg.value = msg; setTimeout(() => { toastMsg.value = ''; }, 3000); };
 
 const chartRecords = computed(() => {
     const list = Array.isArray(props.records?.data) ? props.records.data : [];
@@ -396,9 +423,13 @@ const toggleAnalysis = (index) => {
 };
 
 const confirmDelete = (id) => {
-    if (confirm('Hapus laporan analisis ini?')) {
-        router.delete(`/kader/pasien/${props.patient.id}/analyze/${id}`);
-    }
+    deleteTargetId.value = id;
+    confirmDeleteModal.value = true;
+};
+
+const doDelete = () => {
+    confirmDeleteModal.value = false;
+    router.delete(`/kader/pasien/${props.patient.id}/analyze/${deleteTargetId.value}`);
 };
 
 const downloadPdf = async (analysis) => {
@@ -526,8 +557,8 @@ const downloadExcel = async () => {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
     } catch (e) {
-        console.error("Export failed", e);
-        alert('Gagal mengunduh Excel.');
+        console.error('Export failed', e);
+        showToast('Gagal mengunduh file Excel. Coba lagi.');
     } finally {
         setTimeout(() => { isDownloading.value = false; }, 1000);
     }
@@ -631,4 +662,6 @@ const renderMarkdown = (text) => {
 :deep(.ar-amber) { border-color: #E48888; background: #FDF4F4; } :deep(.ar-amber .ar-heading) { color: #B92521; } :deep(.ar-amber .ar-list li::before) { background: #E48888; }
 :deep(.ar-rose) { border-color: #A91127; background: #FFF0F0; } :deep(.ar-rose .ar-heading) { color: #A91127; } :deep(.ar-rose .ar-list li::before) { background: #A91127; }
 :deep(.ar-teal) { border-color: #F18E8C; background: #FDF2F2; } :deep(.ar-teal .ar-heading) { color: #B92521; } :deep(.ar-teal .ar-list li::before) { background: #F18E8C; }
+.toast-enter-active, .toast-leave-active { transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
+.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateX(-50%) translateY(12px); }
 </style>
