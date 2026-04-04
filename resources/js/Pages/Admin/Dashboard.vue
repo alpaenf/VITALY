@@ -109,7 +109,7 @@
                 <!-- Obesitas -->
                 <div class="space-y-2">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-medium text-gray-600">Obesitas (BMI ≥25)</span>
+                        <span class="text-xs font-medium text-gray-600">Obesitas (IMT ≥25)</span>
                         <span class="text-xs font-bold text-primary">{{ stats.countObesity }}/{{ stats.analyzedPatients }} pasien</span>
                     </div>
                     <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -140,7 +140,7 @@
                                     </Link>
                                 </div>
                                 <span class="text-[11px] font-mono font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                                    BMI {{ p.bmi }}
+                                    IMT {{ p.imt }}
                                 </span>
                             </div>
                         </div>

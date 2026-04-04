@@ -65,7 +65,7 @@ class AdminDashboardController extends Controller
                         $patientsObesity[] = [
                             'id'   => $p->id,
                             'name' => $p->name,
-                            'bmi'  => round($bmi, 1),
+                            'imt'  => round($bmi, 1),
                         ];
                     }
                 }
