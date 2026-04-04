@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-gray-50 font-poppins lg:flex">
 
         <!-- â”€â”€ SIDEBAR (Desktop only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <aside class="hidden lg:flex flex-col w-60 min-h-screen bg-white border-r border-gray-100 fixed top-0 left-0 z-40 shadow-sm">
+        <aside class="hidden lg:flex flex-col w-60 h-screen bg-white border-r border-gray-100 fixed top-0 left-0 z-40 shadow-sm">
             <!-- Logo -->
             <div class="px-5 py-5 border-b border-gray-100">
                 <div class="flex items-center gap-3">
