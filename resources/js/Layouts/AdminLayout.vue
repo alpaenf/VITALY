@@ -103,9 +103,6 @@
                 <div class="px-3 py-2.5 border border-gray-100 bg-gray-50 rounded-xl mb-1.5">
                     <p class="text-xs font-bold text-gray-800 truncate">{{ $page.props.auth?.user?.name }}</p>
                     <p class="text-[10px] text-gray-400 truncate">{{ $page.props.auth?.user?.email }}</p>
-                    <div class="mt-1.5 flex items-center">
-                        <span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[9px] font-bold uppercase tracking-widest">Administrator</span>
-                    </div>
                 </div>
 
                 <button @click="logout"
