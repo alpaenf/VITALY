@@ -19,6 +19,9 @@ class KaderDashboardController extends Controller
         $countHighSugar = 0;
         $countObesity = 0;
         $analyzedPatients = 0;
+        $patientsHighBp = [];
+        $patientsHighSugar = [];
+        $patientsObesity = [];
 
         foreach ($patientsAll as $p) {
             $latest = $p->healthRecords->sortByDesc('recorded_at')->first();
@@ -26,14 +29,30 @@ class KaderDashboardController extends Controller
                 $analyzedPatients++;
                 if ($latest->systolic >= 140 || $latest->diastolic >= 90) {
                     $countHighBp++;
+                    $patientsHighBp[] = [
+                        'id' => $p->id,
+                        'name' => $p->name,
+                        'systolic' => $latest->systolic,
+                        'diastolic' => $latest->diastolic,
+                    ];
                 }
                 if ($latest->blood_sugar >= 200) {
                     $countHighSugar++;
+                    $patientsHighSugar[] = [
+                        'id' => $p->id,
+                        'name' => $p->name,
+                        'blood_sugar' => $latest->blood_sugar,
+                    ];
                 }
                 if ($latest->weight && $latest->height) {
                     $bmi = $latest->weight / pow($latest->height / 100, 2);
                     if ($bmi >= 25) {
                         $countObesity++;
+                        $patientsObesity[] = [
+                            'id' => $p->id,
+                            'name' => $p->name,
+                            'imt' => round($bmi, 1),
+                        ];
                     }
                 }
             }
@@ -53,11 +72,18 @@ class KaderDashboardController extends Controller
 
         return Inertia::render('Kader/Dashboard', [
             'stats' => [
-                'totalPatients' => $totalPatients,
-                'totalRecords'  => $totalRecords,
-                'pctHighBp'     => $pctHighBp,
-                'pctHighSugar'  => $pctHighSugar,
-                'pctObesity'    => $pctObesity,
+                'totalPatients'    => $totalPatients,
+                'totalRecords'     => $totalRecords,
+                'analyzedPatients' => $analyzedPatients,
+                'countHighBp'      => $countHighBp,
+                'countHighSugar'   => $countHighSugar,
+                'countObesity'     => $countObesity,
+                'pctHighBp'        => $pctHighBp,
+                'pctHighSugar'     => $pctHighSugar,
+                'pctObesity'       => $pctObesity,
+                'patientsHighBp'   => $patientsHighBp,
+                'patientsHighSugar'=> $patientsHighSugar,
+                'patientsObesity'  => $patientsObesity,
             ],
             'recentRecords'  => $recentRecords,
             'recentPatients' => $recentPatients,
