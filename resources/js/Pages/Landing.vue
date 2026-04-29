@@ -71,9 +71,9 @@
             <div class="relative z-10 w-full max-w-6xl mx-auto px-6 py-4 lg:py-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center h-full">
                 <!-- Left: Text -->
                 <div class="text-left">
-                    <h1 class="hero-anim-1 text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-5 tracking-tight">
-                        Transformasi Digital<br>
-                        <span class="text-white/70 italic">Monitoring PTM</span>
+                    <h1 class="hero-anim-1 text-2xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-5 tracking-tight">
+                        <span class="block whitespace-nowrap">Monitoring Kesehatan</span>
+                        <span class="block text-2xl sm:text-3xl lg:text-4xl text-white/70 italic">Data Akurat, Tindak Lanjut Cepat</span>
                     </h1>
                     <p class="hero-anim-2 text-sm sm:text-base leading-relaxed mb-6 max-w-lg min-h-[4rem] sm:min-h-[3rem]">
                         <span class="text-white/80 font-medium whitespace-pre-line">{{ typewriterText }}<span class="animate-pulse inline-block align-baseline text-white">|</span></span>
@@ -377,7 +377,7 @@
             <div class="max-w-4xl mx-auto">
                 <div class="reveal text-center mb-12" data-delay="0">
                     <h2 class="text-3xl font-bold text-white">Metrik yang Dipantau</h2>
-                    <p class="text-white/60 mt-2 text-sm">Data lengkap untuk gambaran kesehatan yang menyeluruh</p>
+                    <p class="text-white/60 mt-2 text-sm">Auto sync dari smartwatch + input manual untuk data khusus</p>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div v-for="(m, i) in metrics" :key="i"
@@ -388,6 +388,10 @@
                         </div>
                         <p class="font-bold text-white text-sm">{{ m.name }}</p>
                         <p class="text-white/50 text-xs mt-1">{{ m.unit }}</p>
+                        <span class="mt-2 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                            :class="m.source === 'auto' ? 'bg-emerald-400/20 text-emerald-100' : 'bg-amber-400/20 text-amber-100'">
+                            {{ m.sourceLabel }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -628,7 +632,7 @@ import { h, ref, onMounted, onUnmounted } from 'vue';
 const navScrolled = ref(false);
 
 const typewriterText = ref('');
-const fullText = "Sistem cerdas deteksi dini PTM & mitigasi risiko berbasis AI.\nTriase otomatis untuk intervensi kesehatan yang proaktif.";
+const fullText = "Sistem monitoring kesehatan berbasis smartwatch dan AI untuk data vital real-time.\nSinkron otomatis membantu Health Agent mengambil tindak lanjut lebih cepat.";
 let typewriterTimer = null;
 
 onMounted(() => {
@@ -720,12 +724,12 @@ const steps = [
 ];
 
 const metrics = [
-    { name: 'Tekanan Darah', unit: 'mmHg (Sistolik & Diastolik)', icon: HeartIcon },
-    { name: 'Gula Darah', unit: 'mg/dL', icon: DropIcon },
-    { name: 'Detak Jantung', unit: 'BPM', icon: HeartIcon },
-    { name: 'Suhu Tubuh', unit: '°C', icon: ThermIcon },
-    { name: 'IMT & Berat Badan', unit: 'kg / m²', icon: ScaleIcon },
-    { name: 'Saturasi Oksigen', unit: 'SpO2 (%)', icon: ChartIcon },
+    { name: 'Tekanan Darah', unit: 'mmHg (Sistolik & Diastolik)', icon: HeartIcon, source: 'manual', sourceLabel: 'Input Manual' },
+    { name: 'Gula Darah', unit: 'mg/dL', icon: DropIcon, source: 'manual', sourceLabel: 'Input Manual' },
+    { name: 'Detak Jantung', unit: 'BPM', icon: HeartIcon, source: 'auto', sourceLabel: 'Auto Sync' },
+    { name: 'Suhu Tubuh', unit: '°C', icon: ThermIcon, source: 'auto', sourceLabel: 'Auto Sync' },
+    { name: 'IMT & Berat Badan', unit: 'kg / m²', icon: ScaleIcon, source: 'manual', sourceLabel: 'Input Manual' },
+    { name: 'Saturasi Oksigen', unit: 'SpO2 (%)', icon: ChartIcon, source: 'auto', sourceLabel: 'Auto Sync' },
 ];
 
 const videos = [

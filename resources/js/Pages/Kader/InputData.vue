@@ -72,16 +72,17 @@
                             </svg>
                         </div>
                         <h3 class="font-semibold text-gray-700">Tekanan Darah</h3>
+                        <span v-if="autoFilled.systolic || autoFilled.diastolic" class="ml-2 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Auto Sync</span>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Sistolik (mmHg)</label>
-                            <input v-model="form.systolic" type="number" placeholder="120" class="input-field w-full" />
+                            <input v-model="form.systolic" @input="clearAuto('systolic')" type="number" placeholder="120" :class="['input-field w-full', inputAutoClass('systolic')]" />
                             <p v-if="form.errors.systolic" class="text-red-500 text-xs mt-1">{{ form.errors.systolic }}</p>
                         </div>
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Diastolik (mmHg)</label>
-                            <input v-model="form.diastolic" type="number" placeholder="80" class="input-field w-full" />
+                            <input v-model="form.diastolic" @input="clearAuto('diastolic')" type="number" placeholder="80" :class="['input-field w-full', inputAutoClass('diastolic')]" />
                         </div>
                     </div>
                     <transition name="badge">
@@ -100,9 +101,10 @@
                             </svg>
                         </div>
                         <h3 class="font-semibold text-gray-700">Detak Jantung</h3>
+                        <span v-if="autoFilled.heart_rate" class="ml-2 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Auto Sync</span>
                     </div>
                     <label class="text-xs text-gray-500 mb-1 block">BPM (denyut per menit)</label>
-                    <input v-model="form.heart_rate" type="number" placeholder="72" class="input-field w-full" />
+                    <input v-model="form.heart_rate" @input="clearAuto('heart_rate')" type="number" placeholder="72" :class="['input-field w-full', inputAutoClass('heart_rate')]" />
                 </div>
 
                 <!-- Berat & Tinggi -->
@@ -153,11 +155,12 @@
                             </svg>
                         </div>
                         <h3 class="font-semibold text-gray-700">Suhu & Laju Nafas</h3>
+                        <span v-if="autoFilled.temperature" class="ml-2 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Auto Sync</span>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">Suhu (°C)</label>
-                            <input v-model="form.temperature" type="number" step="0.1" placeholder="36.5" class="input-field w-full" />
+                            <input v-model="form.temperature" @input="clearAuto('temperature')" type="number" step="0.1" placeholder="36.5" :class="['input-field w-full', inputAutoClass('temperature')]" />
                         </div>
                         <div>
                             <label class="text-xs text-gray-500 mb-1 block">RR (x/menit)</label>
@@ -190,8 +193,16 @@
                 </div>
             </div>
 
+            <div class="mt-6">
+                <label class="flex items-start gap-2 text-xs text-gray-500">
+                    <input v-model="manualConfirmed" type="checkbox" class="mt-0.5" />
+                    <span>Konfirmasi data manual diukur dengan alat yang sesuai.</span>
+                </label>
+                <p v-if="manualError" class="text-red-500 text-xs mt-1">{{ manualError }}</p>
+            </div>
+
             <!-- Submit -->
-            <div class="mt-6 flex flex-col md:flex-row gap-3 md:gap-4">
+            <div class="mt-4 flex flex-col md:flex-row gap-3 md:gap-4">
                 <Link :href="`/kader/pasien/${patient.id}`"
                     class="flex-1 text-center border border-gray-200 text-gray-600 py-3 rounded-xl font-medium text-sm hover:bg-gray-50 transition order-2 md:order-1">
                     Batal
@@ -218,6 +229,37 @@ const showSyncSuccess = ref(false);
 const syncStatusMsg = ref('Mendekatkan perangkat IoMT ke sistem untuk penarikan data vital otomatis.');
 const syncSuccessMsg = ref('Data Tekanan Darah & Detak Jantung berhasil ditarik dari perangkat VITALY Smart Hub.');
 const syncDeviceName = ref('VITALY Pulse v2.0');
+const manualConfirmed = ref(false);
+const manualError = ref('');
+const autoFilled = ref({
+    systolic: false,
+    diastolic: false,
+    heart_rate: false,
+    temperature: false,
+});
+
+const inputAutoClass = (field) => {
+    return autoFilled.value[field] ? 'ring-2 ring-emerald-300 bg-emerald-50/30' : '';
+};
+
+const markAuto = (fields) => {
+    fields.forEach((field) => {
+        autoFilled.value[field] = true;
+    });
+};
+
+const clearAuto = (field) => {
+    autoFilled.value[field] = false;
+};
+
+const submit = () => {
+    if (!manualConfirmed.value) {
+        manualError.value = 'Konfirmasi pengukuran manual wajib diisi.';
+        return;
+    }
+    manualError.value = '';
+    form.post(`/kader/pasien/${props.patient.id}/input`);
+};
 
 const simulateIoMTSync = async () => {
     isScanning.value = true;
@@ -284,6 +326,7 @@ const simulateIoMTSync = async () => {
                 form.heart_rate = 112;
                 form.temperature = 37.2;
             }
+            markAuto(['heart_rate', 'systolic', 'diastolic', 'temperature']);
             form.notes = `Data ditarik via Bluetooth dari ${device.name || 'smartwatch'} (IoMT Real)`;
             syncSuccessMsg.value = `Data berhasil ditarik dari ${device.name || 'Smartwatch'} via Bluetooth secara langsung!`;
 
@@ -310,6 +353,7 @@ const simulateIoMTSync = async () => {
         form.diastolic   = 115;
         form.heart_rate  = 112;
         form.temperature = 37.2;
+        markAuto(['heart_rate', 'systolic', 'diastolic', 'temperature']);
         form.notes = 'Data otomatis ditarik via Bluetooth (Simulasi IoMT)';
         setTimeout(() => { showSyncSuccess.value = false; }, 3000);
     }, 2500);
@@ -328,7 +372,6 @@ const form = useForm({
     recorded_at: '',
 });
 
-const submit = () => form.post(`/kader/pasien/${props.patient.id}/input`);
 
 const bpStatus = computed(() => {
     const s = Number(form.systolic), d = Number(form.diastolic);

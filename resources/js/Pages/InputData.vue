@@ -131,8 +131,16 @@
 
             </div>
 
+            <div class="mt-5 animate-fade-in-up delay-350">
+                <label class="flex items-start gap-2 text-xs text-gray-500">
+                    <input v-model="manualConfirmed" type="checkbox" class="mt-0.5" />
+                    <span>Saya memastikan data manual diukur dengan alat yang sesuai.</span>
+                </label>
+                <p v-if="manualError" class="text-red-500 text-xs mt-1">{{ manualError }}</p>
+            </div>
+
             <!-- Submit Button -->
-            <div class="mt-5 animate-fade-in-up delay-400">
+            <div class="mt-4 animate-fade-in-up delay-400">
                 <button type="submit" :disabled="form.processing"
                     class="w-full lg:w-auto lg:px-12 bg-primary hover:bg-primary-dark text-white font-semibold py-3.5 rounded-xl transition-all duration-200 disabled:opacity-70 shadow-md shadow-primary/30 flex items-center justify-center gap-2">
                     <span v-if="form.processing">
@@ -153,7 +161,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
@@ -161,12 +169,22 @@ const now = new Date();
 const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 
 const form = useForm({
-    systolic: '', diastolic: '', heart_rate: '', blood_sugar: '',
+            systolic: '', diastolic: '', heart_rate: '', blood_sugar: '',
     weight: '', height: '', temperature: '', respiratory_rate: '',
     notes: '', recorded_at: localDatetime,
 });
 
-const submit = () => form.post('/input-data');
+const manualConfirmed = ref(false);
+const manualError = ref('');
+
+const submit = () => {
+    if (!manualConfirmed.value) {
+        manualError.value = 'Konfirmasi pengukuran manual wajib diisi.';
+        return;
+    }
+    manualError.value = '';
+    form.post('/input-data');
+};
 
 const bpStatus = computed(() => {
     if (!form.systolic || !form.diastolic) return null;
