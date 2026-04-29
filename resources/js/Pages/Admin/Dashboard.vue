@@ -4,7 +4,7 @@
 
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Dashboard Admin</h1>
-            <p class="text-sm text-gray-500">Ringkasan sistem HEALTIVA</p>
+            <p class="text-sm text-gray-500">Ringkasan sistem VITALY</p>
         </div>
 
         <!-- Stats Grid -->
@@ -46,9 +46,9 @@
                         </button>
                     </div>
                     <Transition name="slide-fade">
-                        <div v-if="openPanel === 'bp'" class="rounded-xl border border-red-100 bg-red-50/50 overflow-hidden">
+                        <div v-if="openPanel === 'bp'" class="rounded-xl border border-primary/20 bg-primary/5 overflow-hidden">
                             <div v-for="p in stats.patientsHighBp" :key="p.id"
-                                class="flex items-center justify-between px-3 py-2 border-b border-red-100/50 last:border-0 hover:bg-red-50 transition">
+                                class="flex items-center justify-between px-3 py-2 border-b border-primary/10 last:border-0 hover:bg-primary/10 transition">
                                 <div class="flex items-center gap-2">
                                     <div class="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-[10px]">
                                         {{ p.name.charAt(0).toUpperCase() }}
@@ -87,9 +87,9 @@
                         </button>
                     </div>
                     <Transition name="slide-fade">
-                        <div v-if="openPanel === 'sugar'" class="rounded-xl border border-red-100 bg-red-50/50 overflow-hidden">
+                        <div v-if="openPanel === 'sugar'" class="rounded-xl border border-primary/20 bg-primary/5 overflow-hidden">
                             <div v-for="p in stats.patientsHighSugar" :key="p.id"
-                                class="flex items-center justify-between px-3 py-2 border-b border-red-100/50 last:border-0 hover:bg-red-50 transition">
+                                class="flex items-center justify-between px-3 py-2 border-b border-primary/10 last:border-0 hover:bg-primary/10 transition">
                                 <div class="flex items-center gap-2">
                                     <div class="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-[10px]">
                                         {{ p.name.charAt(0).toUpperCase() }}
@@ -128,9 +128,9 @@
                         </button>
                     </div>
                     <Transition name="slide-fade">
-                        <div v-if="openPanel === 'obesity'" class="rounded-xl border border-red-100 bg-red-50/50 overflow-hidden">
+                        <div v-if="openPanel === 'obesity'" class="rounded-xl border border-primary/20 bg-primary/5 overflow-hidden">
                             <div v-for="p in stats.patientsObesity" :key="p.id"
-                                class="flex items-center justify-between px-3 py-2 border-b border-red-100/50 last:border-0 hover:bg-red-50 transition">
+                                class="flex items-center justify-between px-3 py-2 border-b border-primary/10 last:border-0 hover:bg-primary/10 transition">
                                 <div class="flex items-center gap-2">
                                     <div class="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-[10px]">
                                         {{ p.name.charAt(0).toUpperCase() }}
@@ -214,8 +214,8 @@ const barChartData = computed(() => ({
     datasets: [{
         label: 'Data Kesehatan',
         data: props.monthlyChart.map(d => d.count),
-        backgroundColor: 'rgba(240, 64, 75, 0.7)',
-        borderColor: '#F0404B',
+        backgroundColor: 'rgba(5, 150, 105, 0.7)',
+        borderColor: '#059669',
         borderWidth: 2,
         borderRadius: 8,
     }]

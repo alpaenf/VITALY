@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Analisis Kesehatan - HEALTIVA</title>
+    <title>Laporan Analisis Kesehatan - VITALY</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -166,12 +166,7 @@
     $printedAt = optional($analysis->created_at)->format('j M Y H:i') ?? '-';
 
     $raw = (string) ($analysis->result ?? '-');
-    $normalized = str_replace(['BMI (', 'BMI:'], ['IMT (', 'IMT:'], $raw);
-    
-    // Hilangkan tanda ** (bold markdown) 
-    $normalized = str_replace('**', '', $normalized);
-    // Ubah bullet list * (jika ada) menjadi -
-    $normalized = preg_replace('/^\s*\*\s/m', '- ', $normalized);
+    $normalized = str_replace(['BMI (', '**BMI (', 'BMI:'], ['IMT (', '**IMT (', 'IMT:'], $raw);
 
     $lines = preg_split('/\r\n|\r|\n/', $normalized);
 
@@ -215,14 +210,14 @@
 @endphp
 
     <div class="sheet">
-        <div class="top-title">Laporan Analisis Kesehatan - HEALTIVA</div>
+        <div class="top-title">Laporan Analisis Kesehatan - VITALY</div>
 
         <div class="head">
             <div>
                 <div class="logo-wrap">
-                    <img src="/images/logo.png" alt="HEALTIVA" class="logo">
+                    <img src="/images/logo.png" alt="VITALY" class="logo">
                     <div>
-                        <div class="brand">HEALTIVA</div>
+                        <div class="brand">VITALY</div>
                         <div class="subtitle">HEALTH & TECHNOLOGY</div>
                     </div>
                 </div>
@@ -260,7 +255,7 @@
         </table>
 
         <div class="foot">
-            Laporan ini dihasilkan oleh HEALTIVA AI. Bersifat informatif dan tidak menggantikan diagnosa medis resmi dari dokter spesialis.
+            Laporan ini dihasilkan oleh VITALY AI. Bersifat informatif dan tidak menggantikan diagnosa medis resmi dari dokter spesialis.
         </div>
 
         <div class="actions">

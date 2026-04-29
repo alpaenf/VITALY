@@ -69,6 +69,30 @@
             </div>
         </div>
 
+        <!-- Panic Button / Rujukan Cepat (Life-Saving Feature) -->
+        <div v-if="isCritical" class="bg-red-50 border border-red-200 rounded-2xl p-4 sm:p-5 mb-6 animate-fade-in-down shadow-sm">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 animate-pulse">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <div class="flex-1">
+                    <h2 class="text-sm sm:text-base font-bold text-red-700">Kondisi Medis Darurat Terdeteksi!</h2>
+                    <p class="text-xs sm:text-sm text-red-600 mt-1 mb-3">Hasil pemeriksaan terakhir menunjukkan angka yang sangat kritis. Segera lakukan tindakan rujukan ke Puskesmas/RS terdekat.</p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-2.5">
+                        <button @click="printRujukan" class="flex-1 flex items-center justify-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold hover:bg-red-700 transition shadow-sm shadow-red-500/30">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                            Cetak Surat Rujukan
+                        </button>
+                        <button @click="sendEmergencyWA" class="flex-1 flex items-center justify-center gap-2 bg-white border border-red-200 text-red-700 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold hover:bg-red-50 transition">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.673.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                            Peringatan Keluarga (WA)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Health Trend Chart -->
         <div v-if="chartRecords.length >= 2" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 mb-5">
             <div class="flex items-center justify-between mb-4">
@@ -82,7 +106,7 @@
                     <span class="text-xs text-gray-500">Sistolik</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                    <span class="w-3 h-1 rounded-full bg-[#F18E8C] inline-block"></span>
+                    <span class="w-3 h-1 rounded-full bg-[#F59E0B] inline-block"></span>
                     <span class="text-xs text-gray-500">Diastolik</span>
                 </div>
                 <div class="flex items-center gap-1.5">
@@ -230,7 +254,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button @click="confirmDelete(analysis.id)" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                            <button @click="confirmDelete(analysis.id)" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-primary/10 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                             </button>
                             <div class="cursor-pointer select-none w-8 h-8 flex items-center justify-center" @click="toggleAnalysis(index)">
@@ -246,7 +270,7 @@
                             <!-- Action Buttons -->
                             <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 px-4 sm:px-6 pb-4 pt-1">
                                 <button @click="downloadPdf(analysis)"
-                                    class="flex-1 md:flex-none flex items-center justify-center gap-1.5 text-sm font-medium px-4 py-2.5 rounded-xl bg-[#FDD3CF] text-[#B92521] hover:bg-[#F18E8C]/40 transition w-full md:w-auto">
+                                    class="flex-1 md:flex-none flex items-center justify-center gap-1.5 text-sm font-medium px-4 py-2.5 rounded-xl bg-[#FCD34D] text-[#064E3B] hover:bg-[#F59E0B]/40 transition w-full md:w-auto">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                     Cetak PDF
                                 </button>
@@ -266,7 +290,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <a v-for="vid in getRelatedVideos(analysis.result).slice(0, 2)" :key="vid.id"
                                         :href="`https://www.youtube.com/watch?v=${vid.youtubeId}`" target="_blank" rel="noopener noreferrer"
-                                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-100 hover:border-[#FF0000]/30 hover:bg-red-50/40 transition-all group">
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-100 hover:border-primary/30 hover:bg-primary/10/40 transition-all group">
                                         <div class="relative w-20 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 shadow-sm">
                                             <img :src="`https://i.ytimg.com/vi/${vid.youtubeId}/hqdefault.jpg`" :alt="vid.title" class="w-full h-full object-cover" />
                                             <div class="absolute inset-0 flex items-center justify-center group-hover:bg-black/10 transition">
@@ -317,7 +341,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import KaderLayout from '@/Layouts/KaderLayout.vue';
 import ConfirmModal from '@/Components/ConfirmModal.vue';
@@ -334,12 +358,128 @@ const props = defineProps({
     eduVideos: { type: Array, default: () => [] },
 });
 
+const page = usePage();
 const analyzing = ref(false);
 const openAnalysis = ref(0);
 const confirmDeleteModal = ref(false);
 const deleteTargetId = ref(null);
 const toastMsg = ref('');
 const showToast = (msg) => { toastMsg.value = msg; setTimeout(() => { toastMsg.value = ''; }, 3000); };
+
+const isCritical = computed(() => {
+    if (!props.latestRecord) return false;
+    const { systolic, diastolic, blood_sugar, heart_rate } = props.latestRecord;
+    if (systolic >= 160 || diastolic >= 100) return true; // Hipertensi krisis
+    if (blood_sugar >= 250 || blood_sugar <= 60) return true; // Gula darah krisis
+    if (heart_rate >= 120 || heart_rate <= 50) return true; // Detak jantung krisis
+    return false;
+});
+
+const sendEmergencyWA = () => {
+    const phone = props.patient.phone;
+    if (!phone) {
+        showToast('Nomor telepon pasien tidak tersedia!');
+        return;
+    }
+    const { systolic, diastolic, blood_sugar } = props.latestRecord;
+    let kondisi = [];
+    if (systolic >= 160 || diastolic >= 100) kondisi.push(`Tekanan Darah Darurat: ${systolic}/${diastolic} mmHg`);
+    if (blood_sugar >= 250 || blood_sugar <= 60) kondisi.push(`Gula Darah Kritis: ${blood_sugar} mg/dL`);
+    
+    const msg = `*PEMBERITAHUAN DARURAT POSBINDU/KLINIK*\n\nBapak/Ibu keluarga dari *${props.patient.name}*,\nKami menginformasikan bahwa hasil pemeriksaan kesehatan terakhir menunjukkan angka yang sangat kritis:\n- ${kondisi.join('\n- ')}\n\n*SEGERA* bawa pasien ke Puskesmas atau Instalasi Gawat Darurat (IGD) Rumah Sakit terdekat untuk mendapatkan penanganan medis segera!`;
+    window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+};
+
+const printRujukan = async () => {
+    const date = formatDate(new Date());
+    let logoHtml = '<div class="logo-text">VITALY</div>';
+    try {
+        const resp = await fetch('/images/logo.png');
+        if (resp.ok) {
+            const blob = await resp.blob();
+            const b64 = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(blob); });
+            logoHtml = `<img src="${b64}" alt="VITALY" class="logo-img">`;
+        }
+    } catch (_) {}
+
+    const ageStr = props.patient.date_of_birth ? formatAge(props.patient.date_of_birth) + ' tahun' : '-';
+    const genderStr = props.patient.gender === 'male' ? 'Laki-laki' : props.patient.gender === 'female' ? 'Perempuan' : '-';
+    const { systolic, diastolic, blood_sugar, heart_rate, temperature } = props.latestRecord;
+
+    const content = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Surat Rujukan Medis - VITALY</title>
+<style>
+  body { font-family: 'Times New Roman', Times, serif; max-width: 800px; margin: 0 auto; padding: 40px; color: #000; font-size: 14pt; line-height: 1.5; }
+  .header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 4px solid #000; border-bottom-style: double; }
+  .logo-img { height: 60px; width: auto; object-fit: contain; }
+  .logo-text { color: #000; font-size: 28px; font-weight: bold; }
+  .header-right { text-align: center; width: 100%; }
+  .header-title { font-weight: bold; font-size: 16pt; text-transform: uppercase; }
+  .header-sub { font-size: 12pt; margin-top: 5px; }
+  .title-surat { text-align: center; font-weight: bold; font-size: 16pt; margin: 30px 0; text-decoration: underline; }
+  .table-data { width: 100%; margin-bottom: 20px; }
+  .table-data td { padding: 5px; vertical-align: top; }
+  .table-data .td-label { width: 30%; }
+  .table-data .td-colon { width: 5%; }
+  .table-data .td-val { width: 65%; font-weight: bold; }
+  .kritis { color: #cc0000; }
+  .footer { margin-top: 50px; text-align: right; }
+  .ttd-box { display: inline-block; text-align: center; margin-top: 20px; }
+  .ttd-space { height: 80px; }
+  .ttd-name { text-decoration: underline; font-weight: bold; }
+  @media print { body { padding: 0; } }
+</style></head><body>
+<div class="header-box"><div>${logoHtml}</div><div class="header-right"><div class="header-title">Sistem Kesehatan VITALY</div><div class="header-sub">Pusat Layanan Kesehatan Tingkat Pertama (Posbindu/Puskesmas)</div></div></div>
+
+<div class="title-surat">SURAT RUJUKAN CEPAT</div>
+
+<p>Kepada Yth.<br><strong>Dokter Jaga IGD / Puskesmas Terdekat</strong><br>Di Tempat</p>
+<p>Bersama surat ini, kami merujuk pasien dengan identitas sebagai berikut:</p>
+
+<table class="table-data">
+    <tr><td class="td-label">Nama Lengkap</td><td class="td-colon">:</td><td class="td-val">${props.patient.name}</td></tr>
+    <tr><td class="td-label">NIK</td><td class="td-colon">:</td><td class="td-val">${props.patient.nik}</td></tr>
+    <tr><td class="td-label">Umur / Jenis Kelamin</td><td class="td-colon">:</td><td class="td-val">${ageStr} / ${genderStr}</td></tr>
+    <tr><td class="td-label">Waktu Pemeriksaan</td><td class="td-colon">:</td><td class="td-val">${date}</td></tr>
+</table>
+
+<p>Hasil skrining vital sign terakhir menunjukkan angka <strong>Kritis (Emergency)</strong>:</p>
+
+<table class="table-data" border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; text-align: center; margin-bottom: 20px;">
+    <tr style="background-color: #f0f0f0;">
+        <th>Tekanan Darah</th>
+        <th>Gula Darah</th>
+        <th>Detak Jantung</th>
+        <th>Suhu Tubuh</th>
+    </tr>
+    <tr>
+        <td class="${(systolic >= 160 || diastolic >= 100) ? 'kritis' : ''}">${systolic ? systolic+'/'+diastolic+' mmHg' : '-'}</td>
+        <td class="${(blood_sugar >= 250 || blood_sugar <= 60) ? 'kritis' : ''}">${blood_sugar ? blood_sugar+' mg/dL' : '-'}</td>
+        <td class="${(heart_rate >= 120 || heart_rate <= 50) ? 'kritis' : ''}">${heart_rate ? heart_rate+' bpm' : '-'}</td>
+        <td>${temperature ? temperature+' °C' : '-'}</td>
+    </tr>
+</table>
+
+<p>Mohon segera diberikan penanganan dan tindakan medis lanjutan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
+
+<div class="footer">
+    <div class="ttd-box">
+        <div class="header-right">
+            <div>${new Date().toLocaleDateString('id-ID')}</div>
+            <div>Petugas Lapangan / Health Agent</div>
+        </div>
+        <div class="ttd-space"></div>
+        <div class="ttd-name">${page.props.auth.user.name}</div>
+    </div>
+</div>
+
+<script>window.onload = () => { window.print(); };<\/script>
+</body></html>`;
+    const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const win  = window.open(url, '_blank');
+    if (!win) { const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.click(); }
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+};
 
 const chartRecords = computed(() => {
     const list = Array.isArray(props.records?.data) ? props.records.data : [];
@@ -358,22 +498,22 @@ const lineChartData = computed(() => ({
         {
             label: 'Sistolik',
             data: chartRecords.value.map((r) => r.systolic || null),
-            borderColor: '#F0404B',
-            backgroundColor: 'rgba(240,64,75,0.07)',
+            borderColor: '#059669',
+            backgroundColor: 'rgba(5,150,105,0.07)',
             fill: true,
             tension: 0.4,
             pointRadius: 4,
-            pointBackgroundColor: '#F0404B',
+            pointBackgroundColor: '#059669',
         },
         {
             label: 'Diastolik',
             data: chartRecords.value.map((r) => r.diastolic || null),
-            borderColor: '#F18E8C',
+            borderColor: '#F59E0B',
             backgroundColor: 'transparent',
             fill: false,
             tension: 0.4,
             pointRadius: 4,
-            pointBackgroundColor: '#F18E8C',
+            pointBackgroundColor: '#F59E0B',
         },
         {
             label: 'Detak Jantung',
@@ -434,13 +574,13 @@ const doDelete = () => {
 
 const downloadPdf = async (analysis) => {
     const date = formatDate(analysis.created_at);
-    let logoHtml = '<div class="logo-text">HEALTIVA</div>';
+    let logoHtml = '<div class="logo-text">VITALY</div>';
     try {
         const resp = await fetch('/images/logo.png');
         if (resp.ok) {
             const blob = await resp.blob();
             const b64 = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(blob); });
-            logoHtml = `<img src="${b64}" alt="HEALTIVA" class="logo-img">`;
+            logoHtml = `<img src="${b64}" alt="VITALY" class="logo-img">`;
         }
     } catch (_) {}
 
@@ -479,12 +619,12 @@ const downloadPdf = async (analysis) => {
     }
     html += '</table>';
 
-    const content = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Laporan Analisis Kesehatan - HEALTIVA</title>
+    const content = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Laporan Analisis Kesehatan - VITALY</title>
 <style>
   body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 18px 30px 30px; color: #1f2937; font-size: 13px; line-height: 1.6; }
-  .header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 3px solid #B92521; }
-  .logo-img { height: 88px; width: auto; object-fit: contain; }
-  .logo-text { color: #B92521; font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+  .header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 3px solid #064E3B; }
+  .logo-img { height: 44px; width: auto; object-fit: contain; }
+  .logo-text { color: #064E3B; font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
   .header-right { text-align: right; }
   .header-title { font-weight: 700; font-size: 13px; color: #374151; }
   .header-sub { font-size: 11px; color: #6b7280; margin-top: 2px; }
@@ -495,7 +635,7 @@ const downloadPdf = async (analysis) => {
   .id-divider { border-top: 1px solid #e5e7eb; margin-bottom: 18px; }
   .analysis-table { width: 100%; border-collapse: collapse; border: 2px solid #111827; margin-bottom: 20px; }
   .analysis-table th, .analysis-table td { border: 1px solid #6b7280; padding: 10px 14px; vertical-align: top; }
-  .main-header { background-color: #FEF0F0; color: #A91127; text-align: left; font-size: 14px; border-bottom: 2px solid #111827; border-top: 2px solid #111827; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .main-header { background-color: #FFFBEB; color: #064E3B; text-align: left; font-size: 14px; border-bottom: 2px solid #111827; border-top: 2px solid #111827; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .key-cell { width: 35%; font-weight: 700; color: #374151; background-color: #f9fafb; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .val-cell { width: 65%; color: #111827; }
   .text-cell { color: #374151; padding: 12px 14px; }
@@ -506,7 +646,7 @@ const downloadPdf = async (analysis) => {
 <div class="header-box"><div>${logoHtml}</div><div class="header-right"><div class="header-title">Laporan Analisis Kesehatan</div><div class="header-sub">${date}</div></div></div>
 ${identityHtml}
 ${html}
-<p class="footer">Dihasilkan oleh HEALTIVA AI. Data diproses oleh Kader Posbindu.</p>
+<p class="footer">Dihasilkan oleh VITALY AI. Data diproses oleh Health Agent.</p>
 <script>window.onload = () => { window.print(); };<\/script>
 </body></html>`;
     const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
@@ -525,7 +665,7 @@ const shareWhatsApp = (analysis) => {
     const plain = (analysis.result ?? '').replace(/\*\*(.+?)\*\*/g, '*$1*').replace(/\*(.+?)\*/g, '_$1_').replace(/#{1,3}\s/g, '');
     const preview = plain.trim().length > 1200 ? `${plain.trim().slice(0, 1200)}...` : plain.trim();
     const shareLink = analysis.share_url ? `Link PDF laporan:\n${analysis.share_url}\n\n` : '';
-    const msg = `*Laporan Analisis Kesehatan Bapak/Ibu ${props.patient.name}*\n${date}\n\n${shareLink}${preview}\n\n_Dihasilkan oleh HEALTIVA Health Monitor dari Kader Posbindu._`;
+    const msg = `*Laporan Analisis Kesehatan Bapak/Ibu ${props.patient.name}*\n${date}\n\n${shareLink}${preview}\n\n_Dihasilkan oleh VITALY Health Monitor dari Health Agent._`;
     window.open(`https://wa.me/${phone ? phone.replace(/[^0-9]/g, '') : ''}?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
@@ -543,7 +683,7 @@ const downloadExcel = async () => {
         link.href = url;
         
         const contentDisposition = response.headers['content-disposition'] || response.headers['Content-Disposition'];
-        let fileName = 'Riwayat_Pemeriksaan_HEALTIVA.csv';
+        let fileName = 'Riwayat_Pemeriksaan_VITALY.csv';
         if (contentDisposition) {
             const fileNameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
             if (fileNameMatch && fileNameMatch.length === 2) {
@@ -646,7 +786,7 @@ const renderMarkdown = (text) => {
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
 :deep(.analysis-result) { font-size: 0.8125rem; line-height: 1.65; color: #374151; }
-:deep(.ar-title) { font-size: 1rem; font-weight: 700; color: #B92521; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid #EFDBDC; }
+:deep(.ar-title) { font-size: 1rem; font-weight: 700; color: #064E3B; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid #D1FAE5; }
 :deep(.ar-section) { border-radius: 0.625rem; border-left: 4px solid; padding: 0.75rem 0.875rem; margin-bottom: 0.625rem; background: #fafafa; }
 :deep(.ar-section:last-child) { margin-bottom: 0; }
 :deep(.ar-heading) { font-weight: 700; font-size: 0.8125rem; margin-bottom: 0.5rem; }
@@ -656,12 +796,12 @@ const renderMarkdown = (text) => {
 :deep(.ar-list li) { position: relative; padding-left: 1.1rem; color: #4b5563; }
 :deep(.ar-list li::before) { content: ''; position: absolute; left: 0; top: 0.48rem; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: currentColor; opacity: 0.55; }
 :deep(.ar-section strong) { font-weight: 700; }
-:deep(.ar-violet) { border-color: #F0404B; background: #FFF5F5; } :deep(.ar-violet .ar-heading) { color: #B92521; } :deep(.ar-violet .ar-list li::before) { background: #F0404B; }
-:deep(.ar-blue) { border-color: #B92521; background: #FEF0F0; } :deep(.ar-blue .ar-heading) { color: #A91127; } :deep(.ar-blue .ar-list li::before) { background: #B92521; }
-:deep(.ar-green) { border-color: #B74443; background: #F9ECEC; } :deep(.ar-green .ar-heading) { color: #B74443; } :deep(.ar-green .ar-list li::before) { background: #B74443; }
-:deep(.ar-amber) { border-color: #E48888; background: #FDF4F4; } :deep(.ar-amber .ar-heading) { color: #B92521; } :deep(.ar-amber .ar-list li::before) { background: #E48888; }
-:deep(.ar-rose) { border-color: #A91127; background: #FFF0F0; } :deep(.ar-rose .ar-heading) { color: #A91127; } :deep(.ar-rose .ar-list li::before) { background: #A91127; }
-:deep(.ar-teal) { border-color: #F18E8C; background: #FDF2F2; } :deep(.ar-teal .ar-heading) { color: #B92521; } :deep(.ar-teal .ar-list li::before) { background: #F18E8C; }
+:deep(.ar-violet) { border-color: #059669; background: #ECFDF5; } :deep(.ar-violet .ar-heading) { color: #064E3B; } :deep(.ar-violet .ar-list li::before) { background: #059669; }
+:deep(.ar-blue) { border-color: #064E3B; background: #FFFBEB; } :deep(.ar-blue .ar-heading) { color: #064E3B; } :deep(.ar-blue .ar-list li::before) { background: #064E3B; }
+:deep(.ar-green) { border-color: #10B981; background: #F0FDF4; } :deep(.ar-green .ar-heading) { color: #10B981; } :deep(.ar-green .ar-list li::before) { background: #10B981; }
+:deep(.ar-amber) { border-color: #FCD34D; background: #F8FAFC; } :deep(.ar-amber .ar-heading) { color: #064E3B; } :deep(.ar-amber .ar-list li::before) { background: #FCD34D; }
+:deep(.ar-rose) { border-color: #064E3B; background: #F8FAFC; } :deep(.ar-rose .ar-heading) { color: #064E3B; } :deep(.ar-rose .ar-list li::before) { background: #064E3B; }
+:deep(.ar-teal) { border-color: #F59E0B; background: #FDF2F2; } :deep(.ar-teal .ar-heading) { color: #064E3B; } :deep(.ar-teal .ar-list li::before) { background: #F59E0B; }
 .toast-enter-active, .toast-leave-active { transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
 .toast-enter-from, .toast-leave-to { opacity: 0; transform: translateX(-50%) translateY(12px); }
 </style>

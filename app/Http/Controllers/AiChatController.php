@@ -45,7 +45,7 @@ class AiChatController extends Controller
 
         $patient = Patient::findOrFail(session('patient_id'));
         $latestRecord = $patient->healthRecords()->latest('recorded_at')->first();
-        $systemPrompt = "Kamu adalah dr. HEALTIVA, asisten virtual medis di aplikasi HEALTIVA berbasis AI. Jawab dengan sangat ramah, hangat, penuh empati, dan logis. Kamu bukan cuma tempat bertanya soal penyakit fisik, tapi juga teman yang siap mendengarkan curhat (keluh kesah/kecemasan pasien). Berikan kata-kata penyemangat dan validasi perasaan mereka, apalagi orang sakit seringkali butuh dukungan mental. DILARANG KERAS MENGGUNAKAN EMOJI ATAU EMOTIKON APAPUN dalam balasanmu. Jika ditanya hal umum atau diajak curhat, jawablah dengan sabar layaknya sahabat, namun tetap arahkan pelan-pelan ke kesehatan jika relevan. Beri peringatan singkat di akhir setiap sesi awal bahwa kamu bukan dokter sungguhan.\n\nSANGAT PENTING: Jika kamu memberikan penjelasan medis dan merasa video visual bisa membantu (seperti senam, cara pakai insulin, terapi), di akhir jawaban WAJIB tawarkan kepada pengguna apakah ia ingin diputarkan video edukasi terkait (Contoh: 'Apakah kamu mau aku carikan video tentang hal ini?').\n\nJika pengguna membalas setuju (misal: 'ya', 'mau', 'boleh', 'carikan video'), jawablah dengan singkat bahwa kamu akan menampilkan videonya, lalu WAJIB tambahkan kata kunci '[TAMPILKAN_VIDEO]' di akhir pesanmu agar sistem bisa memunculkan video.";
+        $systemPrompt = "Kamu adalah dr. VITALY, asisten virtual medis di aplikasi VITALY berbasis AI. Jawab dengan sangat ramah, hangat, penuh empati, dan logis. Kamu bukan cuma tempat bertanya soal penyakit fisik, tapi juga teman yang siap mendengarkan curhat (keluh kesah/kecemasan pasien). Berikan kata-kata penyemangat dan validasi perasaan mereka, apalagi orang sakit seringkali butuh dukungan mental. DILARANG KERAS MENGGUNAKAN EMOJI ATAU EMOTIKON APAPUN dalam balasanmu. Jika ditanya hal umum atau diajak curhat, jawablah dengan sabar layaknya sahabat, namun tetap arahkan pelan-pelan ke kesehatan jika relevan. Beri peringatan singkat di akhir setiap sesi awal bahwa kamu bukan dokter sungguhan.\n\nSANGAT PENTING: Jika kamu memberikan penjelasan medis dan merasa video visual bisa membantu (seperti senam, cara pakai insulin, terapi), di akhir jawaban WAJIB tawarkan kepada pengguna apakah ia ingin diputarkan video edukasi terkait (Contoh: 'Apakah kamu mau aku carikan video tentang hal ini?').\n\nJika pengguna membalas setuju (misal: 'ya', 'mau', 'boleh', 'carikan video'), jawablah dengan singkat bahwa kamu akan menampilkan videonya, lalu WAJIB tambahkan kata kunci '[TAMPILKAN_VIDEO]' di akhir pesanmu agar sistem bisa memunculkan video.";
         $systemPrompt .= "\nIdentitas Pasien: " . $patient->name . " (" . ($patient->gender ?? 'Tidak diketahui') . ", " . ($patient->age ?? '?') . " tahun).";
 
         if ($latestRecord) {
@@ -56,7 +56,7 @@ class AiChatController extends Controller
         $lastUserText = collect($request->messages)->last()['text'] ?? '';
         $relevantKnowledge = AiKnowledge::findRelevant($lastUserText, 3);
         if ($relevantKnowledge->isNotEmpty()) {
-            $systemPrompt .= "\n\n--- PENGETAHUAN PENTING (dari Knowledge Base HEALTIVA) ---";
+            $systemPrompt .= "\n\n--- PENGETAHUAN PENTING (dari Knowledge Base VITALY) ---";
             foreach ($relevantKnowledge as $k) {
                 $systemPrompt .= "\n[{$k->title}]: {$k->content}";
             }
@@ -216,7 +216,7 @@ class AiChatController extends Controller
             if ($kbResults->isNotEmpty()) {
                 $top = $kbResults->first();
                 $extra = $kbResults->count() > 1 ? "\n\n" . $kbResults->get(1)->content : '';
-                return "Berdasarkan basis pengetahuan HEALTIVA untuk **{$top->title}**:\n\n{$top->content}{$extra}\n\nApakah kamu mau aku carikan video edukasi terkait hal ini?";
+                return "Berdasarkan basis pengetahuan VITALY untuk **{$top->title}**:\n\n{$top->content}{$extra}\n\nApakah kamu mau aku carikan video edukasi terkait hal ini?";
             }
         } catch (\Throwable $e) {
             // KB tidak tersedia, lanjut ke rules biasa
@@ -292,7 +292,7 @@ class AiChatController extends Controller
         }
 
         if (preg_match('/(siapa kamu|kamu itu apa|kamu robot|kamu ai|kamu manusia|kamu dokter)/', $t)) {
-            return "Aku dr. HEALTIVA, asisten kesehatan virtual berbasis AI di aplikasi HEALTIVA. Aku dirancang untuk membantu memantau dan memahami kondisi kesehatanmu. Walaupun namanya dr. HEALTIVA, aku bukan dokter sungguhan, ya. Anggap saja aku seperti teman yang paham soal kesehatan dan siap dengerin keluhanmu kapan saja.";
+            return "Aku dr. VITALY, asisten kesehatan virtual berbasis AI di aplikasi VITALY. Aku dirancang untuk membantu memantau dan memahami kondisi kesehatanmu. Walaupun namanya dr. VITALY, aku bukan dokter sungguhan, ya. Anggap saja aku seperti teman yang paham soal kesehatan dan siap dengerin keluhanmu kapan saja.";
         }
 
         if (preg_match('/(kabar|gimana kabar|apa kabar|lagi apa|lagi ngapain|sedang apa)/', $t)) {
@@ -307,7 +307,7 @@ class AiChatController extends Controller
         if (preg_match('/(bosen|bosan|gabut|ga ada kerjaan|ngga ada kerjaan|nganggur|santai)/', $t)) {
             $replies = [
                 "Wah sama dong {$name}, aku juga nunggu pertanyaan dari kamu terus. Kalau bosen, mending gerak ya! Bahkan 10 menit stretching ringan sudah lumayan bagus buat tubuh.",
-                "Kalau lagi gabut, itu waktu yang bagus buat cek kesehatan atau input data vital terbaru ke HEALTIVA. Biar kebiasaan pantau kesehatannya terjaga.",
+                "Kalau lagi gabut, itu waktu yang bagus buat cek kesehatan atau input data vital terbaru ke VITALY. Biar kebiasaan pantau kesehatannya terjaga.",
             ];
             return $replies[array_rand($replies)];
         }

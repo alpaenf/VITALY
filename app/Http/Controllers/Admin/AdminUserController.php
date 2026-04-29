@@ -102,80 +102,36 @@ class AdminUserController extends Controller
                   ->orWhere('nik', 'like', "%{$search}%");
             })
             ->withCount('healthRecords', 'aiAnalyses')
-            ->with(['healthRecords' => function ($query) {
-                $query->latest('recorded_at')->take(1);
-            }])
             ->latest()
             ->get();
 
-        $excelFileName = 'pasien_pemeriksaan_terbaru_' . now()->format('Ymd_His') . '.xlsx';
+        $filename = 'pasien_' . now()->format('Ymd_His') . '.csv';
 
-        $data = [
-            ['<style font-size="16"><b>INSTALASI REKAM MEDIS & INFORMASI KESEHATAN (MEDIX)</b></style>'],
-            ['<style font-size="11">Faskes Tingkat Pertama Pemantauan Pasien Terpadu - Sistem Informasi Medis Digital</style>'],
-            ['<style font-size="11">Email: rekam.medis@medix.id | No. Dokumen: RM-XLS/' . date('Y/m/d') . '</style>'],
-            [''],
-            ['<style font-size="14"><b>LAPORAN DATA PASIEN & RINGKASAN KLINIS TERAKHIR</b></style>'],
-            ['<b>Tanggal Cetak:</b>', now()->format('d/m/Y H:i:s')],
-            [''],
-            [
-                '<style bgcolor="#E2EFDA"><b>No. RM</b></style>', 
-                '<style bgcolor="#E2EFDA"><b>NIK Pasien</b></style>', 
-                '<style bgcolor="#E2EFDA"><b>Nama Lengkap Pasien</b></style>', 
-                '<style bgcolor="#E2EFDA"><b>L/P</b></style>', 
-                '<style bgcolor="#E2EFDA"><b>Tanggal Lahir</b></style>', 
-                '<style bgcolor="#E2EFDA"><b>Kontak (HP)</b></style>', 
-                '<style bgcolor="#E2EFDA"><b>Tgl Registrasi</b></style>',
-                '<style bgcolor="#DDEBF7"><b>Tgl Visite Terakhir</b></style>',
-                '<style bgcolor="#DDEBF7"><b>BB (kg)</b></style>', 
-                '<style bgcolor="#DDEBF7"><b>TB (cm)</b></style>', 
-                '<style bgcolor="#DDEBF7" width="12"><b>IMT</b></style>', 
-                '<style bgcolor="#DDEBF7" width="25"><b>Kategori Status Gizi (IMT)</b></style>',
-                '<style bgcolor="#FCE4D6"><b>Tensi (S/D) mmHg</b></style>', 
-                '<style bgcolor="#FCE4D6"><b>Kategori Kardiovaskular</b></style>',
-                '<style bgcolor="#FFF2CC"><b>Gula Darah (mg/dL)</b></style>',
-                '<style bgcolor="#FFF2CC"><b>Suhu (°C)</b></style>', 
-                '<style bgcolor="#FFF2CC"><b>Nadi (bpm)</b></style>',
-                '<style bgcolor="#F2F2F2"><b>Catatan Medis (Assessment)</b></style>'
-            ]
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
         ];
 
-        foreach ($patients as $p) {
-            $latestRecord = $p->healthRecords->first();
-            
-            $tensi = ($latestRecord && $latestRecord->systolic && $latestRecord->diastolic) 
-                        ? $latestRecord->systolic . '/' . $latestRecord->diastolic 
-                        : '-';
+        $callback = function () use ($patients) {
+            $file = fopen('php://output', 'w');
+            fwrite($file, "\xEF\xBB\xBF");
+            fputcsv($file, ['ID', 'NIK', 'Nama', 'Gender', 'Tanggal Lahir', 'No HP', 'Total Data', 'Total Analisis', 'Terdaftar']);
+            foreach ($patients as $p) {
+                fputcsv($file, [
+                    $p->id,
+                    $p->nik,
+                    $p->name,
+                    $p->gender ?? '-',
+                    $p->date_of_birth?->format('d/m/Y') ?? '-',
+                    $p->phone ?? '-',
+                    $p->health_records_count,
+                    $p->ai_analyses_count,
+                    $p->created_at->format('d/m/Y'),
+                ]);
+            }
+            fclose($file);
+        };
 
-            $data[] = [
-                'RM-' . str_pad($p->id, 5, '0', STR_PAD_LEFT),
-                "'" . $p->nik, // Using quote to force string type so Excel doesn't convert long numbers to scientific notation
-                $p->name,
-                $p->gender === 'male' ? 'L' : ($p->gender === 'female' ? 'P' : '-'),
-                $p->date_of_birth ? date('d/m/Y', strtotime($p->date_of_birth)) : '-',
-                $p->phone ?? '-',
-                $p->created_at->format('d/m/Y'),
-                
-                // Detail Pemeriksaan Terakhir
-                $latestRecord && $latestRecord->recorded_at ? $latestRecord->recorded_at->format('d/m/Y H:i') : 'Belum Ada Visite',
-                $latestRecord->weight ?? '-',
-                $latestRecord->height ?? '-',
-                $latestRecord && $latestRecord->bmi ? number_format($latestRecord->bmi, 1) : '-',
-                $latestRecord->bmi_status ?? '-',
-                $tensi,
-                $latestRecord->blood_pressure_status ?? '-',
-                $latestRecord->blood_sugar ?? '-',
-                $latestRecord->temperature ?? '-',
-                $latestRecord->heart_rate ?? '-',
-                $latestRecord->notes ?? '-'
-            ];
-        }
-
-        return response()->streamDownload(function () use ($data) {
-            $xlsx = \Shuchkin\SimpleXLSXGen::fromArray($data);
-            $xlsx->saveAs('php://output');
-        }, $excelFileName, [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ]);
+        return response()->stream($callback, 200, $headers);
     }
 }

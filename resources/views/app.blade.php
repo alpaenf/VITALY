@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="theme-color" content="#F0404B">
-    <title inertia>{{ config('app.name', 'HEALTIVA') }}</title>
+    <meta name="theme-color" content="#059669">
+    <title inertia>{{ config('app.name', 'VITALY') }}</title>
     <link rel="icon" href="/images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: linear-gradient(135deg, #F0404B 0%, #c72d37 100%);
+            background: #FFFFFF;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -55,11 +55,11 @@
         }
         #splash-spinner circle {
             fill: none;
-            stroke: rgba(255,255,255,0.25);
+            stroke: rgba(5, 150, 105, 0.15);
             stroke-width: 3;
         }
         #splash-spinner .track {
-            stroke: white;
+            stroke: #059669;
             stroke-dasharray: 80;
             stroke-dashoffset: 80;
             stroke-linecap: round;
@@ -77,7 +77,7 @@
         #splash-bar-wrap {
             width: 140px;
             height: 3px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(5, 150, 105, 0.15);
             border-radius: 99px;
             overflow: hidden;
             animation: splashFadeIn 0.4s ease 0.5s forwards;
@@ -86,7 +86,7 @@
         #splash-bar {
             height: 100%;
             width: 0%;
-            background: white;
+            background: #059669;
             border-radius: 99px;
             animation: barProgress 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards;
         }
@@ -101,7 +101,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1.5px, transparent 1.5px);
+            background-image: radial-gradient(circle, rgba(5, 150, 105, 0.06) 1.5px, transparent 1.5px);
             background-size: 28px 28px;
             pointer-events: none;
         }
@@ -111,7 +111,7 @@
 
     <!-- â”€â”€ Splash Screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
     <div id="splash" role="status" aria-label="Loading...">
-        <img id="splash-logo" src="/images/logo.png" alt="HEALTIVA" />
+        <img id="splash-logo" src="/images/logo.png" alt="VITALY" />
         <svg id="splash-spinner" viewBox="0 0 44 44">
             <circle cx="22" cy="22" r="18"/>
             <circle class="track" cx="22" cy="22" r="18"/>

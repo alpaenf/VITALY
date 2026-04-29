@@ -12,7 +12,7 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-gray-800 leading-none">HEALTIVA</p>
+                        <p class="text-sm font-bold text-gray-800 leading-none">VITALY</p>
                         <p class="text-[10px] text-primary font-semibold mt-0.5">Admin Panel</p>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-3 mb-1.5">Menu Utama</p>
 
                 <Link href="/admin/dashboard"
-                    :class="isActive('/admin/dashboard') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    :class="isActive('/admin/dashboard') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
                     <span :class="isActive('/admin/dashboard') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
                         class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
@@ -35,7 +35,7 @@
                 </Link>
 
                 <Link href="/admin/patients"
-                    :class="isActive('/admin/patients') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    :class="isActive('/admin/patients') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
                     <span :class="isActive('/admin/patients') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
                         class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
@@ -47,7 +47,7 @@
                 </Link>
 
                 <Link href="/admin/kaders"
-                    :class="isActive('/admin/kaders') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    :class="isActive('/admin/kaders') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
                     <span :class="isActive('/admin/kaders') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
                         class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
@@ -59,7 +59,7 @@
                 </Link>
 
                 <Link href="/admin/knowledge"
-                    :class="isActive('/admin/knowledge') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    :class="isActive('/admin/knowledge') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
                     <span :class="isActive('/admin/knowledge') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
                         class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
@@ -74,7 +74,7 @@
                 <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Informasi Tambahan</p>
 
                 <Link href="/edukasi"
-                    :class="isActive('/edukasi') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    :class="isActive('/edukasi') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
                     <span :class="isActive('/edukasi') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
                         class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
@@ -86,7 +86,7 @@
                 </Link>
 
                 <Link href="/standar-normal"
-                    :class="isActive('/standar-normal') ? 'bg-[#FFF5F5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    :class="isActive('/standar-normal') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
                     <span :class="isActive('/standar-normal') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
                         class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
@@ -106,9 +106,9 @@
                 </div>
 
                 <button @click="logout"
-                    class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-red-500 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group">
-                    <span class="w-8 h-8 rounded-lg bg-red-50 group-hover:bg-red-100 flex items-center justify-center transition-colors flex-shrink-0 shadow-sm">
-                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-primary hover:bg-primary/10 hover:text-primary-dark transition-all duration-200 group">
+                    <span class="w-8 h-8 rounded-lg bg-primary/10 group-hover:bg-red-100 flex items-center justify-center transition-colors flex-shrink-0 shadow-sm">
+                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
                     </span>

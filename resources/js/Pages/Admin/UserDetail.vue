@@ -14,7 +14,7 @@
         </div>
 
         <!-- Profile Header Card -->
-        <div class="card-Healtiva p-5 mb-5 animate-fade-in-up">
+        <div class="card-VITALY p-5 mb-5 animate-fade-in-up">
             <div class="flex items-center gap-4">
                 <div class="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 shadow-md">
                     <img v-if="user.avatar"
@@ -51,7 +51,7 @@
         </div>
 
         <!-- Health Trend Chart -->
-        <div v-if="records.length >= 2" class="card-Healtiva p-5 mb-5 animate-fade-in-up delay-50">
+        <div v-if="records.length >= 2" class="card-VITALY p-5 mb-5 animate-fade-in-up delay-50">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold text-gray-700">Tren Kesehatan</h2>
                 <span class="text-xs text-gray-400">{{ records.length }} data terakhir</span>
@@ -63,7 +63,7 @@
                     <span class="text-xs text-gray-500">Sistolik</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                    <span class="w-3 h-1 rounded-full bg-[#F18E8C] inline-block"></span>
+                    <span class="w-3 h-1 rounded-full bg-[#F59E0B] inline-block"></span>
                     <span class="text-xs text-gray-500">Diastolik</span>
                 </div>
                 <div class="flex items-center gap-1.5">
@@ -77,7 +77,7 @@
         </div>
 
         <!-- Health Records -->
-        <div class="card-Healtiva mb-5 overflow-hidden animate-fade-in-up delay-75">
+        <div class="card-VITALY mb-5 overflow-hidden animate-fade-in-up delay-75">
             <div class="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-700">Riwayat Data Kesehatan</h2>
                 <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-medium">{{ records.length }} data</span>
@@ -130,7 +130,7 @@
                                 <button
                                     @click="deleteRecord(r)"
                                     :disabled="deletingRecordId === r.id"
-                                    class="inline-flex items-center justify-center text-xs font-medium px-3 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                    class="inline-flex items-center justify-center text-xs font-medium px-3 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-primary/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {{ deletingRecordId === r.id ? 'Menghapus...' : 'Hapus' }}
                                 </button>
@@ -145,7 +145,7 @@
         </div>
 
         <!-- AI Analyses -->
-        <div class="card-Healtiva overflow-hidden animate-fade-in-up delay-150">
+        <div class="card-VITALY overflow-hidden animate-fade-in-up delay-150">
             <div class="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-700">Riwayat Analisis AI</h2>
                 <span class="text-xs bg-violet-50 text-violet-600 px-2 py-1 rounded-full font-medium">{{ analyses.length }} analisis</span>
@@ -182,7 +182,7 @@
                             <div class="analysis-result p-4" v-html="renderMarkdown(a.result)"></div>
                             <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 px-4 pb-4 pt-1">
                                 <button @click="downloadPdf(a)"
-                                    class="flex-1 md:flex-none flex items-center justify-center gap-1.5 text-sm font-medium px-4 py-2.5 rounded-xl bg-[#FDD3CF] text-[#B92521] hover:bg-[#F18E8C]/40 transition w-full md:w-auto">
+                                    class="flex-1 md:flex-none flex items-center justify-center gap-1.5 text-sm font-medium px-4 py-2.5 rounded-xl bg-[#FCD34D] text-[#064E3B] hover:bg-[#F59E0B]/40 transition w-full md:w-auto">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                     Cetak PDF
                                 </button>
@@ -201,7 +201,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <a v-for="vid in getRelatedVideos(a.result).slice(0, 2)" :key="vid.id"
                                         :href="`https://www.youtube.com/watch?v=${vid.youtubeId}`" target="_blank" rel="noopener noreferrer"
-                                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-100 hover:border-[#FF0000]/30 hover:bg-red-50/40 transition-all group">
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-100 hover:border-primary/30 hover:bg-primary/10/40 transition-all group">
                                         <div class="relative w-20 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 shadow-sm">
                                             <img :src="`https://i.ytimg.com/vi/${vid.youtubeId}/hqdefault.jpg`" :alt="vid.title" class="w-full h-full object-cover" />
                                             <div class="absolute inset-0 flex items-center justify-center group-hover:bg-black/10 transition">
@@ -235,7 +235,7 @@
 
                 <div class="relative w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-100 p-5">
                     <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+                        <div class="w-10 h-10 rounded-xl bg-primary/10 text-red-600 flex items-center justify-center flex-shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/>
                             </svg>
@@ -306,16 +306,16 @@ const lineChartData = computed(() => ({
         {
             label: 'Sistolik',
             data: chartRecords.value.map(r => r.systolic || null),
-            borderColor: '#F0404B',
-            backgroundColor: 'rgba(240,64,75,0.07)',
-            fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#F0404B',
+            borderColor: '#059669',
+            backgroundColor: 'rgba(5,150,105,0.07)',
+            fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#059669',
         },
         {
             label: 'Diastolik',
             data: chartRecords.value.map(r => r.diastolic || null),
-            borderColor: '#F18E8C',
+            borderColor: '#F59E0B',
             backgroundColor: 'transparent',
-            fill: false, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#F18E8C',
+            fill: false, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#F59E0B',
         },
         {
             label: 'Detak Jantung',
@@ -351,7 +351,7 @@ const formatDate = (d) => new Date(d).toLocaleDateString('id-ID', { day: 'numeri
 const formatDateFull = (d) => new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
 
 const bpClass = (sys, dia) => {
-    if (sys >= 140 || dia >= 90) return 'bg-red-100 text-red-700';
+    if (sys >= 140 || dia >= 90) return 'bg-[#FCD34D] text-red-700';
     if (sys >= 130 || dia >= 80) return 'bg-orange-100 text-orange-700';
     if (sys >= 120) return 'bg-yellow-100 text-yellow-700';
     if (sys < 90 || dia < 60) return 'bg-blue-100 text-blue-600';
@@ -409,7 +409,7 @@ const formatAge = (dob) => {
 
 const downloadPdf = async (analysis) => {
     const date = formatDateFull(analysis.created_at);
-    let logoHtml = '<div class="logo-text">HEALTIVA</div>';
+    let logoHtml = '<div class="logo-text">VITALY</div>';
     try {
         const resp = await fetch('/images/logo.png');
         if (resp.ok) {
@@ -419,7 +419,7 @@ const downloadPdf = async (analysis) => {
                 r.onload = () => res(r.result);
                 r.readAsDataURL(blob);
             });
-            logoHtml = `<img src="${b64}" alt="HEALTIVA" class="logo-img">`;
+            logoHtml = `<img src="${b64}" alt="VITALY" class="logo-img">`;
         }
     } catch (_) {}
 
@@ -458,12 +458,12 @@ const downloadPdf = async (analysis) => {
     }
     html += '</table>';
 
-    const content = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Laporan Analisis Kesehatan - HEALTIVA</title>
+    const content = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Laporan Analisis Kesehatan - VITALY</title>
 <style>
   body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 18px 30px 30px; color: #1f2937; font-size: 13px; line-height: 1.6; }
-  .header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 3px solid #B92521; }
-  .logo-img { height: 88px; width: auto; object-fit: contain; }
-  .logo-text { color: #B92521; font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+  .header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 3px solid #064E3B; }
+  .logo-img { height: 44px; width: auto; object-fit: contain; }
+  .logo-text { color: #064E3B; font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
   .header-right { text-align: right; }
   .header-title { font-weight: 700; font-size: 13px; color: #374151; }
   .header-sub { font-size: 11px; color: #6b7280; margin-top: 2px; }
@@ -474,7 +474,7 @@ const downloadPdf = async (analysis) => {
   .id-divider { border-top: 1px solid #e5e7eb; margin-bottom: 18px; }
   .analysis-table { width: 100%; border-collapse: collapse; border: 2px solid #111827; margin-bottom: 20px; }
   .analysis-table th, .analysis-table td { border: 1px solid #6b7280; padding: 10px 14px; vertical-align: top; }
-  .main-header { background-color: #FEF0F0; color: #A91127; text-align: left; font-size: 14px; border-bottom: 2px solid #111827; border-top: 2px solid #111827; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .main-header { background-color: #FFFBEB; color: #064E3B; text-align: left; font-size: 14px; border-bottom: 2px solid #111827; border-top: 2px solid #111827; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .key-cell { width: 35%; font-weight: 700; color: #374151; background-color: #f9fafb; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .val-cell { width: 65%; color: #111827; }
   .text-cell { color: #374151; padding: 12px 14px; }
@@ -485,7 +485,7 @@ const downloadPdf = async (analysis) => {
 <div class="header-box"><div>${logoHtml}</div><div class="header-right"><div class="header-title">Laporan Analisis Kesehatan</div><div class="header-sub">${date}</div></div></div>
 ${identityHtml}
 ${html}
-<p class="footer">Dihasilkan oleh HEALTIVA AI. Data diproses oleh Admin Posbindu.</p>
+<p class="footer">Dihasilkan oleh VITALY AI. Data diproses oleh Admin Posbindu.</p>
 <script>window.onload = () => { window.print(); };<\/script>
 </body></html>`;
 
@@ -510,7 +510,7 @@ const shareWhatsApp = (analysis) => {
         .replace(/#{1,3}\s/g, '');
     const preview = plain.trim().length > 1200 ? `${plain.trim().slice(0, 1200)}...` : plain.trim();
     const shareLink = analysis.share_url ? `Link PDF laporan:\n${analysis.share_url}\n\n` : '';
-    const msg = `*Laporan Analisis Kesehatan Bapak/Ibu ${props.user.name}*\n${date}\n\n${shareLink}${preview}\n\n_Dihasilkan oleh HEALTIVA Health Monitor dari Admin Posbindu._`;
+    const msg = `*Laporan Analisis Kesehatan Bapak/Ibu ${props.user.name}*\n${date}\n\n${shareLink}${preview}\n\n_Dihasilkan oleh VITALY Health Monitor dari Admin Posbindu._`;
     window.open(`https://wa.me/${phone ? phone.replace(/[^0-9]/g, '') : ''}?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
@@ -586,7 +586,7 @@ const getRelatedVideos = (text) => {
 .accordion-leave-active { animation: fadeInUp 0.15s ease reverse both; }
 
 :deep(.analysis-result) { font-size: 0.8125rem; line-height: 1.65; color: #374151; }
-:deep(.ar-title) { font-size: 1rem; font-weight: 700; color: #B92521; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid #EFDBDC; }
+:deep(.ar-title) { font-size: 1rem; font-weight: 700; color: #064E3B; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid #D1FAE5; }
 :deep(.ar-section) { border-radius: 0.625rem; border-left: 4px solid; padding: 0.75rem 0.875rem; margin-bottom: 0.625rem; background: #fafafa; }
 :deep(.ar-heading) { font-weight: 700; font-size: 0.8125rem; margin-bottom: 0.5rem; }
 :deep(.ar-subheading) { font-weight: 600; font-size: 0.8rem; color: #6b7280; margin: 0.375rem 0 0.25rem; }
@@ -595,24 +595,24 @@ const getRelatedVideos = (text) => {
 :deep(.ar-list li) { position: relative; padding-left: 1.1rem; color: #4b5563; }
 :deep(.ar-list li::before) { content: ''; position: absolute; left: 0; top: 0.48rem; width: 0.4rem; height: 0.4rem; border-radius: 50%; opacity: 0.55; }
 :deep(.ar-section strong) { font-weight: 700; }
-:deep(.ar-violet) { border-color: #F0404B; background: #FFF5F5; }
-:deep(.ar-violet .ar-heading) { color: #B92521; }
-:deep(.ar-violet .ar-list li::before) { background: #F0404B; }
-:deep(.ar-blue) { border-color: #B92521; background: #FEF0F0; }
-:deep(.ar-blue .ar-heading) { color: #A91127; }
-:deep(.ar-blue .ar-list li::before) { background: #B92521; }
-:deep(.ar-green) { border-color: #B74443; background: #F9ECEC; }
-:deep(.ar-green .ar-heading) { color: #B74443; }
-:deep(.ar-green .ar-list li::before) { background: #B74443; }
-:deep(.ar-amber) { border-color: #E48888; background: #FDF4F4; }
-:deep(.ar-amber .ar-heading) { color: #B92521; }
-:deep(.ar-amber .ar-list li::before) { background: #E48888; }
-:deep(.ar-rose) { border-color: #A91127; background: #FFF0F0; }
-:deep(.ar-rose .ar-heading) { color: #A91127; }
-:deep(.ar-rose .ar-list li::before) { background: #A91127; }
-:deep(.ar-teal) { border-color: #F18E8C; background: #FDF2F2; }
-:deep(.ar-teal .ar-heading) { color: #B92521; }
-:deep(.ar-teal .ar-list li::before) { background: #F18E8C; }
+:deep(.ar-violet) { border-color: #059669; background: #ECFDF5; }
+:deep(.ar-violet .ar-heading) { color: #064E3B; }
+:deep(.ar-violet .ar-list li::before) { background: #059669; }
+:deep(.ar-blue) { border-color: #064E3B; background: #FFFBEB; }
+:deep(.ar-blue .ar-heading) { color: #064E3B; }
+:deep(.ar-blue .ar-list li::before) { background: #064E3B; }
+:deep(.ar-green) { border-color: #10B981; background: #F0FDF4; }
+:deep(.ar-green .ar-heading) { color: #10B981; }
+:deep(.ar-green .ar-list li::before) { background: #10B981; }
+:deep(.ar-amber) { border-color: #FCD34D; background: #F8FAFC; }
+:deep(.ar-amber .ar-heading) { color: #064E3B; }
+:deep(.ar-amber .ar-list li::before) { background: #FCD34D; }
+:deep(.ar-rose) { border-color: #064E3B; background: #F8FAFC; }
+:deep(.ar-rose .ar-heading) { color: #064E3B; }
+:deep(.ar-rose .ar-list li::before) { background: #064E3B; }
+:deep(.ar-teal) { border-color: #F59E0B; background: #FDF2F2; }
+:deep(.ar-teal .ar-heading) { color: #064E3B; }
+:deep(.ar-teal .ar-list li::before) { background: #F59E0B; }
 
 .modal-fade-enter-active,
 .modal-fade-leave-active {

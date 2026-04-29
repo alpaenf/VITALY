@@ -10,7 +10,7 @@
         </div>
 
         <!-- Empty state -->
-        <div v-if="!records.data.length" class="card-Healtiva p-6 sm:p-10 text-center animate-scale-in">
+        <div v-if="!records.data.length" class="card-VITALY p-6 sm:p-10 text-center animate-scale-in">
             <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             </div>
@@ -21,7 +21,7 @@
         <!-- Records Grid -->
         <div v-else class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4">
             <div v-for="(record, index) in records.data" :key="record.id"
-                class="card-Healtiva p-4 hover-lift animate-fade-in-up"
+                class="card-VITALY p-4 hover-lift animate-fade-in-up"
                 :style="`animation-delay:${index * 50}ms`">
                 <div class="flex items-start justify-between mb-3">
                     <div>
@@ -95,8 +95,8 @@ const MetricBadge = {
     props: ['label', 'sub', 'status'],
     setup(props) {
         const statusClass = {
-            normal: 'bg-[#FDD3CF] border-[#F18E8C]/40',
-            warning: 'bg-[#EFDBDC] border-[#B74443]/30',
+            normal: 'bg-[#FCD34D] border-[#F59E0B]/40',
+            warning: 'bg-[#D1FAE5] border-[#10B981]/30',
             danger: 'bg-primary/10 border-primary/20',
         };
         return () => h('div', {

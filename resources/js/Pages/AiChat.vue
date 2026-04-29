@@ -72,7 +72,7 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-800 mb-1">Halo! Saya Asisten Kesehatan HEALTIVA</h3>
+                        <h3 class="font-bold text-gray-800 mb-1">Halo! Saya Asisten Kesehatan VITALY</h3>
                         <p class="text-sm text-gray-500 max-w-xs mx-auto">Tanyakan apa saja seputar kesehatan Anda. Jawaban saya berbasis pedoman <strong>Kemenkes RI</strong> dan sumber medis terpercaya.</p>
                     </div>
                     <!-- Quick suggestions -->
@@ -211,7 +211,7 @@
         :show="confirmClearModal"
         title="Hapus Semua Percakapan"
         subtitle="Riwayat chat akan dikosongkan"
-        message="Semua percakapan dengan dr. HEALTIVA akan dihapus dari perangkat ini. Apakah Anda yakin?"
+        message="Semua percakapan dengan dr. VITALY akan dihapus dari perangkat ini. Apakah Anda yakin?"
         confirm-label="Ya, Hapus Semua"
         @confirm="doClear"
         @cancel="confirmClearModal = false"
@@ -317,24 +317,24 @@ const clearChat = () => {
 
 const doClear = () => {
     messages.value = [];
-    localStorage.removeItem('HEALTIVA_chat_history');
+    localStorage.removeItem('VITALY_chat_history');
     confirmClearModal.value = false;
 };
 
 // SIMPAN OTO BILA ADA PERUBAHAN
 watch(messages, (newVal) => {
-    localStorage.setItem('HEALTIVA_chat_history', JSON.stringify(newVal));
+    localStorage.setItem('VITALY_chat_history', JSON.stringify(newVal));
 }, { deep: true });
 
 onMounted(() => {
     // 1. Cek Histori Obrolan sebelumnya di browser
-    const sa = localStorage.getItem('HEALTIVA_chat_history');
+    const sa = localStorage.getItem('VITALY_chat_history');
     if (sa) {
         try {
             messages.value = JSON.parse(sa);
             scrollToBottom();
         } catch (e) {
-            localStorage.removeItem('HEALTIVA_chat_history');
+            localStorage.removeItem('VITALY_chat_history');
         }
     }
 

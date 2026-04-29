@@ -283,7 +283,7 @@ class GeminiService
             : "Pertahankan pola hidup sehat: makan bergizi seimbang, tidur 7-8 jam, dan aktif bergerak setiap hari.";
         $comboTeks = count($comboNotes) > 0 ? "\n\n" . implode("\n\n", $comboNotes) : "";
         $kesimpulan = $riskScore >= 4
-            ? "Kondisi {$name} saat ini memerlukan perhatian medis lebih lanjut. Mohon luangkan waktu untuk berkonsultasi dengan dokter secepatnya."
+            ? "🚨 **PERINGATAN DARURAT (KRITIS):** Kondisi {$name} saat ini sangat berbahaya dan berisiko fatal jika diabaikan. Segera bawa pasien ke IGD RS Terdekat atau Puskesmas sekarang juga!"
             : "Secara keseluruhan kondisi {$name} terpantau dalam batas yang dapat dikelola. Tetap pertahankan gaya hidup sehat dan pantau secara berkala.";
 
         return "**1. Ringkasan Kesehatan**\nBerdasarkan data terakhir {$name}, sistem menghasilkan **Skor Risiko: {$riskLabel}**.{$personalNote}\n\n**2. Analisis Detail Parameter**\n{$analisaTeks}{$comboTeks}\n\n**3. Rekomendasi Gaya Hidup**\n{$rekomendasiTeks}\n\n**4. Kesimpulan**\n{$kesimpulan}\n\n---\n*Analisis ini dihasilkan oleh sistem cadangan lokal berbasis aturan klinis. Tidak menggantikan diagnosis dokter.*";
@@ -320,6 +320,6 @@ class GeminiService
             return "Pengukuran " . ($index + 1) . " ({$date}):\n- " . implode("\n- ", $parts);
         })->join("\n\n");
 
-        return "Analisis data kesehatan berikut dalam Bahasa Indonesia secara singkat, jelas, dan menggunakan format poin. Jangan gunakan emoji atau emotikon sama sekali. Jangan berbasa-basi berlebihan, langsung ke inti analisis. Gunakan gaya bahasa yang hangat, ramah, dan mudah dipahami orang awam.\n\nPasien: {$name}, {$gender}, {$age} tahun.\n\nData kesehatan:\n{$recordsSummary}\n\nBerikan:\n1. **Ringkasan Kesehatan Anda** kondisi saat ini\n2. **Analisis Detail** tiap parameter yang diukur\n3. **Rekomendasi Gaya Hidup** yang spesifik dan actionable\n4. **Kesimpulan & Saran** apakah perlu ke dokter\n\n*Anda adalah asisten medis AI yang bertujuan memberikan informasi, bukan pengganti dokter.*";
+        return "Tugas Anda adalah bertindak sebagai **Sistem Triase Medis Darurat (Smart Triage AI)** untuk agen kesehatan di lapangan. Analisis data kesehatan berikut dalam Bahasa Indonesia.\n\nAturan Triase Wajib:\n1. Jika Tekanan Darah >= 160/100, atau Gula Darah >= 250, atau SpO2 < 90, Anda WAJIB menyatakan status pasien sebagai **KRITIS / DARURAT MEDIS**.\n2. Jangan pernah mengatakan 'dapat dikelola' jika ada angka yang masuk kategori krisis.\n3. Jangan gunakan emoji berlebihan, gunakan format poin yang tegas.\n\nPasien: {$name}, {$gender}, {$age} tahun.\n\nData kesehatan:\n{$recordsSummary}\n\nBerikan:\n1. **Status Triase Pasien** (Aman / Waspada / Kritis Darurat)\n2. **Analisis Detail** tiap parameter yang diukur\n3. **Tindakan Darurat / Rekomendasi** yang harus dilakukan agen kesehatan saat ini juga\n4. **Kesimpulan Medis**";
     }
 }

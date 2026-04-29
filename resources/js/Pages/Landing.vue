@@ -9,88 +9,155 @@
                     : 'bg-white shadow-xl shadow-black/10 border-gray-100 py-2']">
                 
                 <div class="relative flex items-center h-10 w-40 group cursor-pointer">
-                    <img src="/images/logo.png" alt="HEALTIVA" class="absolute top-1/2 -translate-y-1/2 -left-2 max-w-none h-20 w-auto drop-shadow-sm transition-transform duration-500 ease-out group-hover:scale-[1.08] group-hover:-rotate-1 origin-center" />
+                    <img src="/images/logo.png" alt="VITALY" class="absolute top-1/2 -translate-y-1/2 -left-2 max-w-none h-7 w-auto drop-shadow-sm transition-transform duration-500 ease-out group-hover:scale-[1.08] group-hover:-rotate-1 origin-center" />
                 </div>
 
                 <div class="flex items-center gap-2">
                     <a href="/login"
-                        class="text-sm font-semibold bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-2 rounded-full transition-all duration-300 shadow-md shadow-primary/30 hover:shadow-primary/50 hover:shadow-lg hover:-translate-y-0.5 hover:scale-105 active:translate-y-0 active:scale-95">
+                        class="text-sm font-semibold bg-primary text-white px-6 py-2 rounded-full transition-all duration-300 shadow-md shadow-primary/30 hover:shadow-primary/50 hover:shadow-lg hover:-translate-y-0.5 hover:scale-105 active:translate-y-0 active:scale-95">
                         Masuk 
                     </a>
                 </div>
             </nav>
         </div>
 
-        <!-- â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <section class="relative flex flex-col items-center overflow-hidden bg-gradient-to-br from-primary via-primary to-primary-dark pt-40 pb-0 min-h-screen">
+        <!-- ── HERO ─────────────────────────────────────────────────── -->
+        <section class="relative flex flex-col overflow-hidden pt-24 sm:pt-24 lg:pt-32 pb-8 lg:pb-0 min-h-screen">
+            <!-- Background Video -->
+            <div class="absolute inset-0 z-0 bg-primary"> <!-- Fallback color -->
+                <video 
+                    autoplay 
+                    muted 
+                    loop 
+                    playsinline 
+                    class="w-full h-full object-cover object-center scale-105"
+                >
+                    <source src="/images/video1.mp4" type="video/mp4">
+                </video>
+                <!-- Premium Dark Emerald Overlay (Solid Green) -->
+                <div class="absolute inset-0 bg-primary/90 mix-blend-multiply"></div>
+                <div class="absolute inset-0 bg-black/30 sm:bg-black/20"></div>
+            </div>
+
+
             <!-- Blobs -->
-            <div class="absolute -top-32 -right-32 w-[500px] h-[500px] bg-white/10 rounded-full blur-3xl animate-blob"></div>
-            <div class="absolute bottom-0 -left-24 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-blob" style="animation-delay:3s"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-white/5 rounded-full blur-3xl animate-blob" style="animation-delay:6s"></div>
+            <div class="absolute -top-32 -right-32 w-[500px] h-[500px] bg-white/10 rounded-full blur-3xl animate-blob z-[1]"></div>
+            <div class="absolute bottom-0 -left-24 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-blob z-[1]" style="animation-delay:3s"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-white/5 rounded-full blur-3xl animate-blob z-[1]" style="animation-delay:6s"></div>
             <!-- Dot grid -->
-            <div class="absolute inset-0 opacity-[0.06] pointer-events-none" style="background-image:radial-gradient(circle,white 1.5px,transparent 1.5px);background-size:28px 28px;"></div>
+            <div class="absolute inset-0 opacity-[0.08] pointer-events-none z-[2]" style="background-image:radial-gradient(circle,white 1.5px,transparent 1.5px);background-size:28px 28px;"></div>
+
 
             <!-- Ring ornaments -->
-            <svg class="absolute top-24 left-6 w-24 h-24 text-white/10 svg-spin-slow pointer-events-none" viewBox="0 0 96 96" fill="none">
+            <svg class="absolute top-24 left-6 w-24 h-24 text-white/10 svg-spin-slow pointer-events-none z-[2]" viewBox="0 0 96 96" fill="none">
                 <circle cx="48" cy="48" r="44" stroke="currentColor" stroke-width="1.5" stroke-dasharray="8 6"/>
                 <circle cx="48" cy="48" r="28" stroke="currentColor" stroke-width="1" stroke-dasharray="4 8"/>
             </svg>
-            <svg class="absolute bottom-32 right-8 w-20 h-20 text-white/10 svg-spin-slow-rev pointer-events-none" viewBox="0 0 80 80" fill="none">
+            <svg class="absolute bottom-32 right-8 w-20 h-20 text-white/10 svg-spin-slow-rev pointer-events-none z-[2]" viewBox="0 0 80 80" fill="none">
                 <circle cx="40" cy="40" r="36" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 5"/>
             </svg>
 
+
             <!-- Floating cross marks -->
-            <svg class="absolute top-40 right-[10%] text-white/20 w-6 h-6 svg-drift-1 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
-            <svg class="absolute top-52 left-[8%] text-white/15 w-5 h-5 svg-drift-2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
-            <svg class="absolute bottom-48 left-[15%] text-white/20 w-4 h-4 svg-drift-3 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
-            <svg class="absolute bottom-40 right-[18%] text-white/15 w-5 h-5 svg-drift-2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
-            <svg class="absolute top-[35%] left-[5%] text-white/10 w-7 h-7 svg-drift-1 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>
-            <svg class="absolute top-[45%] right-[6%] text-white/10 w-6 h-6 svg-drift-3 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>
+            <svg class="absolute top-40 right-[10%] text-white/20 w-6 h-6 svg-drift-1 pointer-events-none z-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
+            <svg class="absolute top-52 left-[8%] text-white/15 w-5 h-5 svg-drift-2 pointer-events-none z-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
+            <svg class="absolute bottom-48 left-[15%] text-white/20 w-4 h-4 svg-drift-3 pointer-events-none z-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
+            <svg class="absolute bottom-40 right-[18%] text-white/15 w-5 h-5 svg-drift-2 pointer-events-none z-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
+            <svg class="absolute top-[35%] left-[5%] text-white/10 w-7 h-7 svg-drift-1 pointer-events-none z-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>
+            <svg class="absolute top-[45%] right-[6%] text-white/10 w-6 h-6 svg-drift-3 pointer-events-none z-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>
 
-            <!-- TOP TEXT -->
-            <div class="relative z-10 text-center px-5 max-w-3xl mx-auto w-full">
-                <h1 class="hero-anim-1 text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 tracking-tight">
-                    Kesehatan Anda,<br>
-                    <span class="text-white/70">Lebih Terkontrol</span>
-                </h1>
-                <p class="hero-anim-2 text-sm sm:text-base leading-relaxed mb-7 max-w-xl mx-auto min-h-[4rem] sm:min-h-[3rem]">
-                    <span class="text-white/80 font-medium whitespace-pre-line">{{ typewriterText }}<span class="animate-pulse inline-block align-baseline text-white">|</span></span>
-                </p>
-                <div class="hero-anim-3 flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <a href="/masuk" class="w-full sm:w-auto bg-white text-primary font-bold px-9 py-3.5 rounded-full hover:bg-white/90 transition-all shadow-2xl shadow-black/20 text-sm hover:scale-105 active:scale-100">
-                        Masuk Pasien
-                    </a>
-                    <a href="#features" class="w-full sm:w-auto border border-white/40 text-white font-semibold px-9 py-3.5 rounded-full hover:bg-white/10 transition text-sm">
-                        Pelajari Lebih Lanjut
-                    </a>
+
+            <!-- Content Grid (Split Screen) -->
+            <div class="relative z-10 w-full max-w-6xl mx-auto px-6 py-4 lg:py-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center h-full">
+                <!-- Left: Text -->
+                <div class="text-left">
+                    <h1 class="hero-anim-1 text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-5 tracking-tight">
+                        Transformasi Digital<br>
+                        <span class="text-white/70 italic">Monitoring PTM</span>
+                    </h1>
+                    <p class="hero-anim-2 text-sm sm:text-base leading-relaxed mb-6 max-w-lg min-h-[4rem] sm:min-h-[3rem]">
+                        <span class="text-white/80 font-medium whitespace-pre-line">{{ typewriterText }}<span class="animate-pulse inline-block align-baseline text-white">|</span></span>
+                    </p>
+                    <div class="hero-anim-3 flex flex-col sm:flex-row items-center gap-3 mb-8">
+                        <a href="/masuk" class="w-full sm:w-auto bg-white text-primary font-bold px-8 py-3.5 rounded-xl hover:bg-gray-50 transition-all shadow-xl text-sm text-center">
+                            Masuk Pasien
+                        </a>
+                        <a href="#features" class="w-full sm:w-auto border border-white/40 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition text-sm text-center">
+                            Pelajari Inovasi
+                        </a>
+                    </div>
+
+                    <!-- Innovation Pills - VISIBLE ON ALL SCREENS -->
+                    <div class="hero-anim-3 grid grid-cols-3 gap-2 lg:hidden">
+                        <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 text-center">
+                            <div class="w-8 h-8 bg-amber-400/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            </div>
+                            <p class="text-white font-bold text-[10px] leading-tight">IoMT</p>
+                            <p class="text-white/50 text-[9px] mt-0.5">Wearable Sync</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 text-center">
+                            <div class="w-8 h-8 bg-red-400/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <svg class="w-4 h-4 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                            </div>
+                            <p class="text-white font-bold text-[10px] leading-tight">Smart Triage</p>
+                            <p class="text-white/50 text-[9px] mt-0.5">AI Prioritas</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 text-center">
+                            <div class="w-8 h-8 bg-emerald-400/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
+                            </div>
+                            <p class="text-white font-bold text-[10px] leading-tight">AI Analysis</p>
+                            <p class="text-white/50 text-[9px] mt-0.5">Decision Support</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Floating Glass Elements - DESKTOP ONLY -->
+                <div class="hidden lg:flex flex-col gap-5 hero-anim-5 pt-10">
+
+                    <!-- Glass Card 2 - IoMT Wearable -->
+                    <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 self-start w-4/5 transform -translate-x-8 hover:-translate-x-4 transition-transform duration-500 shadow-2xl">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-amber-400/40 flex items-center justify-center border border-amber-300/50 flex-shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-white font-bold text-sm">IoMT Device Paired ✓</p>
+                                <p class="text-white/70 text-xs mt-1">VITALY Pulse v2.0 · ID: <span class="font-mono text-amber-300">VTL-M18BX9</span></p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="text-white/60 text-[10px]">Data vital ditarik otomatis via Bluetooth</span>
+                        </div>
+                    </div>
+
+                    <!-- Mini Stats Grid -->
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 self-center w-full mt-2 flex justify-around">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-white">6+</p>
+                            <p class="text-white/50 text-[9px] mt-1 uppercase tracking-wider">Metrik Vital</p>
+                        </div>
+                        <div class="w-px h-8 bg-white/10"></div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-white">24/7</p>
+                            <p class="text-white/50 text-[9px] mt-1 uppercase tracking-wider">Monitoring</p>
+                        </div>
+                        <div class="w-px h-8 bg-white/10"></div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-amber-300">IoMT</p>
+                            <p class="text-white/50 text-[9px] mt-1 uppercase tracking-wider">Wearable</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- STATS MINI (floating) -->
-            <div class="hero-anim-5 relative z-10 w-full max-w-2xl mx-auto px-5 mt-8 mb-8 pt-6 border-t border-white/20 flex items-center justify-center gap-8 sm:gap-16">
-                <div class="float-stat-1 text-center">
-                    <p class="text-3xl sm:text-4xl font-bold text-white">6+</p>
-                    <p class="text-white/60 text-xs mt-1">Metrik Kesehatan</p>
-                </div>
-                <div class="w-px h-10 bg-white/20"></div>
-                <div class="float-stat-2 text-center">
-                    <p class="text-3xl sm:text-4xl font-bold text-white">AI</p>
-                    <p class="text-white/60 text-xs mt-1">Analisis Cerdas</p>
-                </div>
-                <div class="w-px h-10 bg-white/20"></div>
-                <div class="float-stat-3 text-center">
-                    <p class="text-3xl sm:text-4xl font-bold text-white">24/7</p>
-                    <p class="text-white/60 text-xs mt-1">Monitoring</p>
-                </div>
-            </div>
 
-            <!-- Wave divider hero â†’ features -->
-            <div class="absolute bottom-0 left-0 right-0 pointer-events-none z-10">
-                <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full" preserveAspectRatio="none">
-                    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="white"/>
-                </svg>
-            </div>
+            <!-- Clean Bottom Overlay to blend with next section -->
+            <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent z-10"></div>
         </section>
+
 
         <!-- â”€â”€ FEATURES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <section id="features" class="relative py-20 px-6 bg-white overflow-hidden">
@@ -105,9 +172,9 @@
             <svg class="absolute bottom-24 right-[12%] text-primary/6 w-6 h-6 svg-drift-1 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>
             <div class="max-w-5xl mx-auto">
                 <div class="reveal text-center mb-14" data-delay="0">
-                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Fitur Unggulan</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Semua yang Anda Butuhkan</h2>
-                    <p class="text-gray-500 mt-3 max-w-xl mx-auto text-sm leading-relaxed">HEALTIVA hadir dengan fitur lengkap untuk memantau dan memahami kondisi kesehatan Anda secara menyeluruh</p>
+                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Inovasi Teknologi Kesehatan</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Solusi Strategis Berbasis Data</h2>
+                    <p class="text-gray-500 mt-3 max-w-2xl mx-auto text-sm leading-relaxed">VITALY mengintegrasikan kecerdasan buatan untuk mendukung penguatan sistem deteksi dini dan mitigasi risiko penyakit tidak menular di tingkat masyarakat.</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -125,8 +192,100 @@
             </div>
         </section>
 
+        <!-- â”€â”€ FEATURE HIGHLIGHT: SMARTWATCH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+        <section class="relative py-20 px-6 bg-gradient-to-br from-[#F8FAFC] to-white overflow-hidden">
+            <div class="absolute -top-10 right-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div class="reveal from-left" data-delay="100">
+                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Fitur Unggulan</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Integrasi Smartwatch untuk Data Otomatis</h2>
+                    <p class="text-gray-500 mt-4 text-sm leading-relaxed">
+                        Health Agent bisa menarik data vital pasien langsung dari smartwatch dan tensimeter Bluetooth. Tanpa ketik manual, tanpa salah input, hasil lebih cepat untuk tindakan berikutnya.
+                    </p>
+                    <div class="mt-6 space-y-3">
+                        <div class="flex items-start gap-3">
+                            <span class="mt-0.5 w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center">
+                                <svg class="w-3 h-3 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </span>
+                            <p class="text-sm text-gray-600">Pairing sekali, sinkron otomatis di pemeriksaan berikutnya.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="mt-0.5 w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center">
+                                <svg class="w-3 h-3 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </span>
+                            <p class="text-sm text-gray-600">Data vital langsung masuk ke profil pasien dan analisis AI.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="mt-0.5 w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center">
+                                <svg class="w-3 h-3 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </span>
+                            <p class="text-sm text-gray-600">Waktu pemeriksaan lebih singkat, fokus ke tindak lanjut.</p>
+                        </div>
+                    </div>
+                    <a href="#cara-kerja"
+                        class="inline-flex items-center gap-2 mt-8 text-primary font-semibold text-sm">
+                        Lihat cara kerja
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="reveal from-right" data-delay="200">
+                    <div class="bg-white rounded-3xl shadow-xl shadow-amber-200/40 border border-amber-100 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-amber-600 uppercase tracking-widest">Smartwatch</p>
+                                <p class="text-lg font-bold text-gray-800 mt-1">VITALY Pulse v2.0</p>
+                                <p class="text-xs text-gray-400 mt-1">Terhubung via Bluetooth</p>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 grid grid-cols-2 gap-3">
+                            <div class="bg-[#FFF7ED] rounded-2xl p-4">
+                                <p class="text-[10px] font-semibold text-amber-600">Detak Jantung</p>
+                                <p class="text-2xl font-bold text-gray-800">78</p>
+                                <p class="text-[10px] text-gray-400">BPM</p>
+                            </div>
+                            <div class="bg-[#ECFDF5] rounded-2xl p-4">
+                                <p class="text-[10px] font-semibold text-emerald-600">Tekanan Darah</p>
+                                <p class="text-2xl font-bold text-gray-800">122/80</p>
+                                <p class="text-[10px] text-gray-400">mmHg</p>
+                            </div>
+                            <div class="bg-[#F0F9FF] rounded-2xl p-4">
+                                <p class="text-[10px] font-semibold text-sky-600">Suhu</p>
+                                <p class="text-2xl font-bold text-gray-800">36.6</p>
+                                <p class="text-[10px] text-gray-400">C</p>
+                            </div>
+                            <div class="bg-[#F5F3FF] rounded-2xl p-4">
+                                <p class="text-[10px] font-semibold text-indigo-600">SpO2</p>
+                                <p class="text-2xl font-bold text-gray-800">98%</p>
+                                <p class="text-[10px] text-gray-400">Stabil</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center gap-2 text-xs text-gray-500">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Sinkronisasi aktif ke dashboard Health Agent
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- â”€â”€ AI SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <section class="relative py-20 px-6 bg-gradient-to-br from-[#FEF2F2] to-[#FECACA] overflow-hidden">
+        <section class="relative py-20 px-6 bg-gradient-to-br from-[#ECFDF5] to-[#ECFDF5] overflow-hidden">
             <!-- Wave top -->
             <div class="absolute top-0 left-0 right-0 pointer-events-none">
                 <svg viewBox="0 0 1440 50" fill="none" class="w-full" preserveAspectRatio="none">
@@ -150,10 +309,10 @@
             <div class="max-w-5xl mx-auto">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div class="reveal from-left" data-delay="100">
-                        <span class="text-xs font-bold text-primary uppercase tracking-widest">Kecerdasan Buatan</span>
-                        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2 mb-4">Analisis Kesehatan<br>yang Lebih Cerdas</h2>
+                        <span class="text-xs font-bold text-primary uppercase tracking-widest">Kecerdasan Buatan (AI)</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2 mb-4">Mitigasi Risiko Dengan<br>Pendekatan Prediktif</h2>
                         <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                            Engine AI HEALTIVA membantu kader membaca data kesehatan warga secara menyeluruh, mulai dari tekanan darah, gula darah, IMT, hingga tren dari riwayat pemeriksaan, lalu menyajikannya dalam laporan yang jelas.
+                            Melalui algoritma cerdas, VITALY mentransformasi data mentah pemeriksaan menjadi informasi strategis. Kami fokus pada percepatan deteksi dini melalui sistem triase otomatis yang membantu tenaga kesehatan mengambil keputusan klinis lebih cepat.
                         </p>
                         <ul class="space-y-3">
                             <li v-for="(p, i) in aiPoints" :key="i" class="flex items-start gap-3">
@@ -167,7 +326,7 @@
                         </ul>
                         <a href="/login"
                             class="inline-flex items-center gap-2 mt-8 bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-full transition text-sm shadow-md shadow-primary/30">
-                            Masuk Dashboard Kader
+                            Masuk Dashboard Health Agent
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>
@@ -177,7 +336,7 @@
                     <!-- Fake analysis card preview -->
                     <div class="reveal from-right" data-delay="200">
                     <div class="relative">
-                        <div class="bg-white rounded-3xl shadow-xl shadow-primary/10 p-6 border border-[#FECACA]">
+                        <div class="bg-white rounded-3xl shadow-xl shadow-primary/10 p-6 border border-[#ECFDF5]">
                             <div class="flex items-center gap-3 mb-5">
                                 <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
@@ -208,7 +367,7 @@
 
 
         <!-- â”€â”€ METRICS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <section class="relative py-20 px-6 bg-gradient-to-br from-primary to-primary-dark">
+        <section class="relative py-20 px-6 bg-primary">
             <!-- Wave top -->
             <div class="absolute top-0 left-0 right-0 pointer-events-none">
                 <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full" preserveAspectRatio="none">
@@ -235,16 +394,16 @@
         </section>
 
         <!-- â”€â”€ CARA KERJA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <section class="relative py-24 px-6 bg-white overflow-hidden">
+        <section id="cara-kerja" class="relative py-24 px-6 bg-white overflow-hidden">
             <div class="absolute top-0 right-0 w-96 h-96 bg-primary/3 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute bottom-0 left-0 w-72 h-72 bg-primary/3 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="max-w-5xl mx-auto">
                 <div class="reveal text-center mb-20" data-delay="0">
                     <span class="text-xs font-bold text-primary uppercase tracking-widest">Cara Kerja</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Alur 3 Langkah Kader</h2>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Alur 3 Langkah Health Agent</h2>
                     <p class="text-gray-500 mt-3 max-w-md mx-auto text-sm leading-relaxed">
-                        Dirancang untuk alur kerja posyandu: data pasien rapi, pemeriksaan cepat, dan analisis AI langsung terbaca.
+                        Dirancang untuk alur kerja Health Agent: data pasien rapi, pemeriksaan cepat, dan analisis AI langsung terbaca.
                     </p>
                 </div>
 
@@ -252,7 +411,7 @@
                     <!-- Connector line desktop -->
                     <div class="hidden sm:block absolute top-14 left-[22%] right-[22%] pointer-events-none">
                         <svg viewBox="0 0 400 4" fill="none" class="w-full" preserveAspectRatio="none">
-                            <line x1="0" y1="2" x2="400" y2="2" stroke="#F0404B" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.25"/>
+                            <line x1="0" y1="2" x2="400" y2="2" stroke="#059669" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.25"/>
                         </svg>
                     </div>
 
@@ -300,7 +459,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-800 mb-2">Analisis & Tindak Lanjut</h3>
                         <p class="text-sm text-gray-500 leading-relaxed max-w-[200px] mx-auto">
-                            Sistem AI membantu ringkasan kondisi pasien sehingga kader lebih cepat menentukan tindak lanjut.
+                            Sistem AI membantu ringkasan kondisi pasien sehingga agen kesehatan lebih cepat menentukan tindak lanjut.
                         </p>
                     </div>
                 </div>
@@ -309,7 +468,7 @@
                 <div class="reveal text-center mt-16" data-delay="500">
                     <a href="/login"
                         class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-3.5 rounded-full transition-all shadow-lg shadow-primary/30 text-sm hover:scale-105 active:scale-100">
-                        Mulai dari Dashboard Kader
+                        Mulai dari Dashboard Health Agent
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
@@ -319,7 +478,7 @@
         </section>
 
         <!-- â”€â”€ VIDEO EDUKASI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <section class="py-20 px-6 bg-[#FDF4F4]">
+        <section class="py-20 px-6 bg-[#F8FAFC]">
             <div class="max-w-5xl mx-auto">
                 <div class="reveal flex flex-col sm:flex-row justify-between items-end mb-10 gap-4" data-delay="0">
                     <div>
@@ -351,9 +510,53 @@
             </div>
         </section>
 
+        <!-- â”€â”€ TESTIMONI PENGGUNA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+        <section class="relative py-20 px-6 bg-white overflow-hidden">
+            <!-- Wave top from Cara Kerja -->
+            <div class="absolute top-0 left-0 right-0 pointer-events-none">
+                <svg viewBox="0 0 1440 50" fill="none" class="w-full" preserveAspectRatio="none">
+                    <path d="M0,25 C480,0 960,50 1440,25 L1440,0 L0,0 Z" fill="#f9fafb" opacity="0.7"/>
+                </svg>
+            </div>
+            <!-- Subtle ring ornament top-right -->
+            <svg class="absolute top-8 right-8 w-32 h-32 text-primary/5 svg-spin-slow pointer-events-none" viewBox="0 0 128 128" fill="none">
+                <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="1" stroke-dasharray="10 7"/>
+                <circle cx="64" cy="64" r="38" stroke="currentColor" stroke-width="1" stroke-dasharray="5 9"/>
+            </svg>
+            <!-- Cross marks -->
+            <svg class="absolute top-16 left-[5%] text-primary/10 w-5 h-5 svg-drift-2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
+            <svg class="absolute bottom-16 right-[8%] text-primary/10 w-4 h-4 svg-drift-1 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/></svg>
+            <div class="max-w-5xl mx-auto">
+                <div class="reveal text-center mb-14" data-delay="0">
+                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Kisah Mereka</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Lebih Sehat bersama VITALY</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div v-for="(t, i) in testimonials" :key="i" class="reveal bg-white p-6 rounded-3xl border border-gray-100 shadow-lg shadow-gray-100/50 relative" :data-delay="i * 150">
+                        <!-- Quote icon bg -->
+                        <svg class="absolute top-4 right-4 w-12 h-12 text-gray-50" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                        
+                        <div class="flex items-center gap-3 mb-4 relative z-10">
+                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg shadow-md">
+                                {{ t.name.charAt(0) }}
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">{{ t.name }}</h4>
+                                <p class="text-xs text-gray-500">{{ t.role }}</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 leading-relaxed relative z-10">"{{ t.quote }}"</p>
+                        <div class="flex text-yellow-400 mt-4 relative z-10">
+                            <svg v-for="s in 5" :key="s" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- â”€â”€ CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <section class="relative py-24 px-6 bg-gradient-to-br from-primary via-primary to-primary-dark overflow-hidden">
+        <section class="relative py-24 px-6 bg-primary-dark overflow-hidden">
             <!-- Wave top -->
             <div class="absolute top-0 left-0 right-0 pointer-events-none">
                 <svg viewBox="0 0 1440 60" fill="none" class="w-full" preserveAspectRatio="none">
@@ -385,7 +588,7 @@
                     </svg>
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Mulai Jaga Kesehatan Anda</h2>
-                <p class="text-white/70 text-sm mb-8 leading-relaxed">Akses untuk pasien dan kader sudah dipisah agar alur layanan lebih rapi dan tidak membingungkan.</p>
+                <p class="text-white/70 text-sm mb-8 leading-relaxed">Akses untuk pasien dan Health Agent sudah dipisah agar alur layanan lebih rapi dan tidak membingungkan.</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a href="/masuk"
                         class="w-full sm:w-auto bg-white text-primary font-bold px-8 py-3.5 rounded-full hover:bg-white/90 transition shadow-xl shadow-black/20 text-sm hover:scale-105 active:scale-100">
@@ -393,7 +596,7 @@
                     </a>
                     <a href="/login"
                         class="w-full sm:w-auto border border-white/40 text-white font-semibold px-8 py-3.5 rounded-full hover:bg-white/10 transition text-sm">
-                        Masuk sebagai Kader
+                        Masuk sebagai Health Agent
                     </a>
                 </div>
             </div>
@@ -402,14 +605,14 @@
         <!-- â”€â”€ FOOTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <footer class="relative bg-gray-50 border-t border-gray-100 py-10 px-6 overflow-hidden">
             <!-- Subtle ornament bg -->
-            <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image:radial-gradient(circle,#F0404B 1px,transparent 1px);background-size:24px 24px;"></div>
+            <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image:radial-gradient(circle,#059669 1px,transparent 1px);background-size:24px 24px;"></div>
             <!-- Ring ornament -->
             <svg class="absolute -bottom-8 -right-8 w-36 h-36 text-primary/8 svg-spin-slow pointer-events-none" viewBox="0 0 144 144" fill="none">
                 <circle cx="72" cy="72" r="66" stroke="currentColor" stroke-width="1" stroke-dasharray="8 8"/>
             </svg>
             <div class="relative z-10 max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-                <img src="/images/logo.png" alt="HEALTIVA" class="h-16 w-auto" />
-                <p class="text-xs text-gray-400">(c) 2026 HEALTIVA | Sistem Monitor Kesehatan Cerdas</p>
+                <img src="/images/logo.png" alt="VITALY" class="h-8 w-auto" />
+                <p class="text-xs text-gray-400">(c) 2026 VITALY | Sistem Monitor Kesehatan Cerdas</p>
                 <div class="flex gap-4 text-xs text-gray-400">
                     <a href="/login" class="hover:text-primary transition">Masuk</a>
                     <a href="/masuk" class="hover:text-primary transition">Masuk Pasien</a>
@@ -425,7 +628,7 @@ import { h, ref, onMounted, onUnmounted } from 'vue';
 const navScrolled = ref(false);
 
 const typewriterText = ref('');
-const fullText = "Pantau tekanan darah, gula darah, IMT, dan kondisi vital lainnya setiap hari.\nDapatkan analisis cerdas berbasis AI untuk menjaga kesehatan optimal.";
+const fullText = "Sistem cerdas deteksi dini PTM & mitigasi risiko berbasis AI.\nTriase otomatis untuk intervensi kesehatan yang proaktif.";
 let typewriterTimer = null;
 
 onMounted(() => {
@@ -489,33 +692,30 @@ const ChatIcon  = { render: () => h('svg', { fill: 'none', stroke: 'currentColor
 const ClipIcon  = { render: () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01' })]) };
 
 const features = [
-    { title: 'Monitoring Harian', desc: 'Catat dan pantau data vital kesehatan Anda setiap hari dengan mudah dan terstruktur.', bg: 'bg-primary/10', color: 'text-primary', icon: HeartIcon },
-    { title: 'Riwayat Data Lengkap', desc: 'Semua data tersimpan rapi dengan visualisasi tren sehingga Anda bisa melihat perkembangan dari waktu ke waktu.', bg: 'bg-[#FECACA]', color: 'text-[#B92521]', icon: ChartIcon },
-    { title: 'Analisis AI', desc: 'Engine AI menganalisis data Anda dan memberikan laporan kondisi kesehatan yang mudah dipahami.', bg: 'bg-[#FCA5A5]', color: 'text-[#B92521]', icon: BrainIcon },
-    { title: 'Chat AI Kesehatan', desc: 'Tanya langsung ke AI seputar kondisi kesehatan Anda. Jawaban berbasis pedoman Kemenkes RI.', bg: 'bg-primary/10', color: 'text-primary', icon: ChatIcon },
-    { title: 'Edukasi Kesehatan', desc: 'Video edukasi dari Kemenkes, WHO, PERKENI, dan sumber medis terpercaya lainnya.', bg: 'bg-[#FECACA]', color: 'text-[#B92521]', icon: BookIcon },
-    { title: 'Standar Normal Pemeriksaan', desc: 'Referensi nilai normal tekanan darah, gula darah, IMT, SpO2, dan parameter lainnya berbasis WHO.', bg: 'bg-[#FCA5A5]', color: 'text-[#B92521]', icon: ClipIcon },
-    { title: 'Privasi Terjaga', desc: 'Data kesehatan Anda bersifat pribadi dan hanya dapat diakses oleh Anda sendiri.', bg: 'bg-primary/10', color: 'text-primary', icon: ShieldIcon },
-    { title: 'Unduh PDF & Bagikan WA', desc: 'Ekspor laporan analisis AI ke PDF atau kirim langsung ke WhatsApp untuk konsultasi dokter.', bg: 'bg-[#FECACA]', color: 'text-[#B92521]', icon: PhoneIcon },
-    { title: 'Akses Kapan Saja', desc: 'Tersedia di semua perangkat — smartphone, tablet, maupun komputer.', bg: 'bg-[#FCA5A5]', color: 'text-[#B92521]', icon: BellIcon },
+    { title: 'Integrasi Smartwatch', desc: 'Hubungkan smartwatch & tensimeter Bluetooth pasien langsung ke VITALY. Data vital ditarik otomatis tanpa ketik manual, akurat dan cepat.', bg: 'bg-amber-50', color: 'text-amber-600', icon: ScaleIcon },
+    { title: 'Smart Triage (Prioritas)', desc: 'Sistem otomatis mendeteksi kondisi kritis pasien (darah tinggi/gula darah) untuk penanganan prioritas.', bg: 'bg-primary/10', color: 'text-primary', icon: BellIcon },
+    { title: 'Panic Button & Rujukan', desc: 'Aksi cepat darurat dengan fitur kirim pesan WhatsApp dan cetak surat rujukan PDF instan.', bg: 'bg-[#FCD34D]', color: 'text-[#064E3B]', icon: PhoneIcon },
+    { title: 'Misi Kesehatan (AI)', desc: 'Tingkatkan pola hidup sehat dengan misi harian yang dipersonalisasi berdasarkan kondisi kesehatan Anda.', bg: 'bg-[#ECFDF5]', color: 'text-[#064E3B]', icon: BrainIcon },
+    { title: 'Family-Linked Alert', desc: 'Notifikasi krisis kesehatan dikirim otomatis ke WhatsApp anggota keluarga dan agen kesehatan terdekat.', bg: 'bg-[#ECFDF5]', color: 'text-[#064E3B]', icon: HeartIcon },
+    { title: 'Offline-First Sync', desc: 'Arsitektur PWA yang memungkinkan input data di wilayah minim sinyal internet dan sinkronisasi otomatis.', bg: 'bg-[#FCD34D]', color: 'text-[#064E3B]', icon: ShieldIcon },
 ];
 
 const aiPoints = [
-    'Analisis tekanan darah, gula darah, dan IMT secara bersamaan',
-    'Deteksi risiko berdasarkan data terkini dan tren historis',
-    'Rekomendasi gaya hidup yang dipersonalisasi',
-    'Laporan mudah dipahami tanpa istilah medis yang rumit',
+    'Smart Triage: Deteksi otomatis kondisi kritis & risiko kesehatan',
+    'Emergency Action: Tombol panik & sistem rujukan cepat via WA/PDF',
+    'AI Health Mission: Gamifikasi misi sehat harian yang personal',
+    'Laporan Terpadu: Analisis data vital lengkap yang mudah dipahami',
 ];
 
 const previewResults = [
-    { title: 'Tekanan Darah', text: 'Tekanan darah dalam rentang normal. Pertahankan pola hidup sehat saat ini.', style: 'border-[#F0404B] bg-[#FEF2F2]', titleColor: 'text-[#B92521]' },
-    { title: 'Gula Darah', text: 'Kadar gula darah sedikit di atas normal. Kurangi konsumsi karbohidrat sederhana.', style: 'border-[#E48888] bg-[#FEE2E2]', titleColor: 'text-[#B92521]' },
-    { title: 'Rekomendasi', text: 'Olahraga ringan 30 menit per hari dan perbanyak konsumsi sayuran hijau.', style: 'border-[#F18E8C] bg-[#FEE2E2]', titleColor: 'text-[#B92521]' },
+    { title: 'Status Kritis', text: 'Tekanan darah tinggi terdeteksi! Gunakan tombol rujukan cepat sekarang.', style: 'border-primary bg-primary/10', titleColor: 'text-primary-dark' },
+    { title: 'Misi Hari Ini', text: 'Jalan kaki 15 menit & kurangi konsumsi garam untuk menurunkan tekanan darah.', style: 'border-[#FCD34D] bg-[#FEF3C7]', titleColor: 'text-[#064E3B]' },
+    { title: 'Analisis AI', text: 'Kondisi Anda memerlukan pemantauan intensif oleh Health Agent setempat.', style: 'border-[#059669] bg-[#ECFDF5]', titleColor: 'text-[#064E3B]' },
 ];
 
 const steps = [
     { title: 'Buat Akun', desc: 'Daftar gratis dengan email atau akun Google Anda hanya dalam beberapa detik.', bg: 'bg-primary', numColor: 'text-white' },
-    { title: 'Input Data Kesehatan', desc: 'Masukkan data vital seperti tekanan darah, gula darah, berat badan, dan lainnya.', bg: 'bg-[#FECACA]', numColor: 'text-[#B92521]' },
+    { title: 'Input Data Kesehatan', desc: 'Masukkan data vital seperti tekanan darah, gula darah, berat badan, dan lainnya.', bg: 'bg-[#ECFDF5]', numColor: 'text-[#064E3B]' },
     { title: 'Dapatkan Analisis AI', desc: 'Jalankan analisis dan terima laporan kondisi kesehatan yang lengkap dan mudah dipahami.', bg: 'bg-primary/10', numColor: 'text-primary' },
 ];
 
@@ -537,7 +737,7 @@ const videos = [
 const testimonials = [
     { name: 'Budi Santoso', role: 'Pasien Hipertensi', quote: 'Aplikasi ini sangat membantu saya melacak hasil tensi darah saya setiap pagi. Laporan AI-nya mudah dimengerti.' },
     { name: 'Siti Aminah', role: 'Pengguna Aktif', quote: 'Saya selalu mengecek video edukasi di sini karena sangat sinkron dengan rekam medis saya. Navigasinya juga mulus!' },
-    { name: 'dr. Hendra', role: 'Praktisi Kesehatan', quote: 'Data PDF yang diunduh pasien dari HEALTIVA amat membantu saya dalam menganalisis histori medis mereka lebih cepat.' }
+    { name: 'dr. Hendra', role: 'Praktisi Kesehatan', quote: 'Data PDF yang diunduh pasien dari VITALY amat membantu saya dalam menganalisis histori medis mereka lebih cepat.' }
 ];
 </script>
 
@@ -555,7 +755,7 @@ const testimonials = [
 
 /* â”€â”€ Brand gradient â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .text-gradient {
-    background: linear-gradient(135deg, #F0404B, #B92521);
+    background: linear-gradient(135deg, #059669, #064E3B);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

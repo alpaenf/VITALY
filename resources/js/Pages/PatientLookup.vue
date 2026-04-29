@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-primary via-[#C63632] to-primary-dark flex items-start sm:items-center justify-center p-4 py-6 sm:py-4 font-poppins">
+    <div class="min-h-screen bg-gradient-to-br from-primary to-primary-dark flex items-start sm:items-center justify-center p-4 py-6 sm:py-4 font-poppins">
         <Head title="Masuk - Cek Data Kesehatan" />
 
         <!-- Background decoration -->
@@ -11,8 +11,8 @@
         <div class="relative w-full max-w-sm">
             <!-- Logo -->
             <div class="text-center mb-6 sm:mb-8">
-                <img src="/images/logo.png" alt="Healtiva" class="h-20 w-auto mx-auto brightness-0 invert" />
-                <p class="text-white/70 text-sm mt-2">Sistem Informasi Kesehatan Posyandu</p>
+                <img src="/images/logo.png" alt="VITALY" class="h-10 w-auto mx-auto brightness-0 invert" />
+                <p class="text-white/70 text-sm mt-2">Sistem Monitor Kesehatan VITALY</p>
             </div>
 
             <!-- Card -->
@@ -81,19 +81,10 @@
                     </svg>
                     Login sebagai Kader / Admin
                 </Link>
-
-                <div class="mt-6 text-center">
-                    <a href="/" class="inline-flex items-center justify-center gap-1.5 text-xs text-gray-400 hover:text-primary transition">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                        </svg>
-                        Kembali ke Landing Page
-                    </a>
-                </div>
             </div>
 
             <p class="text-center text-white/50 text-xs mt-6">
-                HEALTIVA &copy; {{ new Date().getFullYear() }} — Posyandu Digital
+                VITALY &copy; {{ new Date().getFullYear() }} — Sistem Monitor Kesehatan
             </p>
         </div>
     </div>

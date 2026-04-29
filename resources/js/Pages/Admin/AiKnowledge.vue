@@ -53,13 +53,13 @@
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <button @click="openEdit(item)"
-                            class="p-2 text-gray-400 hover:text-primary hover:bg-[#FFF5F5] rounded-lg transition">
+                            class="p-2 text-gray-400 hover:text-primary hover:bg-[#ECFDF5] rounded-lg transition">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
                         </button>
                         <button @click="deleteItem(item.id)"
-                            class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
+                            class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
@@ -69,7 +69,7 @@
             </div>
 
             <div v-if="!items.data.length" class="bg-white rounded-2xl border border-gray-100 p-12 text-center">
-                <div class="w-16 h-16 bg-[#FDD3CF] rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <div class="w-16 h-16 bg-[#FCD34D] rounded-2xl flex items-center justify-center mx-auto mb-3">
                     <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                     </svg>
@@ -195,9 +195,9 @@ const categories = [
 
 const categoryColor = (c) => ({
     umum:       'bg-gray-100 text-gray-500',
-    tensi:      'bg-[#FDD3CF] text-primary',
+    tensi:      'bg-[#FCD34D] text-primary',
     gula:       'bg-amber-50 text-amber-700',
-    jantung:    'bg-red-50 text-red-600',
+    jantung:    'bg-primary/10 text-red-600',
     bmi:        'bg-blue-50 text-blue-600',
     kolesterol: 'bg-purple-50 text-purple-600',
     pernapasan: 'bg-cyan-50 text-cyan-600',

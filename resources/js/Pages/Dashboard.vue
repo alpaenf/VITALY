@@ -3,7 +3,7 @@
         <Head title="Dashboard" />
 
         <!-- Greeting Banner -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-[#C63632] to-primary-dark text-white p-4 sm:p-6 mb-5 animate-fade-in-down shadow-xl shadow-primary/20">
+        <div class="relative overflow-hidden rounded-2xl bg-primary text-white p-4 sm:p-6 mb-5 animate-fade-in-down shadow-xl shadow-primary/20">
             <!-- Modern subtle abstract decorations (White/Glassy glows instead of hard circles) -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
             <div class="absolute bottom-0 left-0 w-48 h-48 bg-black/10 blur-2xl rounded-full translate-y-1/2 -translate-x-1/4"></div>
@@ -36,15 +36,15 @@
 
         <!-- Quick Stats Row -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
-            <div class="card-Healtiva p-3.5 text-center hover-lift animate-fade-in-up delay-75"
+            <div class="card-VITALY p-3.5 text-center hover-lift animate-fade-in-up delay-75"
                 :class="latestRecord?.systolic ? '' : 'opacity-60'">
-                <div class="w-8 h-8 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-1.5">
+                <div class="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-1.5">
                     <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                 </div>
                 <p class="text-sm font-bold text-gray-800">{{ latestRecord?.systolic ? `${latestRecord.systolic}/${latestRecord.diastolic}` : '—' }}</p>
                 <p class="text-[10px] text-gray-400 mt-0.5">Tekanan</p>
             </div>
-            <div class="card-Healtiva p-3.5 text-center hover-lift animate-fade-in-up delay-100"
+            <div class="card-VITALY p-3.5 text-center hover-lift animate-fade-in-up delay-100"
                 :class="latestRecord?.heart_rate ? '' : 'opacity-60'">
                 <div class="w-8 h-8 rounded-xl bg-secondary/20 flex items-center justify-center mx-auto mb-1.5">
                     <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -52,9 +52,9 @@
                 <p class="text-sm font-bold text-gray-800">{{ latestRecord?.heart_rate ? `${latestRecord.heart_rate}` : '—' }}</p>
                 <p class="text-[10px] text-gray-400 mt-0.5">BPM</p>
             </div>
-            <div class="card-Healtiva p-3.5 text-center hover-lift animate-fade-in-up delay-150">
-                <div class="w-8 h-8 rounded-xl bg-[#EFDBDC] flex items-center justify-center mx-auto mb-1.5">
-                    <svg class="w-4 h-4 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            <div class="card-VITALY p-3.5 text-center hover-lift animate-fade-in-up delay-150">
+                <div class="w-8 h-8 rounded-xl bg-[#D1FAE5] flex items-center justify-center mx-auto mb-1.5">
+                    <svg class="w-4 h-4 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 </div>
                 <p class="text-sm font-bold text-gray-800">{{ totalRecords }}</p>
                 <p class="text-[10px] text-gray-400 mt-0.5">Total Data</p>
@@ -64,7 +64,7 @@
         <!-- Chart + Latest Record -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
             <!-- Chart -->
-            <div v-if="chartData.length > 1" class="card-Healtiva p-4 sm:p-5 animate-fade-in-left delay-150">
+            <div v-if="chartData.length > 1" class="card-VITALY p-4 sm:p-5 animate-fade-in-left delay-150">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                     <h3 class="font-semibold text-gray-700 text-sm">Tren Tekanan Darah</h3>
                     <div class="flex flex-wrap items-center gap-3 text-[10px] text-gray-400">
@@ -78,7 +78,7 @@
             </div>
 
             <!-- Latest record metrics -->
-            <div v-if="latestRecord" class="card-Healtiva p-4 sm:p-5 animate-fade-in-right delay-150"
+            <div v-if="latestRecord" class="card-VITALY p-4 sm:p-5 animate-fade-in-right delay-150"
                 :class="chartData.length <= 1 ? 'lg:col-span-2' : ''">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                     <h3 class="font-semibold text-gray-700 text-sm">Data Terkini</h3>
@@ -113,7 +113,7 @@
             </div>
 
             <!-- No data -->
-            <div v-if="!latestRecord" class="card-Healtiva p-6 sm:p-8 text-center animate-scale-in delay-150 lg:col-span-2">
+            <div v-if="!latestRecord" class="card-VITALY p-6 sm:p-8 text-center animate-scale-in delay-150 lg:col-span-2">
                 <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
                     <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 </div>
@@ -128,7 +128,7 @@
         <!-- Bottom: AI + Quick Actions -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
             <!-- AI Prompt Card -->
-            <div class="bg-gradient-to-br from-primary to-primary-dark rounded-2xl p-5 text-white hover-lift animate-fade-in-up delay-250 shadow-lg shadow-primary/20">
+            <div class="bg-primary-dark rounded-2xl p-5 text-white hover-lift animate-fade-in-up delay-250 shadow-lg shadow-primary/20">
                 <div class="flex items-start gap-4">
                     <div class="w-11 h-11 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
@@ -146,7 +146,7 @@
             </div>
 
             <!-- Latest Analysis preview OR quick navigation -->
-            <div v-if="latestAnalysis" class="card-Healtiva p-5 hover-lift animate-fade-in-up delay-300 flex flex-col justify-between">
+            <div v-if="latestAnalysis" class="card-VITALY p-5 hover-lift animate-fade-in-up delay-300 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="font-semibold text-gray-700 text-sm">Analisis Terakhir</h3>
@@ -159,23 +159,23 @@
                         Lihat selengkapnya
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </Link>
-                    <Link href="/standar-normal" class="text-xs font-medium bg-[#FDD3CF]/50 text-[#B92521] px-3 py-1.5 rounded-lg hover:bg-[#FDD3CF] transition inline-flex items-center gap-1.5">
+                    <Link href="/standar-normal" class="text-xs font-medium bg-[#FCD34D]/50 text-[#064E3B] px-3 py-1.5 rounded-lg hover:bg-[#FCD34D] transition inline-flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                         Kalkulator IMT
                     </Link>
                 </div>
             </div>
-            <div v-else class="card-Healtiva p-5 animate-fade-in-up delay-300">
+            <div v-else class="card-VITALY p-5 animate-fade-in-up delay-300">
                 <h3 class="font-semibold text-gray-700 text-sm mb-3">Aksi Cepat</h3>
                 <div class="space-y-2">
-                    <Link href="/ai-analysis" class="flex items-center gap-3 p-2.5 rounded-xl bg-red-50 hover:bg-red-100 transition">
+                    <Link href="/ai-analysis" class="flex items-center gap-3 p-2.5 rounded-xl bg-primary/10 hover:bg-[#FCD34D] transition">
                         <div class="w-8 h-8 bg-primary rounded-xl flex items-center justify-center">
                             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
                         </div>
                         <span class="text-sm font-medium text-gray-700">Analisis AI</span>
                     </Link>
-                    <Link href="/history" class="flex items-center gap-3 p-2.5 rounded-xl bg-[#EFDBDC] hover:bg-[#e4cdce] transition">
-                        <div class="w-8 h-8 bg-[#B74443] rounded-xl flex items-center justify-center">
+                    <Link href="/history" class="flex items-center gap-3 p-2.5 rounded-xl bg-[#D1FAE5] hover:bg-[#e4cdce] transition">
+                        <div class="w-8 h-8 bg-[#10B981] rounded-xl flex items-center justify-center">
                             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                         </div>
                         <span class="text-sm font-medium text-gray-700">Lihat Riwayat</span>
@@ -190,23 +190,25 @@
             </div>
         </div>
 
-        <!-- Health Tips -->
-        <div v-if="healthTip" class="card-Healtiva p-4 border-l-4 animate-fade-in-up delay-400"
-            :class="healthTip.border">
-            <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                    :class="healthTip.iconBg">
-                    <svg v-if="healthTip.type === 'danger'" class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    <svg v-else-if="healthTip.type === 'warning'" class="w-4 h-4 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    <svg v-else-if="healthTip.type === 'sugar'" class="w-4 h-4 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-                    <svg v-else-if="healthTip.type === 'heart'" class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                    <svg v-else-if="healthTip.type === 'good'" class="w-4 h-4 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <svg v-else class="w-4 h-4 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold text-gray-700">{{ healthTip.title }}</p>
-                    <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ healthTip.message }}</p>
-                </div>
+        <!-- Target Mingguan (Gamifikasi) -->
+        <div v-if="missions.length > 0" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 mb-5 animate-fade-in-up delay-400">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-gray-700 text-sm flex items-center gap-2">
+                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    Misi Kesehatan Minggu Ini
+                </h3>
+                <span class="text-[10px] bg-amber-50 text-amber-700 px-2 py-1 rounded-lg font-bold">+10 Poin / Misi</span>
+            </div>
+            <div class="space-y-2">
+                <label v-for="(mission, idx) in missions" :key="idx" class="flex items-start gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition group">
+                    <div class="relative flex items-start mt-0.5">
+                        <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/30 transition-colors cursor-pointer" />
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-700 group-hover:text-primary transition-colors">{{ mission.title }}</p>
+                        <p class="text-xs text-gray-500 mt-0.5">{{ mission.desc }}</p>
+                    </div>
+                </label>
             </div>
         </div>
     </AppLayout>
@@ -340,26 +342,31 @@ const hrStatus = computed(() => {
     if (!hr) return 'info';
     if (hr < 60 || hr > 100) return 'warn';
     return 'good';
+
 });
 
-const healthTip = computed(() => {
+const missions = computed(() => {
+    let list = [];
     const s = props.latestRecord?.systolic;
-    const hr = props.latestRecord?.heart_rate;
     const bs = props.latestRecord?.blood_sugar;
-    if (s && s >= 140) return { type: 'danger', iconBg: 'bg-primary/10',      title: 'Tekanan Darah Tinggi',           message: 'Tekanan darah Anda melebihi 140 mmHg. Segera konsultasikan dengan dokter dan kurangi konsumsi garam.', border: 'border-primary' };
-    if (s && s >= 130) return { type: 'warning', iconBg: 'bg-secondary/20',     title: 'Tekanan Darah Perlu Dipantau',   message: 'Tekanan darah Anda di tahap prehipertensi. Olahraga ringan dan diet rendah garam bisa membantu.', border: 'border-secondary' };
-    if (bs && bs > 200) return { type: 'sugar',  iconBg: 'bg-secondary/20',     title: 'Gula Darah Tinggi',              message: 'Gula darah di atas 200 mg/dL dapat mengindikasikan diabetes. Segera periksa ke dokter.', border: 'border-[#B74443]' };
-    if (hr && (hr < 60 || hr > 100)) return { type: 'heart', iconBg: 'bg-secondary/20', title: 'Detak Jantung Tidak Normal', message: `Detak jantung ${hr} bpm berada di luar rentang normal (60–100 bpm). Istirahat yang cukup dan pantau terus.`, border: 'border-secondary' };
-    if (props.healthScore >= 80) return { type: 'good',  iconBg: 'bg-[#FDD3CF]',   title: 'Kondisi Kesehatan Baik',         message: 'Pertahankan gaya hidup sehat Anda! Terus pantau secara rutin untuk menjaga kondisi tetap optimal.', border: 'border-[#F18E8C]' };
-    if (props.totalRecords === 0) return { type: 'info',  iconBg: 'bg-[#EFDBDC]',   title: 'Mulai Pantau Kesehatanmu',       message: 'Belum ada data tercatat. Masukkan data kesehatan pertamamu untuk mendapatkan analisis.', border: 'border-[#B74443]' };
-    return null;
+    const hr = props.latestRecord?.heart_rate;
+    const b = parseFloat(bmi.value);
+
+    list.push({ title: 'Jalan Kaki 15 Menit', desc: 'Lakukan aktivitas fisik ringan setiap pagi atau sore.' });
+    list.push({ title: 'Minum Air Putih 2 Liter', desc: 'Jaga hidrasi tubuh dengan minum air minimal 8 gelas hari ini.' });
+
+    if (s && s >= 130) list.push({ title: 'Kurangi Konsumsi Garam', desc: 'Hindari makanan bersodium tinggi (seperti ikan asin, camilan gurih).' });
+    if (bs && bs >= 140) list.push({ title: 'Puasa Gula Tambahan', desc: 'Jangan mengonsumsi teh manis, kopi manis, atau boba hari ini.' });
+    if (b && b >= 25) list.push({ title: 'Tidur Cukup 7-8 Jam', desc: 'Tidur yang cukup membantu mengontrol nafsu makan dan metabolisme.' });
+
+    return list.slice(0, 3);
 });
 
 const lineChartData = computed(() => ({
     labels: props.chartData.map(d => d.date),
     datasets: [
-        { label: 'Sistolik', data: props.chartData.map(d => d.systolic), borderColor: '#F0404B', backgroundColor: 'rgba(240,64,75,0.08)', fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#F0404B' },
-        { label: 'Diastolik', data: props.chartData.map(d => d.diastolic), borderColor: '#F18E8C', backgroundColor: 'transparent', fill: false, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#F18E8C' },
+        { label: 'Sistolik', data: props.chartData.map(d => d.systolic), borderColor: '#059669', backgroundColor: 'rgba(5,150,105,0.08)', fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#059669' },
+        { label: 'Diastolik', data: props.chartData.map(d => d.diastolic), borderColor: '#F59E0B', backgroundColor: 'transparent', fill: false, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#F59E0B' },
     ],
 }));
 
@@ -384,10 +391,10 @@ const truncateAnalysis = (text) => {
 
 // MetricCard render component
 const statusStyles = {
-    good:   { bg: 'bg-[#FDD3CF]',  dot: 'bg-[#B74443]',    text: 'text-[#B92521]' },
-    warn:   { bg: 'bg-secondary/15', dot: 'bg-secondary',    text: 'text-[#B92521]' },
+    good:   { bg: 'bg-[#FCD34D]',  dot: 'bg-[#10B981]',    text: 'text-[#064E3B]' },
+    warn:   { bg: 'bg-secondary/15', dot: 'bg-secondary',    text: 'text-[#064E3B]' },
     danger: { bg: 'bg-primary/10',   dot: 'bg-primary',      text: 'text-primary-dark' },
-    info:   { bg: 'bg-[#EFDBDC]',    dot: 'bg-[#B74443]',    text: 'text-[#B74443]' },
+    info:   { bg: 'bg-[#D1FAE5]',    dot: 'bg-[#10B981]',    text: 'text-[#10B981]' },
 };
 
 const MetricCard = {

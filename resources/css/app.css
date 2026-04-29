@@ -1,20 +1,20 @@
 @import 'tailwindcss';
 
 @theme {
-    --color-primary: #F0404B;
-    --color-primary-dark: #B92521;
-    --color-primary-support: #B74443;
-    --color-secondary: #F18E8C;
-    --color-secondary-light: #E48888;
-    --color-bg-app: #F2E9EE;
-    --color-bg-card: #FECACA;
+    --color-primary: #059669;
+    --color-primary-dark: #064E3B;
+    --color-primary-support: #10B981;
+    --color-secondary: #F59E0B;
+    --color-secondary-light: #FCD34D;
+    --color-bg-app: #F8FAFC;
+    --color-bg-card: #ECFDF5;
 
     --font-family-poppins: 'Poppins', sans-serif;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #F2E9EE;
+    background-color: #F8FAFC;
 }
 
 .font-poppins {
@@ -22,50 +22,50 @@ body {
 }
 
 .bg-app {
-    background-color: #F2E9EE;
+    background-color: #F8FAFC;
 }
 
 /* Markdown prose for AI analysis results */
-.prose-Healtiva h1,
-.prose-Healtiva h2,
-.prose-Healtiva h3 {
-    color: #B92521;
+.prose-Vitaly h1,
+.prose-Vitaly h2,
+.prose-Vitaly h3 {
+    color: #064E3B;
     font-weight: 600;
     margin-top: 1rem;
     margin-bottom: 0.5rem;
 }
 
-.prose-Healtiva h1 {
+.prose-VITALY h1 {
     font-size: 1.25rem;
 }
 
-.prose-Healtiva h2 {
+.prose-VITALY h2 {
     font-size: 1.1rem;
 }
 
-.prose-Healtiva h3 {
+.prose-VITALY h3 {
     font-size: 1rem;
 }
 
-.prose-Healtiva p {
+.prose-VITALY p {
     margin-bottom: 0.75rem;
     line-height: 1.6;
     color: #374151;
 }
 
-.prose-Healtiva ul,
-.prose-Healtiva ol {
+.prose-VITALY ul,
+.prose-VITALY ol {
     padding-left: 1.5rem;
     margin-bottom: 0.75rem;
 }
 
-.prose-Healtiva li {
+.prose-VITALY li {
     margin-bottom: 0.25rem;
     color: #374151;
 }
 
-.prose-Healtiva strong {
-    color: #B92521;
+.prose-Vitaly strong {
+    color: #064E3B;
     font-weight: 600;
 }
 
@@ -76,11 +76,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #F2E9EE;
+    background: #F8FAFC;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #F18E8C;
+    background: #059669;
     border-radius: 4px;
 }
 
@@ -90,10 +90,10 @@ body {
 }
 
 /* Card styles */
-.card-Healtiva {
+.card-Vitaly {
     background-color: white;
     border-radius: 1rem;
-    box-shadow: 0 2px 12px rgba(240, 64, 75, 0.08);
+    box-shadow: 0 2px 12px rgba(5, 150, 105, 0.08);
 }
 
 /* ── Page & Form Transitions ───────────────────────────────────── */
@@ -289,7 +289,7 @@ body {
 
 .hover-lift:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(240, 64, 75, 0.15);
+    box-shadow: 0 8px 24px rgba(5, 150, 105, 0.15);
 }
 
 /* Glass card */
@@ -302,10 +302,7 @@ body {
 
 /* Gradient text */
 .text-gradient {
-    background: linear-gradient(135deg, #F0404B, #B92521);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #059669;
 }
 
 

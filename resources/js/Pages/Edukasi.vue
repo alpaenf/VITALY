@@ -119,7 +119,7 @@
         </div>
 
         <!-- Sumber Terpercaya Banner -->
-        <div class="bg-gradient-to-br from-[#FFF5F5] to-[#EFDBDC] rounded-2xl p-5 border border-[#F18E8C]/30 animate-fade-in-up">
+        <div class="bg-gradient-to-br from-[#ECFDF5] to-[#D1FAE5] rounded-2xl p-5 border border-[#F59E0B]/30 animate-fade-in-up">
             <div class="flex items-start gap-3">
                 <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
                     <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@ const getCategoryLabel = (id) => categories.find(c => c.id === id)?.label ?? id;
 const getCategoryColor = (id) => {
     const map = {
         heart:     'text-primary',
-        diabetes:  'text-[#B74443]',
+        diabetes:  'text-[#10B981]',
         nutrition: 'text-green-600',
         lifestyle: 'text-blue-600',
         mental:    'text-purple-600',

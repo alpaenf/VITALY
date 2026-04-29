@@ -2,7 +2,7 @@
     <!-- ① Role selection -->
     <template v-if="!selectedRole">
         <div class="flex items-center justify-center mb-5 lg:hidden">
-            <img src="/images/logo.png" alt="Healtiva" class="h-10 w-auto" />
+            <img src="/images/logo.png" alt="VITALY" class="h-5 w-auto" />
         </div>
         <h2 class="text-lg font-bold text-gray-800 mb-0.5">Selamat Datang</h2>
         <p class="text-xs text-gray-500 mb-5">Silakan pilih akses Anda</p>
@@ -38,7 +38,7 @@
                     </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-800">Saya Kader / Admin</p>
+                    <p class="text-sm font-semibold text-gray-800">Saya Health Agent / Admin</p>
                     <p class="text-xs text-gray-500 mt-0.5">Akses portal manajemen</p>
                 </div>
                 <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,8 +95,8 @@
             Kembali
         </button>
 
-        <h2 class="text-lg font-bold text-gray-800 mb-0.5">Login Kader / Admin</h2>
-        <p class="text-xs text-gray-500 mb-4">Masuk ke portal manajemen HEALTIVA</p>
+        <h2 class="text-lg font-bold text-gray-800 mb-0.5">Login Health Agent / Admin</h2>
+        <p class="text-xs text-gray-500 mb-4">Masuk ke portal manajemen VITALY</p>
 
         <form @submit.prevent="submit" class="space-y-3">
             <div>

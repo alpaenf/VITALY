@@ -4,9 +4,7 @@
         <!-- ─── DESKTOP SIDEBAR (lg+) ─────────────────────────────── -->
         <aside class="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-64 bg-white shadow-lg z-40 border-r border-gray-100">
             <!-- Logo -->
-            <div class="flex items-center px-2 -mb-5 border-b border-gray-100">
-                <img src="/images/logo.png" alt="Healtiva" class="h-[120px] w-auto" />
-            </div>
+            <div class="flex items-center justify-center px-4 py-4 border-b border-gray-100"><img src="/images/logo.png" alt="VITALY" class="h-[60px] w-auto" /></div>
 
             <!-- Nav Links -->
             <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
@@ -67,7 +65,7 @@
             <!-- Bottom logout -->
             <div class="px-3 py-4 border-t border-gray-100">
                 <form @submit.prevent="showLogoutModal = true">
-                    <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-500 hover:bg-red-50 hover:text-red-500 transition">
+                    <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-500 hover:bg-primary/10 hover:text-primary transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
@@ -81,7 +79,7 @@
         <header class="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100">
             <div class="px-2 py-0.5 flex items-center justify-between">
                 <div class="flex items-center">
-                    <img src="/images/logo.png" alt="Healtiva" class="h-[60px] w-auto" />
+                    <img src="/images/logo.png" alt="VITALY" class="h-[35px] w-auto" />
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white text-sm font-bold shadow flex-shrink-0">
                     {{ patientInitial }}
@@ -103,7 +101,7 @@
             <div v-if="$page.props.flash?.success || $page.props.flash?.error"
                 class="fixed z-50 top-16 lg:top-4 left-0 right-0 lg:left-64 px-4 lg:px-8 pt-2 pointer-events-none">
                 <div v-if="$page.props.flash?.success"
-                    class="max-w-xl lg:max-w-md bg-[#FDD3CF] border border-[#F18E8C] text-[#B92521] rounded-xl px-4 py-3 text-sm font-medium shadow-md pointer-events-auto">
+                    class="max-w-xl lg:max-w-md bg-[#FCD34D] border border-[#F59E0B] text-[#064E3B] rounded-xl px-4 py-3 text-sm font-medium shadow-md pointer-events-auto">
                     {{ $page.props.flash.success }}
                 </div>
                 <div v-if="$page.props.flash?.error"

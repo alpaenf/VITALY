@@ -93,7 +93,7 @@
         </div>
 
         <!-- Disclaimer -->
-        <div class="mt-6 bg-gradient-to-br from-[#FFF5F5] to-[#EFDBDC] rounded-2xl p-5 border border-[#F18E8C]/30 animate-fade-in-up">
+        <div class="mt-6 bg-gradient-to-br from-[#ECFDF5] to-[#D1FAE5] rounded-2xl p-5 border border-[#F59E0B]/30 animate-fade-in-up">
             <div class="flex items-start gap-3">
                 <svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
@@ -128,7 +128,7 @@ const layout = computed(() => {
 const statusClass = (s) => ({
     normal:   'bg-green-50 text-green-700',
     warning:  'bg-amber-50 text-amber-700',
-    danger:   'bg-red-50 text-red-700',
+    danger:   'bg-primary/10 text-red-700',
     critical: 'bg-red-100 text-red-800',
     info:     'bg-blue-50 text-blue-700',
 }[s] ?? 'bg-gray-100 text-gray-600');
@@ -152,7 +152,7 @@ const statusLabel = (s) => ({
 const standards = [
     {
         id: 'bp', title: 'Tekanan Darah', subtitle: 'Nilai sistolik & diastolik (mmHg)',
-        source: 'ESH/ESC/Kemenkes 2018', bgFrom: '#FFF5F5', bgTo: '#FEF2F2', iconBg: '#FDD3CF',
+        source: 'ESH/ESC/Kemenkes 2018', bgFrom: '#ECFDF5', bgTo: '#ECFDF5', iconBg: '#FCD34D',
         note: 'Pengukuran sebaiknya dilakukan 2x dengan jeda 5 menit saat istirahat.',
         rows: [
             { label: 'Optimal',              value: '< 120 / < 80',            status: 'normal'  },
@@ -166,7 +166,7 @@ const standards = [
     },
     {
         id: 'hr', title: 'Detak Jantung', subtitle: 'Denyut nadi istirahat (BPM)',
-        source: 'AHA / Kemenkes', bgFrom: '#FFF5F5', bgTo: '#FEF0F0', iconBg: '#EFDBDC',
+        source: 'AHA / Kemenkes', bgFrom: '#ECFDF5', bgTo: '#FFFBEB', iconBg: '#D1FAE5',
         note: 'Atlet terlatih dapat memiliki detak jantung 40-60 bpm dan tetap dianggap normal.',
         rows: [
             { label: 'Terlalu Lambat (Bradikardia)', value: '< 60 BPM',    status: 'warning' },
@@ -177,7 +177,7 @@ const standards = [
     },
     {
         id: 'sugar', title: 'Gula Darah', subtitle: 'Kadar glukosa darah puasa (mg/dL)',
-        source: 'PERKENI 2021', bgFrom: '#FFF5F5', bgTo: '#FEFCE8', iconBg: '#FDD3CF',
+        source: 'PERKENI 2021', bgFrom: '#ECFDF5', bgTo: '#FEFCE8', iconBg: '#FCD34D',
         note: 'Nilai di atas adalah untuk gula darah puasa (GDP). Gula darah 2 jam PP: Normal <140, Pradiabetes 140-199, DM >=200 mg/dL.',
         rows: [
             { label: 'Hipoglikemia',   value: '< 70 mg/dL',    status: 'danger'  },
@@ -188,7 +188,7 @@ const standards = [
     },
     {
         id: 'bmi', title: 'Indeks Massa Tubuh (IMT)', subtitle: 'Kategori Indeks Massa Tubuh',
-        source: 'Kemenkes 2025', bgFrom: '#FFF5F5', bgTo: '#FEF2F2', iconBg: '#EFDBDC',
+        source: 'Kemenkes 2025', bgFrom: '#ECFDF5', bgTo: '#ECFDF5', iconBg: '#D1FAE5',
         note: 'Berdasarkan panduan Kemenkes 2025.',
         rows: [
             { label: 'Berat badan kurang',   value: '< 18,5',      status: 'warning' },
@@ -201,7 +201,7 @@ const standards = [
     },
     {
         id: 'temp', title: 'Suhu Tubuh', subtitle: 'Temperatur oral/aksila (°C)',
-        source: 'Kemenkes RI', bgFrom: '#FFF5F5', bgTo: '#FFF0EC', iconBg: '#FDD3CF',
+        source: 'Kemenkes RI', bgFrom: '#ECFDF5', bgTo: '#FFF0EC', iconBg: '#FCD34D',
         note: 'Pengukuran aksila biasanya 0.3-0.5 C lebih rendah dari oral. Pengukuran rektal lebih tinggi +/-0.5 C.',
         rows: [
             { label: 'Hipotermia',        value: '< 35.0 °C',     status: 'critical'},
@@ -214,7 +214,7 @@ const standards = [
     },
     {
         id: 'spo2', title: 'Saturasi Oksigen (SpO2)', subtitle: 'Kadar oksigen dalam darah (%)',
-        source: 'WHO / Kemenkes', bgFrom: '#FFF5F5', bgTo: '#FEF2F2', iconBg: '#EFDBDC',
+        source: 'WHO / Kemenkes', bgFrom: '#ECFDF5', bgTo: '#ECFDF5', iconBg: '#D1FAE5',
         note: 'Perokok aktif dan penderita PPOK mungkin memiliki baseline SpO2 yang lebih rendah. Nilai <94% perlu evaluasi dokter.',
         rows: [
             { label: 'Normal',               value: '>= 95%',   status: 'normal'  },
@@ -225,7 +225,7 @@ const standards = [
     },
     {
         id: 'chol', title: 'Kolesterol (Referensi)', subtitle: 'Kadar lipid darah (mg/dL)',
-        source: 'PERKI / Kemenkes RI', bgFrom: '#FFF5F5', bgTo: '#FEF2F2', iconBg: '#EFDBDC',
+        source: 'PERKI / Kemenkes RI', bgFrom: '#ECFDF5', bgTo: '#ECFDF5', iconBg: '#D1FAE5',
         note: 'Nilai ini adalah referensi umum. Target kolesterol individual bergantung pada faktor risiko jantung yang lain.',
         rows: [
             { label: 'Kolesterol Total - Optimal', value: '< 200 mg/dL', status: 'normal'  },

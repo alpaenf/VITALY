@@ -13,7 +13,7 @@
             <!-- LEFT: Profile summary + action buttons -->
             <div class="space-y-4">
                 <!-- Profile Header -->
-                <div class="card-Healtiva p-5 text-center hover-lift animate-fade-in-left delay-75">
+                <div class="card-VITALY p-5 text-center hover-lift animate-fade-in-left delay-75">
                     <!-- Avatar with upload button -->
                     <div class="relative w-20 h-20 mx-auto mb-3">
                         <div class="w-20 h-20 rounded-2xl overflow-hidden shadow-lg">
@@ -39,15 +39,15 @@
                             <p class="text-xl font-bold text-primary">{{ totalRecords }}</p>
                             <p class="text-xs text-gray-500">Data Kesehatan</p>
                         </div>
-                        <div class="text-center p-2 rounded-xl bg-[#EFDBDC]">
-                            <p class="text-xl font-bold text-[#B74443]">{{ totalAnalyses }}</p>
+                        <div class="text-center p-2 rounded-xl bg-[#D1FAE5]">
+                            <p class="text-xl font-bold text-[#10B981]">{{ totalAnalyses }}</p>
                             <p class="text-xs text-gray-500">Analisis AI</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Logout -->
-                <div class="card-Healtiva p-4 animate-fade-in-left delay-150">
+                <div class="card-VITALY p-4 animate-fade-in-left delay-150">
                     <form @submit.prevent="logout">
                         <button type="submit"
                             class="w-full flex items-center justify-center gap-2 py-2.5 text-red-500 font-semibold rounded-xl border border-red-200 hover:bg-red-50 transition">
@@ -60,13 +60,13 @@
                 </div>
 
                 <!-- Admin Link -->
-                <div v-if="user?.role === 'admin'" class="card-Healtiva p-4 border border-[#F18E8C] bg-[#FDD3CF] hover-lift animate-fade-in-left delay-200">
+                <div v-if="user?.role === 'admin'" class="card-VITALY p-4 border border-[#F59E0B] bg-[#FCD34D] hover-lift animate-fade-in-left delay-200">
                     <Link href="/admin/dashboard" class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-[#B92521]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                            <span class="font-medium text-[#B92521] text-sm">Panel Admin</span>
+                            <svg class="w-4 h-4 text-[#064E3B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            <span class="font-medium text-[#064E3B] text-sm">Panel Admin</span>
                         </div>
-                        <svg class="w-4 h-4 text-[#B92521]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                        <svg class="w-4 h-4 text-[#064E3B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                     </Link>
                 </div>
             </div>
@@ -74,12 +74,12 @@
             <!-- RIGHT: Forms -->
             <div class="lg:col-span-2 space-y-4">
                 <!-- Edit Profile Form -->
-                <div class="card-Healtiva p-5 animate-fade-in-right delay-100">
+                <div class="card-VITALY p-5 animate-fade-in-right delay-100">
                     <h3 class="font-semibold text-gray-700 mb-4 flex items-center gap-2">
                         <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                         Edit Profil
                     </h3>
-                    <div v-if="profileSuccess" class="bg-[#FDD3CF] border border-[#F18E8C] text-[#B92521] rounded-xl px-4 py-3 text-sm mb-4 animate-fade-in-down">
+                    <div v-if="profileSuccess" class="bg-[#FCD34D] border border-[#F59E0B] text-[#064E3B] rounded-xl px-4 py-3 text-sm mb-4 animate-fade-in-down">
                         Profil berhasil diperbarui
                     </div>
                     <form @submit.prevent="updateProfile" class="space-y-3">
@@ -119,12 +119,12 @@
                 </div>
 
                 <!-- Change Password -->
-                <div class="card-Healtiva p-5 animate-fade-in-right delay-200">
+                <div class="card-VITALY p-5 animate-fade-in-right delay-200">
                     <h3 class="font-semibold text-gray-700 mb-4 flex items-center gap-2">
                         <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                         Ubah Password
                     </h3>
-                    <div v-if="passwordSuccess" class="bg-[#FDD3CF] border border-[#F18E8C] text-[#B92521] rounded-xl px-4 py-3 text-sm mb-4 animate-fade-in-down">
+                    <div v-if="passwordSuccess" class="bg-[#FCD34D] border border-[#F59E0B] text-[#064E3B] rounded-xl px-4 py-3 text-sm mb-4 animate-fade-in-down">
                         Password berhasil diubah
                     </div>
                     <form @submit.prevent="updatePassword" class="space-y-3">
@@ -151,7 +151,7 @@
                     </form>
                 </div>
 
-                <p class="text-center text-xs text-gray-400 pb-2">HEALTIVA v1.0 - Sistem Monitor Kesehatan</p>
+                <p class="text-center text-xs text-gray-400 pb-2">VITALY v1.0 - Sistem Monitor Kesehatan</p>
             </div>
         </div>
         <!-- Crop Modal -->
@@ -343,8 +343,8 @@ const logout = () => router.post('/logout');
     transition: all 0.2s; font-family: 'Poppins', sans-serif; background: white;
 }
 .input-field:focus {
-    border-color: #F0404B;
-    box-shadow: 0 0 0 3px rgba(240, 64, 75, 0.1);
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
 .toast-enter-active, .toast-leave-active { transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
 .toast-enter-from, .toast-leave-to { opacity: 0; transform: translateX(-50%) translateY(12px); }

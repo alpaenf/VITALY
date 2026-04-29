@@ -13,7 +13,7 @@
                 </div>
                 <div class="flex-1">
                     <h1 class="text-xl font-bold">Analisis Kesehatan AI</h1>
-                    <p class="text-white/70 text-xs mt-0.5">Powered by HEALTIVA Health AI Engine</p>
+                    <p class="text-white/70 text-xs mt-0.5">Powered by VITALY Health AI Engine</p>
                 </div>
                 <div v-if="analyses.length" class="text-left sm:text-right flex-shrink-0">
                     <p class="text-3xl font-bold leading-none">{{ analyses.length }}</p>
@@ -72,7 +72,7 @@
                 </div>
 
                 <!-- Info card -->
-                <div class="card-Healtiva p-4 animate-fade-in-up delay-150">
+                <div class="card-VITALY p-4 animate-fade-in-up delay-150">
                     <div class="flex items-center gap-2 mb-3">
                         <div class="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center">
                             <svg class="w-3.5 h-3.5 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -80,38 +80,38 @@
                         <h4 class="font-semibold text-gray-700 text-sm">Yang Dianalisis</h4>
                     </div>
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2.5 bg-[#FDD3CF] rounded-lg px-3 py-2">
+                        <div class="flex items-center gap-2.5 bg-[#FCD34D] rounded-lg px-3 py-2">
                             <div class="w-5 h-5 rounded-md bg-primary/20 flex items-center justify-center flex-shrink-0">
                                 <svg class="w-3 h-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                             </div>
                             <span class="text-xs text-gray-600">Tekanan darah (sistolik &amp; diastolik)</span>
                         </div>
-                        <div class="flex items-center gap-2.5 bg-[#EFDBDC] rounded-lg px-3 py-2">
-                            <div class="w-5 h-5 rounded-md bg-[#E48888]/40 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-3 h-3 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        <div class="flex items-center gap-2.5 bg-[#D1FAE5] rounded-lg px-3 py-2">
+                            <div class="w-5 h-5 rounded-md bg-[#FCD34D]/40 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-3 h-3 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                             </div>
                             <span class="text-xs text-gray-600">Detak jantung &amp; ritme</span>
                         </div>
-                        <div class="flex items-center gap-2.5 bg-[#FDD3CF] rounded-lg px-3 py-2">
+                        <div class="flex items-center gap-2.5 bg-[#FCD34D] rounded-lg px-3 py-2">
                             <div class="w-5 h-5 rounded-md bg-primary/20 flex items-center justify-center flex-shrink-0">
                                 <svg class="w-3 h-3 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
                             </div>
                             <span class="text-xs text-gray-600">Gula darah &amp; risiko diabetes</span>
                         </div>
-                        <div class="flex items-center gap-2.5 bg-[#EFDBDC] rounded-lg px-3 py-2">
-                            <div class="w-5 h-5 rounded-md bg-[#E48888]/40 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-3 h-3 text-[#B92521]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+                        <div class="flex items-center gap-2.5 bg-[#D1FAE5] rounded-lg px-3 py-2">
+                            <div class="w-5 h-5 rounded-md bg-[#FCD34D]/40 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-3 h-3 text-[#064E3B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
                             </div>
                             <span class="text-xs text-gray-600">IMT &amp; status berat badan</span>
                         </div>
-                        <div class="flex items-center gap-2.5 bg-[#FDD3CF] rounded-lg px-3 py-2">
+                        <div class="flex items-center gap-2.5 bg-[#FCD34D] rounded-lg px-3 py-2">
                             <div class="w-5 h-5 rounded-md bg-primary/20 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-3 h-3 text-[#B74443]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+                                <svg class="w-3 h-3 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
                             </div>
                             <span class="text-xs text-gray-600">Suhu tubuh &amp; SpO2</span>
                         </div>
-                        <div class="flex items-center gap-2.5 bg-[#EFDBDC] rounded-lg px-3 py-2">
-                            <div class="w-5 h-5 rounded-md bg-[#E48888]/40 flex items-center justify-center flex-shrink-0">
+                        <div class="flex items-center gap-2.5 bg-[#D1FAE5] rounded-lg px-3 py-2">
+                            <div class="w-5 h-5 rounded-md bg-[#FCD34D]/40 flex items-center justify-center flex-shrink-0">
                                 <svg class="w-3 h-3 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                             </div>
                             <span class="text-xs text-gray-600">Tren dari riwayat data</span>
@@ -130,7 +130,7 @@
 
                     <div class="space-y-3">
                         <div v-for="(analysis, index) in analyses" :key="analysis.id"
-                            class="card-Healtiva overflow-hidden hover-lift"
+                            class="card-VITALY overflow-hidden hover-lift"
                             :style="`animation-delay:${index*60}ms`">
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4">
                                 <div class="flex items-center gap-3 flex-1 w-full cursor-pointer select-none" @click="toggleAnalysis(index)">
@@ -164,7 +164,7 @@
                                     <!-- Action Buttons -->
                                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 px-4 pb-4">
                                         <button @click="downloadPdf(analysis)"
-                                            class="w-full sm:w-auto justify-center inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-[#FDD3CF] text-[#B92521] hover:bg-[#F18E8C]/40 transition">
+                                            class="w-full sm:w-auto justify-center inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-[#FCD34D] text-[#064E3B] hover:bg-[#F59E0B]/40 transition">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                             PDF
                                         </button>
@@ -190,7 +190,7 @@
                                             <a v-for="vid in getRelatedVideos(analysis.result)" :key="vid.id"
                                                :href="`https://www.youtube.com/watch?v=${vid.youtubeId}`"
                                                target="_blank" rel="noopener noreferrer"
-                                               class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-100 hover:border-[#FF0000]/30 hover:bg-red-50/40 transition-all group">
+                                               class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-100 hover:border-primary/30 hover:bg-primary/10/40 transition-all group">
                                                 <!-- Thumbnail -->
                                                 <div class="relative w-16 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 shadow-sm">
                                                     <img
@@ -220,7 +220,7 @@
                 </div>
 
                 <!-- No analyses state -->
-                <div v-else class="card-Healtiva p-6 sm:p-10 text-center animate-scale-in">
+                <div v-else class="card-VITALY p-6 sm:p-10 text-center animate-scale-in">
                     <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2" /></svg>
                     </div>
@@ -297,13 +297,13 @@ const downloadPdf = async (analysis) => {
     const date = formatDate(analysis.created_at);
 
     // Load logo as base64 so it works offline in the generated HTML
-    let logoHtml = '<div class="logo-text">HEALTIVA</div>';
+    let logoHtml = '<div class="logo-text">VITALY</div>';
     try {
         const resp = await fetch('/images/logo.png');
         if (resp.ok) {
             const blob = await resp.blob();
             const b64 = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(blob); });
-            logoHtml = `<img src="${b64}" alt="HEALTIVA" class="logo-img">`;
+            logoHtml = `<img src="${b64}" alt="VITALY" class="logo-img">`;
         }
     } catch (_) {}
 
@@ -356,12 +356,12 @@ const downloadPdf = async (analysis) => {
     html += '</table>';
 
     const content = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
-<title>Laporan Analisis Kesehatan - HEALTIVA</title>
+<title>Laporan Analisis Kesehatan - VITALY</title>
 <style>
   body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 18px 30px 30px; color: #1f2937; font-size: 13px; line-height: 1.6; }
-  .header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 3px solid #B92521; }
-  .logo-img { height: 88px; width: auto; object-fit: contain; }
-  .logo-text { color: #B92521; font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+  .header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 3px solid #064E3B; }
+  .logo-img { height: 44px; width: auto; object-fit: contain; }
+  .logo-text { color: #064E3B; font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
   .header-right { text-align: right; }
   .header-title { font-weight: 700; font-size: 13px; color: #374151; }
   .header-sub { font-size: 11px; color: #6b7280; margin-top: 2px; }
@@ -375,7 +375,7 @@ const downloadPdf = async (analysis) => {
   .analysis-table { width: 100%; border-collapse: collapse; border: 2px solid #111827; margin-bottom: 20px; }
   .analysis-table th, .analysis-table td { border: 1px solid #6b7280; padding: 10px 14px; vertical-align: top; }
   
-  .main-header { background-color: #FEF0F0; color: #A91127; text-align: left; font-size: 14px; border-bottom: 2px solid #111827; border-top: 2px solid #111827; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .main-header { background-color: #FFFBEB; color: #064E3B; text-align: left; font-size: 14px; border-bottom: 2px solid #111827; border-top: 2px solid #111827; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .key-cell { width: 35%; font-weight: 700; color: #374151; background-color: #f9fafb; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .val-cell { width: 65%; color: #111827; }
   .text-cell { color: #374151; padding: 12px 14px; }
@@ -399,7 +399,7 @@ const downloadPdf = async (analysis) => {
 </div>
 ${identityHtml}
 ${html}
-<p class="footer">Laporan ini dihasilkan oleh HEALTIVA AI. Bersifat informatif dan tidak menggantikan diagnosa medis resmi dari dokter spesialis.</p>
+<p class="footer">Laporan ini dihasilkan oleh VITALY AI. Bersifat informatif dan tidak menggantikan diagnosa medis resmi dari dokter spesialis.</p>
 <script>window.onload = () => { window.print(); };<\/script>
 </body></html>`;
 
@@ -423,7 +423,7 @@ const shareWhatsApp = (analysis) => {
         .replace(/#{1,3}\s/g, '');
     const preview = plain.trim().length > 1200 ? `${plain.trim().slice(0, 1200)}...` : plain.trim();
     const shareLink = analysis.share_url ? `Link PDF laporan:\n${analysis.share_url}\n\n` : '';
-    const msg = `*Laporan Analisis Kesehatan HEALTIVA*\n${date}\n\n${shareLink}${preview}\n\n_Dihasilkan oleh HEALTIVA Health Monitor. Bukan pengganti konsultasi dokter._`;
+    const msg = `*Laporan Analisis Kesehatan VITALY*\n${date}\n\n${shareLink}${preview}\n\n_Dihasilkan oleh VITALY Health Monitor. Bukan pengganti konsultasi dokter._`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
@@ -556,10 +556,10 @@ const renderMarkdown = (text) => {
 :deep(.ar-title) {
     font-size: 1rem;
     font-weight: 700;
-    color: #B92521;
+    color: #064E3B;
     margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #EFDBDC;
+    border-bottom: 2px solid #D1FAE5;
 }
 
 :deep(.ar-section) {
@@ -620,44 +620,44 @@ const renderMarkdown = (text) => {
 
 /* Section color themes */
 :deep(.ar-violet) {
-    border-color: #F0404B;
-    background: #FFF5F5;
+    border-color: #059669;
+    background: #ECFDF5;
 }
-:deep(.ar-violet .ar-heading) { color: #B92521; }
-:deep(.ar-violet .ar-list li::before) { background: #F0404B; }
+:deep(.ar-violet .ar-heading) { color: #064E3B; }
+:deep(.ar-violet .ar-list li::before) { background: #059669; }
 
 :deep(.ar-blue) {
-    border-color: #B92521;
-    background: #FEF0F0;
+    border-color: #064E3B;
+    background: #FFFBEB;
 }
-:deep(.ar-blue .ar-heading) { color: #A91127; }
-:deep(.ar-blue .ar-list li::before) { background: #B92521; }
+:deep(.ar-blue .ar-heading) { color: #064E3B; }
+:deep(.ar-blue .ar-list li::before) { background: #064E3B; }
 
 :deep(.ar-green) {
-    border-color: #B74443;
-    background: #F9ECEC;
+    border-color: #10B981;
+    background: #F0FDF4;
 }
-:deep(.ar-green .ar-heading) { color: #B74443; }
-:deep(.ar-green .ar-list li::before) { background: #B74443; }
+:deep(.ar-green .ar-heading) { color: #10B981; }
+:deep(.ar-green .ar-list li::before) { background: #10B981; }
 
 :deep(.ar-amber) {
-    border-color: #E48888;
-    background: #FDF4F4;
+    border-color: #FCD34D;
+    background: #F8FAFC;
 }
-:deep(.ar-amber .ar-heading) { color: #B92521; }
-:deep(.ar-amber .ar-list li::before) { background: #E48888; }
+:deep(.ar-amber .ar-heading) { color: #064E3B; }
+:deep(.ar-amber .ar-list li::before) { background: #FCD34D; }
 
 :deep(.ar-rose) {
-    border-color: #A91127;
-    background: #FFF0F0;
+    border-color: #064E3B;
+    background: #F8FAFC;
 }
-:deep(.ar-rose .ar-heading) { color: #A91127; }
-:deep(.ar-rose .ar-list li::before) { background: #A91127; }
+:deep(.ar-rose .ar-heading) { color: #064E3B; }
+:deep(.ar-rose .ar-list li::before) { background: #064E3B; }
 
 :deep(.ar-teal) {
-    border-color: #F18E8C;
+    border-color: #F59E0B;
     background: #FDF2F2;
 }
-:deep(.ar-teal .ar-heading) { color: #B92521; }
-:deep(.ar-teal .ar-list li::before) { background: #F18E8C; }
+:deep(.ar-teal .ar-heading) { color: #064E3B; }
+:deep(.ar-teal .ar-list li::before) { background: #F59E0B; }
 </style>

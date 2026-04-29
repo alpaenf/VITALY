@@ -10,7 +10,7 @@
 
             <div class="relative z-10 animate-fade-in-left">
                 <div class="flex items-center mb-10">
-                    <img src="/images/logo.png" alt="Healtiva" class="h-[120px] w-auto brightness-0 invert" />
+                    <img src="/images/logo.png" alt="VITALY" class="h-[60px] w-auto brightness-0 invert" />
                 </div>
 
                 <h2 class="text-3xl font-bold text-white leading-tight mb-3">Monitor Kesehatan<br><span class="text-white/70">Lebih Cerdas</span></h2>
@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <p class="relative z-10 text-white/40 text-xs">© 2026 Healtiva · Sistem Monitor Kesehatan</p>
+            <p class="relative z-10 text-white/40 text-xs">© 2026 VITALY · Sistem Monitor Kesehatan</p>
         </div>
 
         <!-- RIGHT PANEL (auth card) -->

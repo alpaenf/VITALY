@@ -1,12 +1,13 @@
 <template>
     <KaderLayout>
-        <Head title="Dashboard Kader" />
+        <Head title="Smart Health Agent Dashboard" />
 
         <!-- Header -->
         <div class="mb-5">
-            <h1 class="text-xl font-bold text-gray-800">Dashboard Kader</h1>
+            <h1 class="text-xl font-bold text-gray-800">Smart Health Agent Dashboard</h1>
             <p class="text-sm text-gray-500 mt-0.5">Selamat datang, <span class="font-medium text-gray-700">{{ user?.name }}</span></p>
         </div>
+
 
         <!-- Stats -->
         <div class="grid grid-cols-2 gap-3 mb-4">
