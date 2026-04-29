@@ -328,6 +328,31 @@ Pencatatan kesehatan masih manual, data pasien tersebar, deteksi dini terlambat,
 **Kata kunci teknis:**
 Laravel 11, Vue 3, Inertia.js, FastAPI, Python AI Service, PWA, IoMT, WhatsApp sharing.
 
+**Paragraf kesesuaian tema (SDG 3 dan Indonesia Emas 2045):**
+VITALY sejalan dengan tema inovasi kesehatan berbasis teknologi karena memanfaatkan AI, IoMT, dan sistem digital terintegrasi untuk mempercepat deteksi dini, meningkatkan efisiensi layanan, serta memperluas akses informasi kesehatan. Dengan memperbaiki kualitas data, mempercepat pengambilan keputusan, dan mendorong literasi kesehatan, VITALY mendukung SDG 3 (Good Health and Well-being) sekaligus berkontribusi pada transformasi kesehatan digital menuju Indonesia Emas 2045.
+
+**Mapping fitur -> SDG 3 -> Indonesia Emas 2045:**
+| Fitur | Kontribusi SDG 3 | Kontribusi Indonesia Emas 2045 |
+|---|---|---|
+| Integrasi IoMT (smartwatch, tensimeter) | Peningkatan pemantauan dini dan akurasi data pasien | Fondasi ekosistem kesehatan digital yang terukur dan berbasis data |
+| Smart triage (prioritas risiko) | Mengurangi keterlambatan penanganan kasus berisiko | Efisiensi layanan kesehatan dan produktivitas SDM kesehatan |
+| Analisis AI & ringkasan klinis | Dukungan keputusan klinis lebih cepat dan tepat | Peningkatan mutu layanan kesehatan berbasis AI |
+| Laporan PDF & sharing WhatsApp | Continuity of care dan kolaborasi tindak lanjut | Akselerasi layanan kesehatan terhubung lintas peran |
+| Offline-first sync | Akses layanan di wilayah keterbatasan konektivitas | Pemerataan layanan kesehatan digital nasional |
+
+**Metodologi evaluasi dampak (indikator terukur):**
+- Waktu rata-rata input pemeriksaan (menit) sebelum vs sesudah IoMT.
+- Tingkat kelengkapan data pasien (% field terisi per kunjungan).
+- Waktu respon tindak lanjut kasus prioritas (jam/hari).
+- Frekuensi rujukan tepat waktu (jumlah rujukan per kasus berisiko).
+- Peningkatan kepatuhan pemantauan (jumlah kunjungan/rekam per pasien).
+
+**Tantangan & mitigasi:**
+- Keterbatasan koneksi internet -> Offline-first sync dan auto-sync saat online.
+- Variasi akurasi perangkat -> Validasi input dan standar perangkat kompatibel.
+- Literasi digital pengguna -> Pelatihan singkat, UI sederhana, dan panduan visual.
+- Privasi data -> Role-based access dan pembatasan akses data pasien.
+
 ---
 
 ## Referensi Medis
