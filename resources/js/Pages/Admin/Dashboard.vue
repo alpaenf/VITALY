@@ -10,7 +10,7 @@
         <!-- Stats Grid -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <StatCard :value="stats.totalPatients" label="Total Pasien" subtitle="Semua pasien terdaftar" color="blue" class="animate-fade-in-up delay-75" />
-            <StatCard :value="stats.totalKaders" label="Total Kader" subtitle="Tenaga kesehatan aktif" color="green" class="animate-fade-in-up delay-150" />
+            <StatCard :value="stats.totalKaders" label="Total Health Agent" subtitle="Tenaga kesehatan aktif" color="green" class="animate-fade-in-up delay-150" />
             <StatCard :value="stats.totalRecords" label="Rekam Medis" subtitle="Total input data kesehatan" color="purple" class="animate-fade-in-up delay-200" />
             <StatCard :value="stats.newPatientsThisMonth" label="Pasien Baru" subtitle="Terdaftar bulan ini" color="orange" class="animate-fade-in-up delay-300" />
         </div>

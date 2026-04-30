@@ -17,8 +17,8 @@
 
             <!-- Card -->
             <div class="bg-white rounded-3xl shadow-2xl p-5 sm:p-7">
-                <h2 class="text-lg font-bold text-gray-800 mb-0.5">Cek Data Kesehatan</h2>
-                <p class="text-xs text-gray-500 mb-5">Masukkan NIK Anda untuk melihat data kesehatan</p>
+                <h2 class="text-lg font-bold text-gray-800 mb-0.5">Akses Data Kesehatan</h2>
+                <p class="text-xs text-gray-500 mb-5">Masukkan NIK (16 digit) yang kamu daftarkan</p>
 
                 <!-- Google welcome banner -->
                 <div v-if="googleName" class="mb-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-green-800">
@@ -74,12 +74,21 @@
                     <div class="flex-1 h-px bg-gray-100"></div>
                 </div>
 
+                <!-- Daftar Mandiri -->
+                <a href="/auth/google/register"
+                    class="w-full flex items-center justify-center gap-2.5 bg-primary text-white text-sm font-semibold py-2.5 rounded-xl hover:bg-primary-dark transition shadow-lg shadow-primary/30 mb-3">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                    </svg>
+                    Belum terdaftar? Daftar Mandiri
+                </a>
+
                 <Link href="/login"
                     class="w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-600 text-sm font-medium py-2.5 rounded-xl hover:bg-gray-50 transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
-                    Login sebagai Kader / Admin
+                    Login sebagai Health Agent / Admin
                 </Link>
             </div>
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\AiAnalysisController;
 use App\Http\Controllers\AiChatController;
 use App\Http\Controllers\EdukasiController;
 use App\Http\Controllers\StandarNormalController;
+use App\Http\Controllers\SelfInputController;
 use App\Http\Controllers\Kader\KaderDashboardController;
 use App\Http\Controllers\Kader\KaderPatientController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -45,6 +46,13 @@ Route::get('/masuk', [PatientController::class, 'showLookup'])->name('patient.lo
 Route::post('/masuk', [PatientController::class, 'lookup'])->name('patient.login');
 Route::post('/keluar', [PatientController::class, 'logout'])->name('patient.logout');
 
+// Self-registration (Daftar Mandiri)
+Route::get('/auth/google/register', [AuthController::class, 'redirectToGoogleRegister'])->name('auth.google.register');
+Route::get('/daftar', [PatientController::class, 'showRegister'])->name('patient.register');
+Route::post('/daftar', [PatientController::class, 'register'])->name('patient.register.submit');
+Route::post('/daftar/device', [PatientController::class, 'saveDevice'])->name('patient.register.device');
+
+
 // ─────────────────────────────────────────────────────────────
 // Patient session routes (NIK session required)
 // ─────────────────────────────────────────────────────────────
@@ -56,6 +64,10 @@ Route::middleware('patient.session')->group(function () {
     Route::delete('/ai-analysis/{aiAnalysis}', [AiAnalysisController::class, 'destroy'])->name('ai-analysis.destroy');
     Route::get('/ai-chat', [AiChatController::class, 'index'])->name('ai-chat');
     Route::post('/ai-chat/message', [AiChatController::class, 'message'])->name('ai-chat.message');
+
+    // Pasien mandiri — input & sync data sendiri
+    Route::get('/input-mandiri', [SelfInputController::class, 'show'])->name('self-input.show');
+    Route::post('/input-mandiri', [SelfInputController::class, 'store'])->name('self-input.store');
 });
 
 // Public signed report link for WhatsApp sharing (no auth, signature-protected)

@@ -15,6 +15,7 @@ class EdukasiController extends Controller
         'nutrition' => 'gizi seimbang IMT BMI nutrisi kemenkes',
         'lifestyle' => 'gaya hidup sehat olahraga kesehatan indonesia',
         'mental'    => 'kesehatan mental stres kecemasan indonesia',
+        'device'    => 'cara pakai smartwatch kesehatan mi band 8 fitbit garmin indonesia',
     ];
 
     // Trusted channel IDs (opsional â€” untuk filter jika ingin strict)
@@ -112,6 +113,8 @@ class EdukasiController extends Controller
             ['id'=>10,'youtubeId'=>'wcHHSRMVHQE','category'=>'heart','title'=>'Pertolongan Pertama pada Serangan Jantung','desc'=>'Kenali tanda-tanda serangan jantung sejak dini dan langkah pertolongan pertama yang tepat.','channel'=>'PERKI Indonesia','source'=>'PERKI','duration'=>'6:45'],
             ['id'=>11,'youtubeId'=>'VHxpfgfonSk','category'=>'diabetes','title'=>'Olahraga Aman dan Efektif untuk Penderita Diabetes','desc'=>'Jenis dan intensitas olahraga yang direkomendasikan untuk mengontrol gula darah pada penderita diabetes.','channel'=>'PERKENI','source'=>'PERKENI','duration'=>'6:20'],
             ['id'=>12,'youtubeId'=>'nm1TxQj9IsQ','category'=>'lifestyle','title'=>'Tips Tidur Berkualitas untuk Kesehatan Optimal','desc'=>'Hubungan antara kualitas tidur dengan tekanan darah, gula darah, dan kesehatan jantung.','channel'=>'Kemenkes RI','source'=>'Kemenkes','duration'=>'5:45'],
+            ['id'=>13,'youtubeId'=>'kYv9G_lU1mQ','category'=>'device','title'=>'Tutorial Koneksi Smartwatch ke VITALY','desc'=>'Cara mudah menghubungkan Mi Band 8 dan smartwatch lainnya ke aplikasi VITALY untuk pemantauan detak jantung real-time.','channel'=>'VITALY Official','source'=>'VITALY','duration'=>'3:20'],
+            ['id'=>14,'youtubeId'=>'680-RjA50uE','category'=>'device','title'=>'Manfaat IoMT untuk Kesehatan Jantung','desc'=>'Bagaimana teknologi sensor pada smartwatch dapat membantu deteksi dini masalah jantung secara otomatis.','channel'=>'Tech Health ID','source'=>'Edukasi','duration'=>'5:15'],
         ];
     }
 }

@@ -16,6 +16,7 @@ class HealthRecord extends Model
         'systolic',
         'diastolic',
         'heart_rate',
+        'oxygen_saturation',
         'blood_sugar',
         'weight',
         'height',

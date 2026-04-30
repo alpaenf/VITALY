@@ -13,7 +13,7 @@
                     </div>
                     <div>
                         <p class="text-sm font-bold text-gray-800 leading-none">VITALY</p>
-                        <p class="text-[10px] text-primary font-semibold mt-0.5">Portal Kader</p>
+                        <p class="text-[10px] text-primary font-semibold mt-0.5">Health Agent</p>
                     </div>
                 </div>
             </div>
@@ -320,10 +320,10 @@ const mobileTo = (href) => {
 const pageTitle = computed(() => {
     const p = window.location.pathname;
     if (p.startsWith('/kader/pasien')) return 'Data Pasien';
-    if (p === '/kader/dashboard')     return 'Dashboard Kader';
+    if (p === '/kader/dashboard')     return 'Dashboard';
     if (p === '/edukasi')             return 'Edukasi Kesehatan';
     if (p === '/standar-normal')      return 'Standar Normal';
-    return 'Portal Kader';
+    return 'Health Agent Portal';
 });
 
 const NavLink = {

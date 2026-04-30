@@ -112,16 +112,48 @@
                 </div>
             </div>
 
-            <!-- No data -->
-            <div v-if="!latestRecord" class="card-VITALY p-6 sm:p-8 text-center animate-scale-in delay-150 lg:col-span-2">
-                <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <!-- No data — IoMT aware empty state -->
+            <div v-if="!latestRecord" class="card-VITALY p-6 sm:p-8 animate-scale-in delay-150 lg:col-span-2">
+
+                <!-- Smartwatch sync CTA -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-5">
+                    <!-- Sync IoMT -->
+                    <button @click="doSync"
+                        :disabled="isSyncing"
+                        class="flex-1 flex items-center gap-3 bg-gradient-to-br from-primary to-primary-dark text-white rounded-2xl px-4 py-4 hover:opacity-90 transition shadow-lg shadow-primary/25 disabled:opacity-60">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg v-if="!isSyncing" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                            <svg v-else class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-bold text-sm">{{ isSyncing ? (syncStatus || 'Mencari perangkat...') : 'Sync Smartwatch' }}</p>
+                            <p class="text-white/70 text-xs mt-0.5">Mi Band 8 / BLE otomatis</p>
+                        </div>
+                    </button>
+
+                    <!-- Input Mandiri -->
+                    <Link href="/input-mandiri"
+                        class="flex-1 flex items-center gap-3 bg-white border-2 border-primary/20 rounded-2xl px-4 py-4 hover:border-primary/50 hover:bg-primary/5 transition">
+                        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm text-gray-800">Input Manual</p>
+                            <p class="text-gray-400 text-xs mt-0.5">Isi data sendiri</p>
+                        </div>
+                    </Link>
                 </div>
-                <h3 class="font-semibold text-gray-700 mb-1">Belum Ada Data</h3>
-                <p class="text-sm text-gray-500 mb-4">Data kesehatan Anda belum tersedia. Minta kader untuk memasukkan data.</p>
-                <Link href="/ai-analysis" class="inline-block bg-primary text-white text-sm font-semibold px-6 py-2.5 rounded-xl hover:bg-primary-dark transition">
-                    Analisis AI Sekarang
-                </Link>
+
+                <!-- Hint -->
+                <div class="text-center">
+                    <p class="text-xs text-gray-400">Atau hubungi Health Agent di posyandu untuk diinputkan datamu</p>
+                </div>
             </div>
         </div>
 
@@ -215,21 +247,38 @@
 </template>
 
 <script setup>
-import { computed, h } from 'vue';
+import { computed, h, ref } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler } from 'chart.js';
+import { syncVitalData } from '@/Services/BluetoothService';
+import axios from 'axios';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
+const isSyncing = ref(false);
+const syncStatus = ref('');
+
+const doSync = async () => {
+    isSyncing.value = true;
+    const data = await syncVitalData((msg) => { syncStatus.value = msg; });
+    if (data) {
+        // Kirim data hasil sync ke backend, lalu reload
+        await axios.post('/input-mandiri', { ...data, source: 'iomt' });
+        window.location.reload();
+    }
+    isSyncing.value = false;
+    syncStatus.value = '';
+};
+
 const props = defineProps({
-    latestRecord: Object,
-    recentRecords: Array,
-    totalRecords: Number,
+    latestRecord:   Object,
+    recentRecords:  Array,
+    totalRecords:   Number,
     latestAnalysis: Object,
-    healthScore: Number,
-    chartData: Array,
+    healthScore:    Number,
+    chartData:      Array,
 });
 
 const page = usePage();

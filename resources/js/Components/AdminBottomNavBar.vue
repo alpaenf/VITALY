@@ -209,7 +209,7 @@ const StandarIcon = {
 const navItems = [
     { name: 'dashboard', href: '/admin/dashboard', label: 'Dashboard', icon: DashboardIcon },
     { name: 'patients',  href: '/admin/patients',  label: 'Pasien', icon: UsersIcon },
-    { name: 'kaders',    href: '/admin/kaders',    label: 'Kader',  icon: KaderIcon },
+    { name: 'kaders',    href: '/admin/kaders',    label: 'Health Agent',  icon: KaderIcon },
     { name: 'knowledge', href: '/admin/knowledge', label: 'Knowledge', icon: KnowledgeIcon },
 ];
 </script>

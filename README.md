@@ -1,366 +1,451 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" />
-  <img src="https://img.shields.io/badge/Vue.js-3-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" />
-  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/Inertia.js-Powered-9E3ACF?style=for-the-badge" />
-</p>
+# VITALY — Platform Monitoring Kesehatan Berbasis IoMT
 
-<h1 align="center">VITALY - Sistem Monitor Kesehatan Cerdas</h1>
-
-<p align="center">
-  Platform monitoring kesehatan berbasis AI untuk Health Agent dan pasien. VITALY memusatkan data vital (tensi, gula darah, IMT, dan metrik lain), menghasilkan analisis AI, edukasi, serta alur rujukan dan tindak lanjut yang cepat.
-</p>
+> **Versi:** 2.0 (IoMT Edition)
+> **Stack:** Laravel 11 · Vue 3 (Inertia.js) · Vite · TailwindCSS · Gemini AI
+> **Konteks:** Karya Tulis Ilmiah (KTI) — Sistem Kesehatan Digital Berbasis Internet of Medical Things
 
 ---
 
-## Daftar Isi
+## 🧠 Ringkasan Sistem
 
-- [Ringkasan Produk](#ringkasan-produk)
-- [Fitur Unggulan](#fitur-unggulan)
-- [Fitur Lengkap](#fitur-lengkap)
-- [Tutorial Cara Kerja Aplikasi](#tutorial-cara-kerja-aplikasi)
-- [Kebutuhan Sistem](#kebutuhan-sistem)
-- [Instalasi Awal](#instalasi-awal)
-- [Cara Menjalankan Aplikasi](#cara-menjalankan-aplikasi)
-- [Akses dari HP](#akses-dari-hp--perangkat-lain)
-- [Struktur Proyek](#struktur-proyek)
-- [LKTI Draft Helper](#lkti-draft-helper)
-- [Referensi Medis](#referensi-medis)
+VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **IoMT (Internet of Medical Things)** berbasis smartwatch (Mi Band 8) dengan **analisis kecerdasan buatan (Google Gemini AI)**. Sistem ini dirancang untuk memberdayakan masyarakat agar bisa memantau kondisi kesehatannya secara mandiri, sekaligus membantu tenaga kesehatan (Health Agent/Kader) dalam mencatat dan menganalisis data vital pasien.
 
 ---
 
-## Ringkasan Produk
+## 👥 Peran Pengguna (Roles)
 
-VITALY adalah sistem monitoring kesehatan cerdas yang menargetkan percepatan deteksi dini, triase, dan tindak lanjut. Sistem ini menghubungkan Health Agent dengan data pasien secara rapi, memadukan pencatatan manual dan integrasi perangkat (smartwatch dan tensimeter Bluetooth), serta menampilkan analisis AI sebagai bahan keputusan.
+| Role | Sebutan di UI | Akses |
+|------|--------------|-------|
+| `user` (Pasien) | Pasien | Dashboard pribadi, riwayat, AI chat, input mandiri |
+| `kader` | Health Agent | Kelola pasien, input data, lihat analisis AI |
+| `admin` | Admin | Kelola Health Agent, kelola pasien, knowledge base AI |
 
-Peran utama di aplikasi:
-- **Pasien**: melihat data kesehatan pribadi, memahami hasil, dan mengikuti rekomendasi.
-- **Health Agent**: mengelola pasien, input data pemeriksaan, melihat tren, dan menindaklanjuti risiko.
-- **Admin**: pengelolaan akun dan monitoring sistem.
-
----
-
-## Fitur Unggulan
-
-1. **Integrasi Smartwatch & IoMT**
-  - Pairing perangkat sekali, data vital sinkron otomatis pada pemeriksaan berikutnya.
-  - Mengurangi input manual dan error pencatatan.
-2. **Smart Triage (Prioritas Risiko)**
-  - Sistem membantu menandai pasien berisiko agar ditangani lebih cepat.
-3. **Analisis AI dan Ringkasan Klinis**
-  - Merangkum kondisi pasien untuk mempermudah pengambilan keputusan.
-4. **Rujukan & Tindak Lanjut Cepat**
-  - Dokumen rujukan dan laporan analisis siap dibagikan.
-5. **Offline-First Sync**
-  - Aplikasi tetap usable pada koneksi minim, lalu sinkron saat online.
-
----
-
-## Fitur Lengkap
-
-### Modul Utama (Health Agent)
-- **Dashboard**: ringkasan kondisi, indikator risiko, tren.
-- **Data Pasien**: pencarian, detail pasien, dan histori pemeriksaan.
-- **Input Pemeriksaan**: pencatatan tekanan darah, gula darah, IMT, suhu, SpO2, dan metrik vital lain.
-- **Analisis AI**: ringkasan kondisi, rekomendasi tindak lanjut.
-- **Riwayat**: arsip data pemeriksaan per pasien.
-
-### Modul Pasien
-- **Cek Data Kesehatan**: akses data pribadi berbasis NIK.
-- **Ringkasan & Edukasi**: pemahaman hasil dan materi edukasi.
-
-### Modul Umum
-- **Chat AI**: tanya jawab seputar kesehatan.
-- **Edukasi Kesehatan**: konten video edukatif.
-- **Standar Normal**: referensi nilai normal parameter kesehatan.
-- **Profil**: pengelolaan akun pengguna.
-
-### Output & Distribusi Informasi
-- **Unduh PDF**: laporan pemeriksaan dan analisis.
-- **Bagikan WhatsApp**: ringkas laporan untuk kolaborasi tindak lanjut.
-
----
-
-## Tutorial Cara Kerja Aplikasi
-
-### A. Alur untuk Health Agent (pemeriksaan pasien)
-1. **Masuk ke Dashboard**
-  - Login sebagai Health Agent.
-2. **Cari atau Tambah Pasien**
-  - Gunakan pencarian atau buat data pasien baru.
-3. **Input Data Pemeriksaan**
-  - Catat metrik vital (tensi, gula darah, IMT, suhu, SpO2, dan lainnya).
-  - Jika perangkat IoMT tersedia, lakukan pairing dan sinkronisasi otomatis.
-4. **Analisis AI**
-  - Sistem menghasilkan ringkasan kondisi dan rekomendasi tindak lanjut.
-5. **Rujukan dan Distribusi Laporan**
-  - Unduh PDF atau bagikan ringkasan ke WhatsApp.
-6. **Pantau Riwayat**
-  - Lihat tren dan perubahan kondisi per pasien.
-
-### B. Alur untuk Pasien
-1. **Masuk dengan NIK**
-  - Pasien melihat data kesehatan pribadi.
-2. **Baca Ringkasan**
-  - Memahami status kesehatan dan rekomendasi.
-3. **Akses Edukasi**
-  - Menonton video atau membaca standar normal.
-
-### C. Cara Kerja Smartwatch (IoMT)
-1. **Pairing perangkat**
-  - Health Agent menghubungkan smartwatch/tensimeter via Bluetooth.
-2. **Sinkron data otomatis**
-  - Data vital ditarik langsung ke profil pasien.
-3. **Validasi & analisis**
-  - Sistem menampilkan data terbaru dan menjalankan analisis AI.
-
----
-
-## Kebutuhan Sistem
-
-| Kebutuhan | Versi |
-|-----------|-------|
-| PHP | 8.2+ |
-| Composer | 2.x |
-| Node.js | 18+ |
-| Python | 3.10+ |
-| Laragon / XAMPP | Terbaru |
-| pip | Terbaru |
-
----
-
-## Instalasi Awal
-
-> Lakukan sekali saat setup awal.
-
-### 1. Clone / Salin Proyek
-
-```bash
-git clone <url-repo> Vitaly
-cd Vitaly
+### Alur Login per Role:
+```
+Pasien / Tamu  → /login → "Saya Pasien" → Google OAuth → /masuk (input NIK)
+Health Agent   → /login → "Saya Health Agent" → Email + Password / Google OAuth
+Admin          → /login → "Saya Health Agent / Admin" → Email + Password
 ```
 
-### 2. Install Dependensi PHP
+---
 
-```bash
-composer install
+## 🗂️ Arsitektur Aplikasi
+
+```
+VITALY/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Auth/AuthController.php       ← Google OAuth + Login biasa
+│   │   │   ├── PatientController.php         ← Lookup NIK + Daftar Mandiri
+│   │   │   ├── SelfInputController.php       ← Input data mandiri oleh pasien
+│   │   │   ├── DashboardController.php       ← Dashboard pasien
+│   │   │   ├── HealthRecordController.php    ← Riwayat data kesehatan
+│   │   │   ├── AiAnalysisController.php      ← Analisis AI Gemini
+│   │   │   ├── AiChatController.php          ← Chatbot VITALY Smart Assistant
+│   │   │   ├── EdukasiController.php         ← Konten edukasi + YouTube API
+│   │   │   ├── StandarNormalController.php   ← Referensi nilai normal
+│   │   │   ├── Kader/
+│   │   │   │   ├── KaderDashboardController.php
+│   │   │   │   └── KaderPatientController.php  ← CRUD pasien + input data
+│   │   │   └── Admin/
+│   │   │       ├── AdminDashboardController.php
+│   │   │       ├── AdminUserController.php     ← Kelola pasien (admin)
+│   │   │       ├── AdminKaderController.php    ← Kelola Health Agent
+│   │   │       └── AiKnowledgeController.php   ← Knowledge base AI
+│   ├── Models/
+│   │   ├── User.php          ← Health Agent & Admin (role: kader/admin)
+│   │   ├── Patient.php       ← Data pasien (NIK, nama, dll + self_registered)
+│   │   ├── HealthRecord.php  ← Record vital: TD, BPM, SpO2, gula darah, dll
+│   │   └── AiAnalysis.php    ← Hasil analisis AI
+│   └── Services/
+│       └── GeminiService.php ← Integrasi Google Gemini API (analisis + chat)
+│
+├── resources/js/
+│   ├── Pages/
+│   │   ├── Landing.vue              ← Halaman utama publik
+│   │   ├── Auth/Login.vue           ← Halaman login (multi-role)
+│   │   ├── PatientLookup.vue        ← Masuk via NIK (pasien)
+│   │   ├── SelfRegister.vue         ← Daftar mandiri pasien baru (3 langkah)
+│   │   ├── SelfInput.vue            ← Input data mandiri pasien
+│   │   ├── Dashboard.vue            ← Dashboard pasien (IoMT-aware)
+│   │   ├── AiAnalysis.vue           ← Halaman analisis AI
+│   │   ├── AiChat.vue               ← Chatbot VITALY Smart Assistant
+│   │   ├── Edukasi.vue              ← Video edukasi kesehatan
+│   │   ├── StandarNormal.vue        ← Referensi nilai normal
+│   │   ├── Kader/
+│   │   │   ├── Dashboard.vue        ← Dashboard Health Agent
+│   │   │   ├── Patients.vue         ← Daftar pasien + pairing smartwatch
+│   │   │   ├── PatientDetail.vue    ← Detail + riwayat pasien
+│   │   │   └── InputData.vue        ← Input data pasien (manual + sync BLE)
+│   │   └── Admin/
+│   │       ├── Dashboard.vue
+│   │       ├── Kaders.vue           ← Kelola Health Agent (UI: "Health Agent")
+│   │       └── UserDetail.vue
+│   ├── Layouts/
+│   │   ├── AppLayout.vue            ← Layout pasien (sidebar + bottom nav mobile)
+│   │   ├── KaderLayout.vue          ← Layout Health Agent
+│   │   ├── AdminLayout.vue          ← Layout Admin
+│   │   └── AuthLayout.vue           ← Layout halaman auth (split-screen)
+│   └── Services/
+│       └── BluetoothService.js      ← 🔑 Layanan BLE / IoMT (lihat bawah)
+│
+├── routes/web.php                   ← Semua route (pasien, kader, admin, daftar)
+└── database/migrations/             ← Schema DB
 ```
 
-### 3. Konfigurasi Environment
+---
 
-```bash
-copy .env.example .env
-php artisan key:generate
+## 🔑 Fitur Utama & Alur Kerja
+
+### 1. Pendaftaran Pasien Mandiri (Self-Registration)
+
+Pasien baru bisa mendaftar sendiri tanpa perlu ke posyandu:
+
+```
+/login → "Saya Pasien" → "Daftar Mandiri (Pasien Baru)"
+    ↓
+[Langkah 1] Verifikasi Google OAuth
+    ↓
+[Langkah 2] Isi form: NIK, Nama, TTL, Gender, HP, Alamat
+    ↓  POST /daftar → PatientController@register
+    ↓  Patient dibuat dengan flag: self_registered = true
+[Langkah 3] Pairing Smartwatch (opsional via BluetoothService)
+    ↓
+Auto-login sebagai pasien → /masuk (gunakan NIK yang sudah didaftarkan)
 ```
 
-Contoh konfigurasi `.env`:
+**File terkait:**
+- `SelfRegister.vue` — Form 3 langkah
+- `PatientController::showRegister()` + `register()` + `saveDevice()`
+- `AuthController::redirectToGoogleRegister()` + callback `register_` flow
+- Route: `GET/POST /daftar`, `GET /auth/google/register`
+
+### 2. Login Pasien (Returning User)
+
+```
+/masuk → Input NIK 16 digit → session('patient_id') disimpan → /dashboard
+```
+
+> **Pasien mandiri** login dengan NIK yang sama saat mendaftar.
+> Tidak perlu Google lagi setelah terdaftar.
+
+### 3. Input Data Mandiri Pasien
+
+Pasien bisa mengisi data vital sendiri atau sync dari smartwatch:
+
+```
+/dashboard (belum ada data) → [Sync Smartwatch] atau [Input Manual]
+    ↓                                ↓
+syncVitalData() via BLE     GET /input-mandiri (SelfInput.vue)
+    ↓ POST /input-mandiri           ↓ POST /input-mandiri
+    SelfInputController@store → HealthRecord disimpan → reload dashboard
+```
+
+**Data yang bisa diinput:**
+- Tekanan Darah (Sistolik/Diastolik) — bisa dari BLE
+- Detak Jantung (BPM) — bisa dari BLE
+- SpO2 / Oksigen Saturasi — bisa dari BLE
+- Gula Darah — manual
+- Suhu Tubuh — manual
+- Berat & Tinggi Badan — manual
+
+### 4. Health Agent Input Data Pasien
+
+```
+/kader/pasien → pilih pasien → /kader/pasien/{id}/input
+    ↓
+InputData.vue → Form vital + tombol "Sync dari Smartwatch"
+    ↓ Sync via syncVitalData() di BluetoothService.js
+    ↓ Data di-autofill, badge "Data Terverifikasi Otomatis" muncul
+    ↓ Jika full sync → konfirmasi manual disembunyikan
+    ↓ Jika manual → checkbox konfirmasi wajib dicentang
+    ↓ POST /kader/pasien/{id}/input
+    KaderPatientController@storeInput → HealthRecord
+```
+
+### 5. Analisis AI (Gemini)
+
+```
+Pasien/Health Agent klik "Analisis AI"
+    ↓ POST /ai-analysis
+    AiAnalysisController → GeminiService::analyze($patient, $record)
+    ↓
+GeminiService membangun prompt dengan:
+  - Data identitas pasien (usia, gender)
+  - Semua nilai vital terbaru
+  - Label sumber data: [SUMBER: IoMT/Smartwatch] atau [SUMBER: Manual]
+  - Knowledge base dari tabel ai_knowledge
+  - Instruksi persona: dokter IoMT Indonesia
+    ↓
+Gemini API mengembalikan:
+  - Interpretasi kondisi kesehatan
+  - Rekomendasi tindakan
+  - Link video YouTube edukatif yang relevan
+  - Saran waktu kontrol ulang
+```
+
+### 6. VITALY Smart Assistant (Chatbot)
+
+```
+/ai-chat → AiChat.vue
+    ↓ POST /ai-chat/message
+    AiChatController → GeminiService::chat($messages)
+    ↓
+Chatbot berkepribadian "VITALY Smart Assistant":
+  - Menjawab pertanyaan kesehatan berbasis Kemenkes RI
+  - Menjelaskan cara koneksi Mi Band 8 ke VITALY
+  - Memberikan link video edukasi yang relevan
+  - Melabeli sumber data IoMT vs manual
+```
+
+**Quick Questions di UI:**
+- "Tensi 130/85 itu bahaya?"
+- "Cara cepat turunin gula darah?"
+- "Cara hubungkan Mi Band 8 ke VITALY?"
+- "Manfaat pantau kesehatan pakai smartwatch?"
+
+### 7. Konten Edukasi
+
+```
+/edukasi → EdukasiController@index
+    ↓
+Jika YOUTUBE_API_KEY tersedia di .env:
+    → Fetch video live dari YouTube per kategori
+Jika tidak ada API Key:
+    → Tampilkan video statis (fallback)
+```
+
+**Kategori video:**
+| ID | Label |
+|----|-------|
+| `heart` | Jantung & TD |
+| `diabetes` | Gula Darah |
+| `nutrition` | Gizi & IMT |
+| `lifestyle` | Gaya Hidup |
+| `mental` | Kesehatan Mental |
+| `device` | IoMT & Teknologi ← *kategori baru* |
+
+---
+
+## ⚡ BluetoothService.js — Layanan IoMT BLE
+
+File: `resources/js/Services/BluetoothService.js`
+
+### Export yang tersedia:
+
+| Fungsi | Kegunaan |
+|--------|---------|
+| `isBluetoothSupported()` | Cek apakah browser support Web Bluetooth |
+| `isHttps()` | Cek apakah halaman berjalan di HTTPS |
+| `getBluetoothStatus()` | Return `{ canUse, reason, message }` — cek lengkap |
+| `pairDevice(onStatus)` | Buka dialog pairing, return `{ deviceId, deviceName }` |
+| `syncVitalData(onStatus)` | Baca data vital dari BLE, return objek data |
+| `formatDeviceId(id)` | Format device ID untuk tampilan |
+
+### Logika Fallback:
+
+```
+syncVitalData() dipanggil
+    ↓
+getBluetoothStatus()
+    ├── HTTP (bukan HTTPS)? → pesan error + simulasi
+    ├── Browser tidak support? → pesan error + simulasi
+    ├── Bluetooth hardware off? → pesan error + simulasi
+    └── Semua OK → requestDevice() → GATT connect → baca data real
+                        ↓ gagal?
+                    simulateVitalData() ← data demo realistis
+```
+
+### Syarat Agar BLE Asli Bekerja:
+
+1. **HTTPS wajib** — Web Bluetooth API diblokir di HTTP
+2. **Chrome atau Edge** — Firefox & Safari tidak support
+3. **Bluetooth aktif** di perangkat user
+4. **Smartwatch dalam mode discoverable**
+
+### Protokol Mi Band 8:
+
+Mi Band 8 menggunakan protokol **Zepp OS proprietary** + GATT standard:
+- Heart Rate dibaca via GATT standard (`0x180D` + `0x2A37`) ✅
+- Blood Pressure via GATT notifications ✅
+- Data lain (langkah, tidur) butuh auth Zepp token ⚠️
+
+---
+
+## 🗃️ Database Schema (Tabel Utama)
+
+### `patients`
+```sql
+id, nik (unique 16 digit), name, date_of_birth, gender,
+phone, address, device_id (smartwatch ID),
+google_email, self_registered (bool), timestamps
+```
+
+### `health_records`
+```sql
+id, patient_id (FK), recorded_by (FK users),
+systolic, diastolic,          -- Tekanan Darah (mmHg)
+heart_rate,                   -- Detak Jantung (bpm)
+oxygen_saturation,            -- SpO2 (%)
+blood_sugar,                  -- Gula Darah (mg/dL)
+temperature,                  -- Suhu (°C)
+weight, height,               -- BB (kg), TB (cm)
+respiratory_rate,             -- Laju napas (x/menit)
+notes,                        -- [SUMBER: IoMT] / [SUMBER: Manual]
+recorded_at, timestamps
+```
+
+### `users` (Health Agent & Admin)
+```sql
+id, name, email, password, role (kader/admin),
+google_id, avatar, gender, date_of_birth, phone, timestamps
+```
+
+### `ai_analyses`
+```sql
+id, patient_id, health_record_id, result (text), timestamps
+```
+
+---
+
+## 🌐 Route Map Penting
+
+```
+GET  /                      → Landing page
+GET  /login                 → Halaman login multi-role
+GET  /auth/google           → Google OAuth (Health Agent)
+GET  /auth/google/tamu      → Google OAuth (Pasien/Tamu)
+GET  /auth/google/register  → Google OAuth (Daftar Mandiri)
+GET  /auth/google/callback  → Callback handler semua flow
+
+GET  /masuk                 → PatientLookup (input NIK)
+POST /masuk                 → Proses lookup NIK → session patient_id
+GET  /daftar                → Form daftar mandiri (SelfRegister)
+POST /daftar                → Simpan pasien baru (self_registered=true)
+POST /daftar/device         → Simpan device_id smartwatch
+
+-- PATIENT SESSION (middleware: patient.session) --
+GET  /dashboard             → Dashboard pasien
+GET  /history               → Riwayat data
+GET  /ai-analysis           → Analisis AI
+POST /ai-analysis           → Jalankan analisis
+GET  /ai-chat               → Chatbot
+POST /ai-chat/message       → Kirim pesan chatbot
+GET  /input-mandiri         → Form input mandiri
+POST /input-mandiri         → Simpan data mandiri
+
+-- HEALTH AGENT (middleware: auth + kader) --
+GET  /kader/dashboard
+GET  /kader/pasien                    → Daftar pasien
+POST /kader/pasien                    → Tambah pasien
+GET  /kader/pasien/{id}               → Detail pasien
+GET  /kader/pasien/{id}/input         → Form input data
+POST /kader/pasien/{id}/input         → Simpan data
+POST /kader/pasien/{id}/analyze       → Analisis AI
+
+-- ADMIN (middleware: auth + admin) --
+GET  /admin/dashboard
+GET  /admin/patients
+GET  /admin/kaders                    → Kelola Health Agent
+GET  /admin/knowledge                 → Knowledge base AI
+
+-- PUBLIC --
+GET  /edukasi               → Konten edukasi
+GET  /standar-normal        → Referensi nilai normal
+```
+
+---
+
+## ⚙️ Konfigurasi `.env` Penting
 
 ```env
-APP_URL=http://localhost
-
+# Database
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=Vitaly
-DB_USERNAME=root
-DB_PASSWORD=
+DB_DATABASE=vitaly
 
-# URL layanan AI Python (default)
-HEALTH_AI_URL=http://localhost:8001
+# Google OAuth (wajib untuk login)
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_REDIRECT_URI=https://your-domain.com/auth/google/callback
 
-# Opsional untuk Chat AI berbasis Gemini
-GEMINI_API_KEY=
-```
+# Google Gemini AI (wajib untuk analisis & chatbot)
+GEMINI_API_KEY=...
 
-### 4. Migrasi Database
+# YouTube Data API v3 (opsional — untuk video edukasi live)
+YOUTUBE_API_KEY=...
 
-```bash
-php artisan migrate
-```
-
-### 5. Storage Link
-
-```bash
-php artisan storage:link
-```
-
-### 6. Dependensi Frontend & Build
-
-```bash
-npm install
-npm run build
+# App
+APP_URL=https://your-domain.com
+APP_ENV=production
 ```
 
 ---
 
-## Cara Menjalankan Aplikasi
+## 📱 Responsivitas Mobile
 
-Setiap kali ingin menggunakan VITALY, ada **2 layanan** yang harus aktif:
+Semua halaman dirancang **mobile-first** menggunakan Tailwind CSS:
+- Bottom navigation bar (capsule style) untuk pasien di mobile
+- Sidebar collapse di Health Agent mobile
+- Form grid adaptif: `grid-cols-2` → `grid-cols-1` di layar kecil
+- Hero section dengan animasi wave divider
 
-### Langkah 1 - Jalankan Python AI Service (`start.bat`)
+---
 
-1. Buka folder `python-ai`.
-2. Jalankan `start.bat`.
+## 🤖 GeminiService.php — Prompt AI
+
+File: `app/Services/GeminiService.php`
+
+Prompt sistem yang dikirim ke Gemini mencakup:
+1. **Persona:** Dokter IoMT Indonesia berbasis Kemenkes RI
+2. **Data Pasien:** Usia, gender, semua nilai vital terbaru
+3. **Label Sumber:** `[SUMBER: IoMT/Smartwatch]` atau `[SUMBER: Manual]`
+4. **Knowledge Base:** Dari tabel `ai_knowledge` (bisa dikelola admin)
+5. **Instruksi Output:** Format terstruktur — interpretasi, rekomendasi, video YouTube
+
+---
+
+## 🚀 Cara Deploy ke Production
 
 ```bash
-cd python-ai
-start.bat
+# 1. Clone & install
+git clone ... && cd Vitaly
+composer install --no-dev
+npm install && npm run build
+
+# 2. Setup environment
+cp .env.example .env
+php artisan key:generate
+# Isi semua nilai di .env (DB, Google OAuth, Gemini API)
+
+# 3. Migrate database
+php artisan migrate --force
+
+# 4. Optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# 5. Pastikan HTTPS aktif (wajib untuk Web Bluetooth API)
+# Gunakan SSL dari Let's Encrypt atau layanan hosting yang menyediakan SSL
 ```
 
-Tunggu hingga muncul pesan:
-
-```
-INFO:     Uvicorn running on http://0.0.0.0:8001
-```
-
-> Jangan tutup jendela ini selama aplikasi digunakan.
-
-### Langkah 2 - Jalankan Laravel via Laragon
-
-1. Buka Laragon dan klik **Start All**.
-2. Akses aplikasi:
-
-```
-http://localhost/Vitaly/public
-```
-
-Jika memakai virtual host:
-
-```
-http://vitaly.test
-```
+> ⚠️ **Penting:** Web Bluetooth API **hanya bekerja di HTTPS**. Tanpa SSL, fitur sync smartwatch otomatis menggunakan mode simulasi.
 
 ---
 
-## Akses dari HP / Perangkat Lain
+## 📊 Nilai Referensi Kesehatan (Standar Kemenkes RI)
 
-> PC dan HP harus berada pada jaringan WiFi yang sama.
-
-### Langkah 1 - Cek IP Lokal PC
-
-```powershell
-ipconfig
-```
-
-Catat `IPv4 Address`, contoh: `192.168.1.5`.
-
-### Langkah 2 - Buka Port di Firewall
-
-```powershell
-netsh advfirewall firewall add rule name="Laragon Apache" dir=in action=allow protocol=TCP localport=80
-netsh advfirewall firewall add rule name="VITALY AI Service" dir=in action=allow protocol=TCP localport=8001
-```
-
-### Langkah 3 - Update APP_URL
-
-```env
-APP_URL=http://192.168.1.5
-```
-
-Lalu:
-
-```bash
-php artisan config:clear
-```
-
-### Langkah 4 - Akses dari HP
-
-```
-http://192.168.1.5/Vitaly/public
-```
+| Parameter | Normal | Perlu Perhatian | Berbahaya |
+|-----------|--------|-----------------|-----------|
+| Tekanan Darah Sistolik | < 120 mmHg | 120–139 | ≥ 140 |
+| Tekanan Darah Diastolik | < 80 mmHg | 80–89 | ≥ 90 |
+| Detak Jantung | 60–100 bpm | — | < 60 atau > 100 |
+| SpO2 | ≥ 95% | 90–94% | < 90% |
+| Gula Darah Puasa | < 100 mg/dL | 100–125 | ≥ 126 |
+| Suhu Tubuh | 36.0–37.5°C | — | > 37.5 (demam) |
+| IMT (Asia Pasifik) | 18.5–22.9 | 23.0–24.9 | ≥ 25 (obes) |
 
 ---
 
-## Struktur Proyek
-
-```
-Vitaly/
-+-- app/Http/Controllers/    # Controller Laravel
-+-- app/Models/              # Model Eloquent
-+-- app/Services/            # GeminiService (AI bridge)
-+-- python-ai/
-|   +-- start.bat            # Jalankan untuk AI Service
-|   +-- main.py              # FastAPI server (port 8001)
-|   +-- analyzer.py          # Logika analisis
-|   +-- requirements.txt     # Dependensi Python
-+-- resources/js/
-|   +-- Pages/               # Halaman Vue (Inertia.js)
-|   +-- Layouts/
-+-- routes/web.php           # Route aplikasi
-+-- .env                     # Konfigurasi environment
-```
-
----
-
-## LKTI Draft Helper
-
-Bagian ini dirancang agar mudah disalin ke GPT untuk membantu menyusun dokumen LKTI.
-
-**Judul singkat produk:**
-VITALY - Sistem Monitor Kesehatan Cerdas berbasis AI untuk Health Agent dan pasien.
-
-**Latar belakang masalah (ringkas):**
-Pencatatan kesehatan masih manual, data pasien tersebar, deteksi dini terlambat, dan tindak lanjut sering tidak terstandarisasi. Diperlukan sistem terintegrasi yang mempercepat pencatatan, analisis, dan rujukan.
-
-**Tujuan solusi:**
-1. Mempercepat pengumpulan data vital dan mengurangi human error.
-2. Menyediakan analisis AI sebagai ringkasan kondisi.
-3. Meningkatkan respons tindak lanjut melalui triase dan rujukan cepat.
-4. Memudahkan edukasi dan literasi kesehatan pasien.
-
-**Inovasi utama:**
-- Integrasi IoMT (smartwatch dan tensimeter Bluetooth) untuk input otomatis.
-- Smart triage untuk prioritas risiko.
-- Laporan analisis AI yang mudah dibagikan.
-- Offline-first sync untuk area dengan koneksi terbatas.
-
-**Skema alur kerja:**
-1. Pasien didata -> input metrik vital -> sinkron perangkat -> analisis AI.
-2. Health Agent menerima ringkasan -> menentukan tindak lanjut -> distribusi laporan.
-3. Pasien mengakses ringkasan dan edukasi.
-
-**Dampak yang diharapkan:**
-- Efisiensi waktu pemeriksaan.
-- Peningkatan akurasi data.
-- Deteksi dini lebih cepat.
-- Kolaborasi tindak lanjut lebih baik.
-
-**Kata kunci teknis:**
-Laravel 11, Vue 3, Inertia.js, FastAPI, Python AI Service, PWA, IoMT, WhatsApp sharing.
-
-**Paragraf kesesuaian tema (SDG 3 dan Indonesia Emas 2045):**
-VITALY sejalan dengan tema inovasi kesehatan berbasis teknologi karena memanfaatkan AI, IoMT, dan sistem digital terintegrasi untuk mempercepat deteksi dini, meningkatkan efisiensi layanan, serta memperluas akses informasi kesehatan. Dengan memperbaiki kualitas data, mempercepat pengambilan keputusan, dan mendorong literasi kesehatan, VITALY mendukung SDG 3 (Good Health and Well-being) sekaligus berkontribusi pada transformasi kesehatan digital menuju Indonesia Emas 2045.
-
-**Mapping fitur -> SDG 3 -> Indonesia Emas 2045:**
-| Fitur | Kontribusi SDG 3 | Kontribusi Indonesia Emas 2045 |
-|---|---|---|
-| Integrasi IoMT (smartwatch, tensimeter) | Peningkatan pemantauan dini dan akurasi data pasien | Fondasi ekosistem kesehatan digital yang terukur dan berbasis data |
-| Smart triage (prioritas risiko) | Mengurangi keterlambatan penanganan kasus berisiko | Efisiensi layanan kesehatan dan produktivitas SDM kesehatan |
-| Analisis AI & ringkasan klinis | Dukungan keputusan klinis lebih cepat dan tepat | Peningkatan mutu layanan kesehatan berbasis AI |
-| Laporan PDF & sharing WhatsApp | Continuity of care dan kolaborasi tindak lanjut | Akselerasi layanan kesehatan terhubung lintas peran |
-| Offline-first sync | Akses layanan di wilayah keterbatasan konektivitas | Pemerataan layanan kesehatan digital nasional |
-
-**Metodologi evaluasi dampak (indikator terukur):**
-- Waktu rata-rata input pemeriksaan (menit) sebelum vs sesudah IoMT.
-- Tingkat kelengkapan data pasien (% field terisi per kunjungan).
-- Waktu respon tindak lanjut kasus prioritas (jam/hari).
-- Frekuensi rujukan tepat waktu (jumlah rujukan per kasus berisiko).
-- Peningkatan kepatuhan pemantauan (jumlah kunjungan/rekam per pasien).
-
-**Tantangan & mitigasi:**
-- Keterbatasan koneksi internet -> Offline-first sync dan auto-sync saat online.
-- Variasi akurasi perangkat -> Validasi input dan standar perangkat kompatibel.
-- Literasi digital pengguna -> Pelatihan singkat, UI sederhana, dan panduan visual.
-- Privasi data -> Role-based access dan pembatasan akses data pasien.
-
----
-
-## Referensi Medis
-
-- Kemenkes RI - Pedoman Klinis & Panduan Kesehatan Nasional
-- WHO - World Health Organization Guidelines
-- PERKENI - Perkumpulan Endokrinologi Indonesia (Diabetes)
-- PERKI - Perhimpunan Dokter Spesialis Kardiovaskular Indonesia
-- AHA - American Heart Association (Tekanan Darah)
-
-> Informasi dari aplikasi ini bersifat edukatif dan tidak menggantikan konsultasi medis profesional.
+*VITALY © 2026 — Sistem Monitor Kesehatan IoMT · KTI Competition Edition*

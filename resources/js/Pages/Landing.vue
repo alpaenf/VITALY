@@ -154,7 +154,28 @@
             </div>
 
 
-            <!-- Bottom overlay removed to keep video visible through the fold -->
+            <!-- Animated Wave Divider -->
+            <div class="absolute bottom-0 left-0 right-0 z-20 pointer-events-none overflow-hidden">
+                <!-- Gradient fade overlay above waves -->
+                <div class="h-32 bg-gradient-to-b from-transparent via-primary/40 to-primary/80"></div>
+                <!-- Multi-layer animated waves -->
+                <div class="relative -mb-px overflow-hidden">
+                    <!-- Wave Layer 3 (back, slowest) -->
+                    <svg class="absolute bottom-0 wave-drift-slow" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" style="height:80px;width:120%;left:-10%;">
+                        <path d="M0,80 C240,110 480,30 720,70 C960,110 1200,40 1440,80 L1440,120 L0,120 Z" fill="white" opacity="0.15"/>
+                    </svg>
+                    <!-- Wave Layer 2 (mid) -->
+                    <svg class="absolute bottom-0 wave-drift-mid" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" style="height:70px;width:120%;left:-10%;">
+                        <path d="M0,60 C360,100 720,20 1080,70 C1260,90 1380,50 1440,60 L1440,120 L0,120 Z" fill="white" opacity="0.35"/>
+                    </svg>
+                    <!-- Wave Layer 1 (front, fastest) -->
+                    <svg class="wave-drift-front" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" style="height:60px;width:120%;left:-10%;position:relative;">
+                        <path d="M0,50 C180,90 420,20 720,60 C1020,100 1260,30 1440,50 L1440,120 L0,120 Z" fill="white"/>
+                    </svg>
+                </div>
+                <!-- Solid white seal to cover any remaining gap -->
+                <div class="h-1 bg-white"></div>
+            </div>
         </section>
 
 
@@ -864,4 +885,29 @@ const testimonials = [
 @keyframes shimmerText {
     to { background-position: 200% center; }
 }
+
+/* ── Animated wave divider layers ───────────────────────── */
+.wave-drift-slow {
+    animation: waveDriftSlow 12s ease-in-out infinite alternate;
+}
+.wave-drift-mid {
+    animation: waveDriftMid 8s ease-in-out infinite alternate;
+}
+.wave-drift-front {
+    animation: waveDriftFront 6s ease-in-out infinite alternate;
+}
+
+@keyframes waveDriftSlow {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-30px); }
+}
+@keyframes waveDriftMid {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(25px); }
+}
+@keyframes waveDriftFront {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-20px); }
+}
 </style>
+

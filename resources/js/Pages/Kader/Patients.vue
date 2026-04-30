@@ -334,6 +334,7 @@
 import { ref } from 'vue';
 import { Head, Link, useForm, router } from '@inertiajs/vue3';
 import KaderLayout from '@/Layouts/KaderLayout.vue';
+import { pairDevice } from '@/Services/BluetoothService';
 
 const props = defineProps({
     patients: Object,
@@ -354,30 +355,16 @@ const simulatePairing = async (mode) => {
         else                editForm.device_id = id;
     };
 
-    // --- BLUETOOTH NYATA (HTTPS + Chrome/Edge) ---
-    if (typeof navigator.bluetooth !== 'undefined') {
-        try {
-            const device = await navigator.bluetooth.requestDevice({
-                acceptAllDevices: true,
-                optionalServices: ['device_information', 'heart_rate', 'battery_service'],
-            });
-            const cleanName = (device.name || 'BLE').replace(/\s+/g, '-').toUpperCase();
-            const uid = Math.random().toString(36).substr(2, 5).toUpperCase();
-            setDeviceId(`VTL-${cleanName}-${uid}`);
-            isPairing.value = false;
-            return;
-        } catch (err) {
-            console.info('Bluetooth pairing fallback to simulation:', err.message);
-        }
+    const result = await pairDevice((msg) => {
+        console.info('[VITALY BT Pairing]', msg);
+    });
+
+    if (result) {
+        setDeviceId(result.deviceId);
     }
 
-    // --- FALLBACK: SIMULASI ---
-    setTimeout(() => {
-        const randomId = 'VTL-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-        setDeviceId(randomId);
-        isPairing.value = false;
-    }, 2000);
-}
+    isPairing.value = false;
+};
 
 
 const fillDemoData = () => {

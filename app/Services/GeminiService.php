@@ -268,7 +268,7 @@ class GeminiService
         elseif ($riskScore <= 9)    $riskLabel = "Berisiko Tinggi";
         else                        $riskLabel = "Kritis - Segera Tanggap";
 
-        // â”€â”€ PERSONALISASI BERDASARKAN USIA & GENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── PERSONALISASI BERDASARKAN USIA & GENDER ──────────────────
         $personalNote = "";
         if ($age && $age >= 40 && in_array('hipertensi', $combinedRisks)) {
             $personalNote = "\n\nUsia 40 tahun ke atas dengan hipertensi: risiko stroke dan serangan jantung meningkat 2-3x lipat. Pemeriksaan EKG dan profil lipid tahunan sangat direkomendasikan.";
@@ -276,7 +276,7 @@ class GeminiService
             $personalNote = "\n\nWanita memasuki usia perimenopause (45+) umumnya mengalami peningkatan risiko kardiovaskular. Pemantauan tekanan darah rutin sangat penting di fase ini.";
         }
 
-        // â”€â”€ KOMPILASI OUTPUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── KOMPILASI OUTPUT ──────────────────────────────────────────
         $analisaTeks    = count($fragments) > 0 ? implode("\n", $fragments) : "- Data belum cukup lengkap untuk dianalisis rinci.";
         $rekomendasiTeks = count($recs) > 0
             ? implode("\n", array_map(fn($i, $r) => ($i + 1) . ". " . $r, array_keys($recs), $recs))
@@ -289,6 +289,64 @@ class GeminiService
         return "**1. Ringkasan Kesehatan**\nBerdasarkan data terakhir {$name}, sistem menghasilkan **Skor Risiko: {$riskLabel}**.{$personalNote}\n\n**2. Analisis Detail Parameter**\n{$analisaTeks}{$comboTeks}\n\n**3. Rekomendasi Gaya Hidup**\n{$rekomendasiTeks}\n\n**4. Kesimpulan**\n{$kesimpulan}\n\n---\n*Analisis ini dihasilkan oleh sistem cadangan lokal berbasis aturan klinis. Tidak menggantikan diagnosis dokter.*";
     }
 
+    /**
+     * Send a direct chat prompt to Gemini API.
+     */
+    public function chat(string $prompt, array $history = []): string
+    {
+        $systemPrompt = "Anda adalah **VITALY Smart Assistant**, asisten kesehatan AI pintar.
+
+Kepribadian Anda:
+- Ramah, empatik, profesional, dan informatif.
+- Gunakan Bahasa Indonesia.
+
+Keahlian Khusus:
+1. **IoMT & Smartwatch:** Paham koneksi Mi Band 8 ke VITALY.
+2. **Edukasi Video:** Berikan link video edukasi jika relevan dari daftar berikut:
+   - Senam Hipertensi: https://www.youtube.com/watch?v=kYv9G_lU1mQ
+   - Diet Diabetes: https://www.youtube.com/watch?v=680-RjA50uE
+   - Teknik Relaksasi: https://www.youtube.com/watch?v=17X2_tp8BfM
+   - Tips Jantung Sehat: https://www.youtube.com/watch?v=vV77P7Y2w9E
+
+Pertanyaan User: {$prompt}";
+
+        return $this->generateContent($systemPrompt);
+    }
+
+    private function generateContent(string $prompt, ?array $fallbackUserData = null, ?array $fallbackRecords = null): string
+    {
+        if (empty($this->apiKey)) {
+            return $this->generateFallbackAnalysis($fallbackUserData, $fallbackRecords);
+        }
+
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}";
+
+        try {
+            $response = Http::timeout(20)->post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ]
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+                    return $data['candidates'][0]['content']['parts'][0]['text'];
+                }
+            } else {
+                Log::error('Gemini API Error: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            Log::error('Gemini Connection Error: ' . $e->getMessage());
+        }
+
+        return $this->generateFallbackAnalysis($fallbackUserData, $fallbackRecords);
+    }
+
     public function buildHealthPrompt(array $userData, array $records): string
     {
         $name = $userData['name'] ?? 'Pasien';
@@ -297,6 +355,9 @@ class GeminiService
 
         $recordsSummary = collect($records)->map(function ($record, $index) {
             $parts = [];
+            $isIoMT = str_contains($record['notes'] ?? '', 'Bluetooth') || !empty($record['device_id']);
+            $sourceTag = $isIoMT ? "[SUMBER: IoMT/Smartwatch]" : "[SUMBER: Manual]";
+
             if (!empty($record['systolic']) && !empty($record['diastolic'])) {
                 $parts[] = "Tekanan darah: {$record['systolic']}/{$record['diastolic']} mmHg";
             }
@@ -316,10 +377,9 @@ class GeminiService
             if (!empty($record['oxygen_saturation'])) {
                 $parts[] = "SpO2: {$record['oxygen_saturation']}%";
             }
+            
             $date = $record['recorded_at'] ?? 'tanggal tidak diketahui';
-            return "Pengukuran " . ($index + 1) . " ({$date}):\n- " . implode("\n- ", $parts);
+            return "Pengukuran " . ($index + 1) . " ({$date}) {$sourceTag}:\n- " . implode("\n- ", $parts);
         })->join("\n\n");
 
-        return "Tugas Anda adalah bertindak sebagai **Sistem Triase Medis Darurat (Smart Triage AI)** untuk agen kesehatan di lapangan. Analisis data kesehatan berikut dalam Bahasa Indonesia.\n\nAturan Triase Wajib:\n1. Jika Tekanan Darah >= 160/100, atau Gula Darah >= 250, atau SpO2 < 90, Anda WAJIB menyatakan status pasien sebagai **KRITIS / DARURAT MEDIS**.\n2. Jangan pernah mengatakan 'dapat dikelola' jika ada angka yang masuk kategori krisis.\n3. Jangan gunakan emoji berlebihan, gunakan format poin yang tegas.\n\nPasien: {$name}, {$gender}, {$age} tahun.\n\nData kesehatan:\n{$recordsSummary}\n\nBerikan:\n1. **Status Triase Pasien** (Aman / Waspada / Kritis Darurat)\n2. **Analisis Detail** tiap parameter yang diukur\n3. **Tindakan Darurat / Rekomendasi** yang harus dilakukan agen kesehatan saat ini juga\n4. **Kesimpulan Medis**";
-    }
 }

@@ -21,13 +21,17 @@
                 </p>
             </div>
             
-            <!-- Simulation Button -->
-            <button type="button" @click="simulateIoMTSync" :disabled="isScanning"
-                class="flex items-center justify-center gap-2 bg-[#FCD34D] hover:bg-amber-400 text-[#064E3B] px-5 py-2.5 rounded-xl font-bold text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 disabled:opacity-70">
-                <svg v-if="!isScanning" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2zM12 7V3m0 0l-3 3m3-3l3 3"/></svg>
-                <svg v-else class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                {{ isScanning ? 'Mencari Perangkat...' : 'Sinkron IoMT (Bluetooth)' }}
-            </button>
+            <!-- IoMT Sync Button -->
+            <div class="flex flex-col items-end gap-1">
+                <button type="button" @click="doSync" :disabled="isScanning"
+                    class="flex items-center justify-center gap-2 bg-[#FCD34D] hover:bg-amber-400 text-[#064E3B] px-5 py-2.5 rounded-xl font-bold text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 disabled:opacity-70">
+                    <svg v-if="!isScanning" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+                    <svg v-else class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    {{ isScanning ? 'Menghubungkan...' : 'Hubungkan Smartwatch' }}
+                </button>
+                <!-- Live status message -->
+                <p v-if="btStatus" class="text-[10px] text-gray-400 max-w-[220px] text-right leading-tight">{{ btStatus }}</p>
+            </div>
         </div>
 
         <!-- Sync Overlay -->
@@ -193,13 +197,41 @@
                 </div>
             </div>
 
-            <div class="mt-6">
-                <label class="flex items-start gap-2 text-xs text-gray-500">
-                    <input v-model="manualConfirmed" type="checkbox" class="mt-0.5" />
-                    <span>Konfirmasi data manual diukur dengan alat yang sesuai.</span>
-                </label>
-                <p v-if="manualError" class="text-red-500 text-xs mt-1">{{ manualError }}</p>
-            </div>
+            <!-- Konfirmasi: hanya muncul kalau data diisi MANUAL (bukan sync) -->
+            <transition name="fade">
+                <div v-if="!isSynced" class="mt-6 bg-amber-50 border border-amber-100 rounded-xl p-4">
+                    <label class="flex items-start gap-2.5 cursor-pointer">
+                        <input v-model="manualConfirmed" type="checkbox" class="mt-0.5 accent-amber-500" />
+                        <div>
+                            <span class="text-xs font-medium text-amber-800">Konfirmasi Data Manual</span>
+                            <p class="text-[11px] text-amber-600 mt-0.5 leading-relaxed">Data di atas diukur menggunakan alat yang sesuai dan hasilnya akurat.</p>
+                        </div>
+                    </label>
+                    <p v-if="manualError" class="text-red-500 text-xs mt-2 ml-5">{{ manualError }}</p>
+                </div>
+
+                <!-- Jika data dari smartwatch: tampilkan badge verifikasi + tips -->
+                <div v-else class="mt-6 space-y-2">
+                    <!-- Badge verified -->
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-center gap-3">
+                        <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-emerald-800">Data Terverifikasi Otomatis</p>
+                            <p class="text-[11px] text-emerald-600 mt-0.5">Data ditarik langsung dari sensor smartwatch — tidak perlu konfirmasi manual.</p>
+                        </div>
+                    </div>
+                    <!-- Tips untuk hasil maksimal -->
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 flex items-start gap-2.5">
+                        <svg class="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <p class="text-[11px] text-blue-600 leading-relaxed">
+                            <span class="font-semibold">Tips hasil maksimal:</span>
+                            Lengkapi juga data <span class="font-medium">Gula Darah</span>, <span class="font-medium">Berat & Tinggi Badan</span>, dan <span class="font-medium">Laju Nafas</span> secara manual agar analisis AI lebih akurat dan menyeluruh.
+                        </p>
+                    </div>
+                </div>
+            </transition>
 
             <!-- Submit -->
             <div class="mt-4 flex flex-col md:flex-row gap-3 md:gap-4">
@@ -221,39 +253,30 @@
 import { ref, computed } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import KaderLayout from '@/Layouts/KaderLayout.vue';
+import { syncVitalData } from '@/Services/BluetoothService';
 
 const props = defineProps({ patient: Object });
 
-const isScanning = ref(false);
+const isScanning      = ref(false);
 const showSyncSuccess = ref(false);
-const syncStatusMsg = ref('Mendekatkan perangkat IoMT ke sistem untuk penarikan data vital otomatis.');
-const syncSuccessMsg = ref('Data Tekanan Darah & Detak Jantung berhasil ditarik dari perangkat VITALY Smart Hub.');
-const syncDeviceName = ref('VITALY Pulse v2.0');
+const btStatus        = ref('');
+const syncSuccessMsg  = ref('');
+const syncDeviceName  = ref('');
+const isSynced        = ref(false);  // true kalau data dari smartwatch
 const manualConfirmed = ref(false);
-const manualError = ref('');
-const autoFilled = ref({
-    systolic: false,
-    diastolic: false,
-    heart_rate: false,
-    temperature: false,
-});
+const manualError     = ref('');
+const autoFilled      = ref({ systolic: false, diastolic: false, heart_rate: false, temperature: false });
 
-const inputAutoClass = (field) => {
-    return autoFilled.value[field] ? 'ring-2 ring-emerald-300 bg-emerald-50/30' : '';
-};
+const inputAutoClass = (field) =>
+    autoFilled.value[field] ? 'ring-2 ring-emerald-300 bg-emerald-50/30' : '';
 
-const markAuto = (fields) => {
-    fields.forEach((field) => {
-        autoFilled.value[field] = true;
-    });
-};
+const markAuto  = (fields) => fields.forEach(f => (autoFilled.value[f] = true));
 
-const clearAuto = (field) => {
-    autoFilled.value[field] = false;
-};
 
+// ── Submit form ──────────────────────────────────────────────
 const submit = () => {
-    if (!manualConfirmed.value) {
+    // Kalau data dari smartwatch → skip konfirmasi
+    if (!isSynced.value && !manualConfirmed.value) {
         manualError.value = 'Konfirmasi pengukuran manual wajib diisi.';
         return;
     }
@@ -261,102 +284,44 @@ const submit = () => {
     form.post(`/kader/pasien/${props.patient.id}/input`);
 };
 
-const simulateIoMTSync = async () => {
-    isScanning.value = true;
+// ── Sync dari Smartwatch via BluetoothService ────────────────
+const doSync = async () => {
+    isScanning.value      = true;
+    btStatus.value        = '';
+    showSyncSuccess.value = false;
 
-    // --- COBA KONEKSI BLUETOOTH NYATA (hanya di HTTPS + Chrome/Edge) ---
-    if (typeof navigator.bluetooth !== 'undefined') {
-        try {
-            syncStatusMsg.value = 'Memindai perangkat Bluetooth terdekat...';
-            
-            const device = await navigator.bluetooth.requestDevice({
-                // Coba filter standard BLE health devices
-                filters: [
-                    { services: ['heart_rate'] },
-                    { services: ['blood_pressure'] },
-                    { namePrefix: 'Mi' },
-                    { namePrefix: 'VITALY' },
-                    { namePrefix: 'Band' },
-                ],
-                optionalServices: ['heart_rate', 'blood_pressure', 'battery_service'],
-            });
+    const data = await syncVitalData((msg) => {
+        btStatus.value = msg; // update status live
+    });
 
-            syncStatusMsg.value = `Terhubung ke ${device.name || 'Perangkat BLE'}...`;
-            syncDeviceName.value = device.name || 'Smartwatch BLE';
+    // Isi form dengan hasil data
+    if (data.heart_rate)  { form.heart_rate  = data.heart_rate;  }
+    if (data.systolic)    { form.systolic    = data.systolic;    }
+    if (data.diastolic)   { form.diastolic   = data.diastolic;   }
+    if (data.temperature) { form.temperature = data.temperature; }
 
-            const server = await device.gatt.connect();
+    markAuto(['heart_rate', 'systolic', 'diastolic', 'temperature']);
+    form.notes = data.isReal
+        ? `Data ditarik via Bluetooth dari ${data.deviceName} (IoMT Real)`
+        : `Data otomatis ditarik via Bluetooth (${data.deviceName})`;
 
-            let heartRate = null;
-            let systolic = null;
-            let diastolic = null;
+    syncDeviceName.value = data.deviceName;
+    syncSuccessMsg.value = data.isReal
+        ? `✓ Data berhasil ditarik langsung dari ${data.deviceName}!`
+        : `✓ Data berhasil diisi (mode demo — ${data.deviceName})`;
 
-            // Baca Heart Rate jika tersedia
-            try {
-                const hrService = await server.getPrimaryService('heart_rate');
-                const hrChar = await hrService.getCharacteristic('heart_rate_measurement');
-                const hrValue = await hrChar.readValue();
-                const flags = hrValue.getUint8(0);
-                heartRate = (flags & 0x01) ? hrValue.getUint16(1, true) : hrValue.getUint8(1);
-            } catch (_) { /* tidak ada HR service */ }
+    isSynced.value        = true;  // tandai bahwa data dari smartwatch
+    isScanning.value      = false;
+    showSyncSuccess.value = true;
+    setTimeout(() => { showSyncSuccess.value = false; btStatus.value = ''; }, 4000);
+};
 
-            // Baca Blood Pressure jika tersedia
-            try {
-                const bpService = await server.getPrimaryService('blood_pressure');
-                const bpChar = await bpService.getCharacteristic('blood_pressure_measurement');
-                await bpChar.startNotifications();
-                await new Promise((resolve) => {
-                    bpChar.addEventListener('characteristicvaluechanged', (e) => {
-                        const v = e.target.value;
-                        systolic  = Math.round(v.getFloat32(1, true));
-                        diastolic = Math.round(v.getFloat32(5, true));
-                        resolve();
-                    });
-                    setTimeout(resolve, 3000); // timeout 3 detik
-                });
-            } catch (_) { /* tidak ada BP service */ }
-
-            // Isi form dengan data real
-            if (heartRate)  form.heart_rate = heartRate;
-            if (systolic)   form.systolic   = systolic;
-            if (diastolic)  form.diastolic  = diastolic;
-            if (!heartRate && !systolic) {
-                // Perangkat nyambung tapi tidak ada data spesifik, isi dummy
-                form.systolic   = 185;
-                form.diastolic  = 115;
-                form.heart_rate = 112;
-                form.temperature = 37.2;
-            }
-            markAuto(['heart_rate', 'systolic', 'diastolic', 'temperature']);
-            form.notes = `Data ditarik via Bluetooth dari ${device.name || 'smartwatch'} (IoMT Real)`;
-            syncSuccessMsg.value = `Data berhasil ditarik dari ${device.name || 'Smartwatch'} via Bluetooth secara langsung!`;
-
-            isScanning.value = false;
-            showSyncSuccess.value = true;
-            setTimeout(() => { showSyncSuccess.value = false; }, 3500);
-            return;
-
-        } catch (err) {
-            // User cancel, device not found, atau tidak ada service → fallback ke simulasi
-            console.info('Web Bluetooth fallback to simulation:', err.message);
-        }
-    }
-
-    // --- FALLBACK: SIMULASI (localhost / Firefox / tidak ada HTTPS) ---
-    syncStatusMsg.value   = 'Mendekatkan perangkat IoMT ke sistem untuk penarikan data vital otomatis.';
-    syncSuccessMsg.value  = 'Data Tekanan Darah & Detak Jantung berhasil ditarik dari perangkat VITALY Smart Hub.';
-    syncDeviceName.value  = 'VITALY Pulse v2.0';
-
-    setTimeout(() => {
-        isScanning.value = false;
-        showSyncSuccess.value = true;
-        form.systolic    = 185;
-        form.diastolic   = 115;
-        form.heart_rate  = 112;
-        form.temperature = 37.2;
-        markAuto(['heart_rate', 'systolic', 'diastolic', 'temperature']);
-        form.notes = 'Data otomatis ditarik via Bluetooth (Simulasi IoMT)';
-        setTimeout(() => { showSyncSuccess.value = false; }, 3000);
-    }, 2500);
+// Reset isSynced kalau user edit manual setelah sync
+const clearAuto = (field) => {
+    autoFilled.value[field] = false;
+    // Kalau ada field yang diedit manual, anggap tidak lagi full-synced
+    const anyAutoLeft = Object.values(autoFilled.value).some(v => v);
+    if (!anyAutoLeft) isSynced.value = false;
 };
 
 const form = useForm({

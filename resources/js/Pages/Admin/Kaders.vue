@@ -1,10 +1,10 @@
 <template>
     <AdminLayout>
-        <Head title="Kelola Kader" />
+        <Head title="Kelola Health Agent" />
 
         <div class="flex items-center justify-between gap-3 mb-5 animate-fade-in-down">
             <div>
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Kelola Kader</h1>
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Kelola Health Agent</h1>
                 <p class="text-sm text-gray-500">{{ kaders.total }} kader terdaftar</p>
             </div>
             <button @click="showAddModal = true"
@@ -12,7 +12,7 @@
                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                <span class="hidden xs:inline">Tambah Kader</span>
+                <span class="hidden xs:inline">Tambah Health Agent</span>
                 <span class="xs:hidden">Tambah</span>
             </button>
         </div>
@@ -53,7 +53,7 @@
                 <table class="w-full text-sm">
                     <thead class="bg-gray-50 border-b border-gray-100">
                         <tr>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Kader</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Health Agent</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Bergabung</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Aksi</th>
@@ -101,7 +101,7 @@
         <!-- Add Kader Modal -->
         <div v-if="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" @click.self="closeAddModal">
             <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
-                <h3 class="font-bold text-gray-800 mb-4">Tambah Kader Baru</h3>
+                <h3 class="font-bold text-gray-800 mb-4">Tambah Health Agent Baru</h3>
                 <form @submit.prevent="submitAdd" class="space-y-3">
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Lengkap</label>
@@ -118,7 +118,7 @@
                         <svg class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <p class="text-xs text-blue-600">Kader akan login menggunakan akun <strong>Google</strong> dengan email di atas. Pastikan email sudah benar.</p>
+                        <p class="text-xs text-blue-600">Health Agent akan login menggunakan akun <strong>Google</strong> dengan email di atas. Pastikan email sudah benar.</p>
                     </div>
                     <div class="flex gap-3 pt-2">
                         <button type="button" @click="closeAddModal"
@@ -137,7 +137,7 @@
         <!-- Delete Confirm Modal -->
         <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" @click.self="showDeleteModal = false">
             <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
-                <h3 class="font-bold text-gray-800 mb-2">Hapus Kader?</h3>
+                <h3 class="font-bold text-gray-800 mb-2">Hapus Health Agent?</h3>
                 <p class="text-sm text-gray-500 mb-5">Akun kader <strong>{{ actionName }}</strong> akan dihapus permanen.</p>
                 <div class="flex gap-3">
                     <button @click="showDeleteModal = false"

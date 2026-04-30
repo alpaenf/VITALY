@@ -176,6 +176,7 @@ const categories = [
     { id: 'nutrition',  label: 'Gizi & IMT' },
     { id: 'lifestyle',  label: 'Gaya Hidup' },
     { id: 'mental',     label: 'Kesehatan Mental' },
+    { id: 'device',     label: 'IoMT & Teknologi' },
 ];
 
 const getCategoryLabel = (id) => categories.find(c => c.id === id)?.label ?? id;
@@ -186,6 +187,7 @@ const getCategoryColor = (id) => {
         nutrition: 'text-green-600',
         lifestyle: 'text-blue-600',
         mental:    'text-purple-600',
+        device:    'text-cyan-600',
     };
     return map[id] ?? 'text-primary';
 };

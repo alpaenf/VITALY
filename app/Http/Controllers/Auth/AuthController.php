@@ -98,6 +98,14 @@ class AuthController extends Controller
             ->redirect();
     }
 
+    public function redirectToGoogleRegister()
+    {
+        return Socialite::driver('google')
+            ->stateless()
+            ->with(['state' => 'register_' . Str::random(40)])
+            ->redirect();
+    }
+
     public function handleGoogleCallback(Request $request)
     {
         try {
@@ -105,7 +113,19 @@ class AuthController extends Controller
 
             // Determine flow from the state parameter Google echoes back
             $state = $request->input('state', '');
-            $flow  = str_starts_with($state, 'tamu_') ? 'tamu' : 'kader';
+            if (str_starts_with($state, 'register_')) $flow = 'register';
+            elseif (str_starts_with($state, 'tamu_'))   $flow = 'tamu';
+            else                                          $flow = 'kader';
+
+            // ── Register / Daftar Mandiri flow ─────────────────────────────
+            if ($flow === 'register') {
+                $request->session()->regenerate();
+                $request->session()->put('register_google_verified', true);
+                $request->session()->put('register_google_name',  $googleUser->getName());
+                $request->session()->put('register_google_email', $googleUser->getEmail());
+                $request->session()->save();
+                return redirect()->route('patient.register');
+            }
 
             // ── Tamu / Pasien flow ──────────────────────────────────────
             if ($flow === 'tamu') {

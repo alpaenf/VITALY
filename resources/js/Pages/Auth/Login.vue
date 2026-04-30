@@ -84,6 +84,22 @@
         <div class="mt-4 bg-blue-50 rounded-xl px-4 py-3 text-xs text-blue-700 leading-relaxed">
             Setelah login, Anda akan diarahkan untuk memasukkan NIK guna mengakses data kesehatan Anda.
         </div>
+
+        <!-- Daftar Mandiri -->
+        <div class="flex items-center gap-3 my-4">
+            <div class="flex-1 h-px bg-gray-100"></div>
+            <span class="text-xs text-gray-400">belum terdaftar?</span>
+            <div class="flex-1 h-px bg-gray-100"></div>
+        </div>
+
+        <a href="/auth/google/register"
+            class="flex items-center justify-center gap-2.5 w-full bg-primary text-white rounded-xl py-2.5
+                   text-sm font-semibold hover:bg-primary-dark transition-all shadow-md shadow-primary/30">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+            </svg>
+            Daftar Mandiri (Pasien Baru)
+        </a>
     </template>
 
     <!-- ③ Kader / Admin panel -->
