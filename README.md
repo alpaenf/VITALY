@@ -96,40 +96,70 @@ VITALY/
 
 ---
 
-## 🤔 Mengapa Ada Daftar Mandiri?
+## 📍 Konteks & Studi Kasus
 
-### Latar Belakang Masalah
+### Skenario Utama: "Kegiatan Pemeriksaan Kesehatan Massal"
 
-Dalam sistem posyandu konvensional, data kesehatan warga **hanya bisa dimasukkan oleh Health Agent** (tenaga kesehatan setempat). Ini menciptakan dua masalah nyata:
+VITALY dirancang sebagai **Platform Skrining Kesehatan Mobile** yang dapat digunakan di berbagai kegiatan pemeriksaan kesehatan, bukan hanya terbatas pada posyandu. Contoh skenario nyata:
 
-1. **Ketergantungan total** — Pasien tidak bisa melihat atau memperbarui datanya sendiri tanpa ke posyandu.
-2. **Jangkauan terbatas** — Warga yang sibuk, lansia yang sulit bepergian, atau yang tinggal jauh dari posyandu kesulitan mengakses layanan.
+| Konteks | Peran Health Agent | Peran Peserta |
+|---------|-------------------|---------------|
+| 🎓 **Bakti Sosial Kampus** | Mahasiswa Keperawatan / Kesehatan Masyarakat | Peserta event / civitas akademika |
+| 🏢 **Medical Check-Up Perusahaan** | Petugas kesehatan perusahaan | Karyawan |
+| 🏘️ **Posyandu / Puskesmas Keliling** | Kader/Nakes desa | Warga setempat |
+| 🏟️ **Pameran / Expo Kesehatan** | Relawan medis | Pengunjung umum |
 
-### Dua Jalur Pendaftaran di VITALY
+### Mengapa Konteks Event/Kampus Lebih Kuat?
 
-| Jalur | Siapa yang Mendaftar | Kapan Digunakan |
-|-------|---------------------|-----------------|
-| **Didaftarkan Health Agent** | Health Agent input data pasien via portal | Pasien datang ke posyandu, data diinput petugas |
-| **Daftar Mandiri (Self-Registration)** | Pasien mendaftar sendiri via Google | Pasien melek digital, punya smartphone, mau pantau kesehatan aktif |
+Kegiatan skrining kesehatan massal (baksos, medical check-up, dll) memiliki dua masalah klasik:
 
-### Filosofi Desain
+1. **Antrian & Penumpukan Data** — Banyak peserta, data dicatat manual di kertas, rentan hilang atau salah ketik.
+2. **Hasil Tidak Berkelanjutan** — Peserta cek tensi hari ini, pulang, lupa hasilnya minggu depan. Tidak ada monitoring lanjutan.
 
-> *"VITALY bukan hanya alat bagi Health Agent — VITALY adalah hak setiap warga untuk memantau kesehatannya sendiri."*
+VITALY menyelesaikan keduanya sekaligus:
 
-Dengan fitur **Daftar Mandiri**, VITALY menjadi inklusif:
-
-- ✅ **Pasien aktif:** Bisa daftar sendiri, input data sendiri, sync smartwatch sendiri.
-- ✅ **Pasien yang datang ke posyandu:** Tetap bisa dilayani Health Agent seperti biasa.
-- ✅ **Pasien tanpa smartwatch:** Tetap bisa input data manual di form `/input-mandiri`.
-- ✅ **Pasien dengan smartwatch:** Satu klik sync dari Mi Band → data langsung tersimpan.
-
-### Batasan Daftar Mandiri
-
-- Pasien mandiri **tidak perlu diverifikasi** Health Agent untuk bisa login.
-- Namun, data mereka tetap bisa **dilihat oleh Health Agent** dari portal `/kader/pasien` (identifikasi via flag `self_registered = true`).
-- Untuk kebutuhan medis formal (seperti surat keterangan), tetap harus ke posyandu.
+```
+Peserta scan QR / buka link VITALY
+        ↓
+Daftar Mandiri (30 detik via Google)
+        ↓
+Pairing Mi Band 8 di booth → data vital tersinkron otomatis
+        ↓
+Gemini AI analisis langsung → hasil tampil di HP peserta
+        ↓
+Peserta pulang, dashboard tetap aktif → monitoring berlanjut
+        ↓
+Health Agent bisa pantau perkembangan peserta dari portal
+```
 
 ---
+
+## 🤔 Mengapa VITALY? (Inovasi vs Sistem Konvensional)
+
+VITALY lahir dari evaluasi kritis terhadap sistem monitoring kesehatan tradisional yang masih bersifat **reaktif, terpusat, dan tidak berkelanjutan**. VITALY melakukan tiga lompatan fundamental:
+
+### 1. Dari "Buku Catatan Digital" → Sistem Monitoring IoMT Aktif
+Sistem sebelumnya hanya memindahkan kertas ke layar — data tetap diinput manual setelah kejadian. VITALY menghilangkan proses itu. Data mengalir **real-time langsung dari tubuh peserta** via Mi Band 8 ke database, tanpa perantara manual yang rawan *human error*. Ini adalah perbedaan antara *mencatat kesehatan* vs *merasakan kesehatan*.
+
+### 2. Dari Sentralisasi Petugas → Otonomi Digital Peserta
+Dulu, data kesehatan seseorang "terkunci" di tangan petugas. Peserta tidak bisa mengakses, memperbarui, atau memahami datanya sendiri. VITALY menghancurkan tembok ini dengan fitur **Self-Registration & Self-Input**. Peserta bukan lagi objek yang "diperiksa", melainkan subjek yang aktif mengelola kesehatannya secara digital — bahkan setelah event selesai.
+
+### 3. Dari Angka → Interpretasi AI yang Kontekstual
+Cek tensi 140/90? Sistem lama hanya simpan angka. VITALY menggunakan **Gemini AI** sebagai "dokter virtual" yang memberikan interpretasi kontekstual: apa artinya, apa risikonya, apa yang harus dilakukan, dan video edukasi apa yang relevan — semua otomatis, berbahasa Indonesia, berbasis standar Kemenkes RI.
+
+---
+
+## 👥 Dua Jalur Pendaftaran (Inklusivitas Digital)
+
+VITALY dirancang agar tidak meninggalkan siapa pun — dari peserta event yang melek teknologi hingga lansia yang butuh bantuan petugas.
+
+| Jalur | Pendekatan | Alur |
+|-------|------------|------|
+| **Independent Flow** *(Mandiri)* | Peserta daftar & input sendiri | Scan QR → Daftar via Google → Sync Mi Band → Lihat hasil AI di HP sendiri |
+| **Assisted Flow** *(Dibantu Petugas)* | Health Agent catat untuk peserta | Petugas input data di portal → Sistem simpan → Peserta bisa akses via NIK |
+
+---
+
 
 ## 🔑 Fitur Utama & Alur Kerja
 
