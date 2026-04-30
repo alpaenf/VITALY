@@ -22,7 +22,7 @@
         </div>
 
         <!-- ── HERO ─────────────────────────────────────────────────── -->
-        <section class="relative flex flex-col overflow-hidden pt-24 sm:pt-24 lg:pt-32 pb-8 lg:pb-0 min-h-screen">
+        <section class="relative flex flex-col overflow-hidden pt-24 sm:pt-24 lg:pt-32 pb-0 min-h-[120vh]">
             <!-- Background Video -->
             <div class="absolute inset-0 z-0 bg-primary"> <!-- Fallback color -->
                 <video 
@@ -30,7 +30,7 @@
                     muted 
                     loop 
                     playsinline 
-                    class="w-full h-full object-cover object-center scale-105"
+                    class="w-full h-full object-cover object-center scale-y-105 scale-x-110"
                 >
                     <source src="/images/video1.mp4" type="video/mp4">
                 </video>
@@ -154,8 +154,7 @@
             </div>
 
 
-            <!-- Clean Bottom Overlay to blend with next section -->
-            <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent z-10"></div>
+            <!-- Bottom overlay removed to keep video visible through the fold -->
         </section>
 
 
