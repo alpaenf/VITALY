@@ -13,7 +13,7 @@
                     class="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden z-10">
 
                     <!-- Top accent bar -->
-                    <div class="h-1 w-full bg-gradient-to-r from-primary to-secondary"></div>
+                    <div class="h-1 w-full bg-primary"></div>
 
                     <div class="px-6 py-5">
                         <!-- Icon -->
@@ -42,7 +42,7 @@
                                 Batal
                             </button>
                             <button @click="$emit('confirm')"
-                                class="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-semibold shadow-md shadow-primary/30 hover:opacity-90 active:scale-95 transition-all duration-150">
+                                class="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-md shadow-primary/30 hover:bg-primary-dark active:scale-95 transition-all duration-150">
                                 Ya, Keluar
                             </button>
                         </div>

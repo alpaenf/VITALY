@@ -198,6 +198,16 @@ body {
     }
 }
 
+/* Disable gradients globally */
+[class*="bg-gradient-to-"] {
+    background-image: none !important;
+    background-color: var(--tw-gradient-from, transparent) !important;
+}
+
+[style*="linear-gradient"] {
+    background-image: none !important;
+}
+
 @keyframes pulse-soft {
 
     0%,
