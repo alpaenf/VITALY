@@ -8,7 +8,7 @@
 
 ## 🧠 Ringkasan Sistem
 
-VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **IoMT (Internet of Medical Things)** berbasis smartwatch (Mi Band 8) dengan **analisis kecerdasan buatan (Google Gemini AI)**. Sistem ini dirancang untuk memberdayakan masyarakat agar bisa memantau kondisi kesehatannya secara mandiri, sekaligus membantu tenaga kesehatan (Health Agent/Kader) dalam mencatat dan menganalisis data vital pasien.
+VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **IoMT (Internet of Medical Things)** berbasis smartwatch (Mi Band 8) dengan **analisis kecerdasan buatan (Google Gemini AI)**. Sistem ini dirancang untuk memberdayakan masyarakat agar bisa memantau kondisi kesehatannya secara mandiri, sekaligus membantu tenaga kesehatan (Health Agent) dalam mencatat dan menganalisis data vital pasien.
 
 ---
 
@@ -17,7 +17,7 @@ VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **I
 | Role | Sebutan di UI | Akses |
 |------|--------------|-------|
 | `user` (Pasien) | Pasien | Dashboard pribadi, riwayat, AI chat, input mandiri |
-| `kader` | Health Agent | Kelola pasien, input data, lihat analisis AI |
+| `kader` *(internal DB)* | **Health Agent** | Kelola pasien, input data, lihat analisis AI |
 | `admin` | Admin | Kelola Health Agent, kelola pasien, knowledge base AI |
 
 ### Alur Login per Role:
@@ -90,9 +90,44 @@ VITALY/
 │   └── Services/
 │       └── BluetoothService.js      ← 🔑 Layanan BLE / IoMT (lihat bawah)
 │
-├── routes/web.php                   ← Semua route (pasien, kader, admin, daftar)
+├── routes/web.php                   ← Semua route (pasien, Health Agent, admin, daftar)
 └── database/migrations/             ← Schema DB
 ```
+
+---
+
+## 🤔 Mengapa Ada Daftar Mandiri?
+
+### Latar Belakang Masalah
+
+Dalam sistem posyandu konvensional, data kesehatan warga **hanya bisa dimasukkan oleh Health Agent** (tenaga kesehatan setempat). Ini menciptakan dua masalah nyata:
+
+1. **Ketergantungan total** — Pasien tidak bisa melihat atau memperbarui datanya sendiri tanpa ke posyandu.
+2. **Jangkauan terbatas** — Warga yang sibuk, lansia yang sulit bepergian, atau yang tinggal jauh dari posyandu kesulitan mengakses layanan.
+
+### Dua Jalur Pendaftaran di VITALY
+
+| Jalur | Siapa yang Mendaftar | Kapan Digunakan |
+|-------|---------------------|-----------------|
+| **Didaftarkan Health Agent** | Health Agent input data pasien via portal | Pasien datang ke posyandu, data diinput petugas |
+| **Daftar Mandiri (Self-Registration)** | Pasien mendaftar sendiri via Google | Pasien melek digital, punya smartphone, mau pantau kesehatan aktif |
+
+### Filosofi Desain
+
+> *"VITALY bukan hanya alat bagi Health Agent — VITALY adalah hak setiap warga untuk memantau kesehatannya sendiri."*
+
+Dengan fitur **Daftar Mandiri**, VITALY menjadi inklusif:
+
+- ✅ **Pasien aktif:** Bisa daftar sendiri, input data sendiri, sync smartwatch sendiri.
+- ✅ **Pasien yang datang ke posyandu:** Tetap bisa dilayani Health Agent seperti biasa.
+- ✅ **Pasien tanpa smartwatch:** Tetap bisa input data manual di form `/input-mandiri`.
+- ✅ **Pasien dengan smartwatch:** Satu klik sync dari Mi Band → data langsung tersimpan.
+
+### Batasan Daftar Mandiri
+
+- Pasien mandiri **tidak perlu diverifikasi** Health Agent untuk bisa login.
+- Namun, data mereka tetap bisa **dilihat oleh Health Agent** dari portal `/kader/pasien` (identifikasi via flag `self_registered = true`).
+- Untuk kebutuhan medis formal (seperti surat keterangan), tetap harus ke posyandu.
 
 ---
 
@@ -163,6 +198,8 @@ InputData.vue → Form vital + tombol "Sync dari Smartwatch"
     ↓ POST /kader/pasien/{id}/input
     KaderPatientController@storeInput → HealthRecord
 ```
+
+> **Catatan:** URL `/kader/...` adalah nama teknis di backend (tidak diubah agar tidak merusak sistem). Tampilan UI tetap menampilkan **"Health Agent"**.
 
 ### 5. Analisis AI (Gemini)
 
@@ -298,7 +335,8 @@ recorded_at, timestamps
 
 ### `users` (Health Agent & Admin)
 ```sql
-id, name, email, password, role (kader/admin),
+id, name, email, password,
+role ENUM('kader','admin'),   -- 'kader' = Health Agent di backend (nama teknis)
 google_id, avatar, gender, date_of_birth, phone, timestamps
 ```
 
@@ -335,7 +373,7 @@ POST /ai-chat/message       → Kirim pesan chatbot
 GET  /input-mandiri         → Form input mandiri
 POST /input-mandiri         → Simpan data mandiri
 
--- HEALTH AGENT (middleware: auth + kader) --
+-- HEALTH AGENT (middleware: auth + role:kader — tampil sebagai "Health Agent" di UI) --
 GET  /kader/dashboard
 GET  /kader/pasien                    → Daftar pasien
 POST /kader/pasien                    → Tambah pasien
@@ -344,10 +382,10 @@ GET  /kader/pasien/{id}/input         → Form input data
 POST /kader/pasien/{id}/input         → Simpan data
 POST /kader/pasien/{id}/analyze       → Analisis AI
 
--- ADMIN (middleware: auth + admin) --
+-- ADMIN (middleware: auth + role:admin) --
 GET  /admin/dashboard
 GET  /admin/patients
-GET  /admin/kaders                    → Kelola Health Agent
+GET  /admin/kaders                    → Kelola Health Agent (UI: "Health Agent")
 GET  /admin/knowledge                 → Knowledge base AI
 
 -- PUBLIC --
