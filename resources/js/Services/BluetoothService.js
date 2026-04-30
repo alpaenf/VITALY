@@ -303,6 +303,78 @@ const simulateVitalData = (onStatusChange) => {
     });
 };
 
+// ─────────────────────────────────────────────────────────────────
+// DATA VALIDATION — Saring data kotor / tidak masuk akal secara klinis
+// Menjawab Research Gap: Consumer-grade IoMT device accuracy limitation
+// Ref: WHO Vital Signs Reference Ranges & AHA Clinical Guidelines
+// ─────────────────────────────────────────────────────────────────
+
+/**
+ * Batas klinis yang masuk akal untuk manusia hidup.
+ * Jika data di luar range ini → dianggap noise/artefak sensor.
+ */
+const CLINICAL_BOUNDS = {
+    heart_rate       : { min: 30,  max: 220, unit: 'BPM'  },
+    systolic         : { min: 60,  max: 260, unit: 'mmHg' },
+    diastolic        : { min: 30,  max: 160, unit: 'mmHg' },
+    oxygen_saturation: { min: 70,  max: 100, unit: '%'    },
+    temperature      : { min: 34.0, max: 42.0, unit: '°C' },
+    blood_sugar      : { min: 30,  max: 600, unit: 'mg/dL'},
+};
+
+/**
+ * Validasi data vital dari perangkat IoMT.
+ * @param {Object} data — objek data vital dari syncVitalData / manual input
+ * @returns {{ isValid: boolean, warnings: string[], cleanData: Object }}
+ *   - isValid      → true jika SEMUA metrik yang ada dalam batas wajar
+ *   - warnings     → array pesan metrik yang bermasalah (untuk ditampilkan di UI)
+ *   - cleanData    → data yang sudah dibersihkan (metrik aneh di-null-kan)
+ */
+export const validateVitalData = (data) => {
+    const warnings  = [];
+    const cleanData = { ...data };
+
+    for (const [key, bounds] of Object.entries(CLINICAL_BOUNDS)) {
+        const value = data[key];
+        if (value === null || value === undefined) continue; // lewati yg kosong
+
+        const num = parseFloat(value);
+        if (isNaN(num)) {
+            warnings.push(`${key}: nilai tidak valid (${value})`);
+            cleanData[key] = null;
+            continue;
+        }
+
+        if (num < bounds.min || num > bounds.max) {
+            warnings.push(
+                `⚠️ ${key.replace(/_/g, ' ')} = ${num} ${bounds.unit} ` +
+                `(di luar batas normal: ${bounds.min}–${bounds.max} ${bounds.unit}). ` +
+                `Kemungkinan artefak sensor — mohon ukur ulang.`
+            );
+            cleanData[key] = null; // hapus data kotor agar tidak dikirim ke AI
+        }
+    }
+
+    // Konsistensi sistolik vs diastolik
+    if (cleanData.systolic && cleanData.diastolic) {
+        if (cleanData.systolic <= cleanData.diastolic) {
+            warnings.push(
+                `⚠️ Tekanan darah tidak konsisten: Sistolik (${cleanData.systolic}) ` +
+                `≤ Diastolik (${cleanData.diastolic}). Kemungkinan posisi sensor bergeser.`
+            );
+            cleanData.systolic  = null;
+            cleanData.diastolic = null;
+        }
+    }
+
+    return {
+        isValid             : warnings.length === 0,
+        warnings,
+        cleanData,
+        inconsistentData    : warnings.length > 0,
+    };
+};
+
 // ── HELPER ────────────────────────────────────────────────────────
 export const formatDeviceId = (deviceId) => {
     if (!deviceId) return '—';

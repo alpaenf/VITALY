@@ -2,6 +2,93 @@
     <AppLayout>
         <Head title="Dashboard" />
 
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SAFETY DISCLAIMER MODAL (tampil sekali per browser)        -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <Transition name="modal-fade">
+            <div v-if="showDisclaimer"
+                id="safety-disclaimer-modal"
+                class="fixed inset-0 z-[999] flex items-center justify-center p-4"
+                style="background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);">
+                <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
+
+                    <!-- Header bar -->
+                    <div class="relative flex items-center gap-3 px-5 pt-5 pb-4">
+                        <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
+                            style="background: linear-gradient(135deg, #FEF3C7, #FDE68A);">
+                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="font-bold text-gray-800 text-sm leading-tight">Perhatian Penting</h2>
+                            <p class="text-[11px] text-amber-600 font-semibold tracking-widest uppercase mt-0.5">Medical Disclaimer</p>
+                        </div>
+                        <!-- Tombol X -->
+                        <button @click="agreeDisclaimer"
+                            class="w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition flex-shrink-0"
+                            aria-label="Tutup">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="h-px bg-gray-100 mx-5"></div>
+
+                    <!-- Body -->
+                    <div class="px-5 py-4 space-y-3">
+                        <!-- Intro box -->
+                        <div class="bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3">
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                <strong class="text-gray-900">Vitaly Smart Intelligence</strong> adalah sistem pemantauan
+                                kesehatan berbasis perangkat IoMT yang berfungsi sebagai
+                                <strong class="text-gray-900">alat bantu monitoring awal</strong>,
+                                bukan alat diagnosis medis final.
+                            </p>
+                        </div>
+
+                        <!-- Point list — teks dibungkus span agar tidak patah -->
+                        <ul class="space-y-2.5">
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">1</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">
+                                    Data dari smartwatch bersifat <strong class="text-gray-800">estimasi</strong> dan dapat memiliki margin error. Selalu validasi dengan alat medis terstandar.
+                                </span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">2</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">
+                                    Analisis AI merupakan <strong class="text-gray-800">rekomendasi gaya hidup</strong>, bukan resep atau anjuran medis yang mengikat.
+                                </span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">!</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">
+                                    Saat mengalami <strong class="text-gray-800">gejala darurat</strong>, segera hubungi fasilitas kesehatan terdekat. Jangan andalkan sistem ini sebagai respons pertama.
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer button -->
+                    <div class="px-5 pb-5">
+                        <button id="btn-disclaimer-agree"
+                            @click="agreeDisclaimer"
+                            class="w-full py-3 rounded-2xl font-bold text-sm text-white transition-all hover:opacity-90 active:scale-95 shadow-lg"
+                            style="background: linear-gradient(135deg, #059669, #047857);">
+                            ✓ &nbsp;Saya Mengerti &amp; Setuju
+                        </button>
+                        <p class="text-center text-[10px] text-gray-400 mt-2.5">Pernyataan ini hanya ditampilkan satu kali.</p>
+                    </div>
+
+                </div>
+            </div>
+        </Transition>
+
+
         <!-- Greeting Banner -->
         <div class="relative overflow-hidden rounded-2xl bg-primary text-white p-4 sm:p-6 mb-5 animate-fade-in-down shadow-xl shadow-primary/20">
             <!-- Modern subtle abstract decorations (White/Glassy glows instead of hard circles) -->
@@ -150,9 +237,27 @@
                     </Link>
                 </div>
 
+                <!-- Data Quality Warning Banner -->
+                <div v-if="syncWarnings.length > 0"
+                    class="mb-4 bg-red-50 border border-red-200 rounded-2xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                        </svg>
+                        <p class="text-xs font-bold text-red-700">Data Tidak Valid — Kualitas Sensor Rendah</p>
+                    </div>
+                    <ul class="space-y-1">
+                        <li v-for="(w, i) in syncWarnings" :key="i"
+                            class="text-xs text-red-600 leading-relaxed">{{ w }}</li>
+                    </ul>
+                    <p class="text-[10px] text-red-400 mt-2 font-medium">
+                        Pastikan perangkat terpasang dengan benar di pergelangan tangan dan diam saat pengukuran.
+                    </p>
+                </div>
+
                 <!-- Hint -->
                 <div class="text-center">
-                    <p class="text-xs text-gray-400">Atau hubungi Health Agent di posyandu untuk diinputkan datamu</p>
+                    <p class="text-xs text-gray-400">Atau hubungi <strong>Health Facilitator</strong> untuk membantu proses input data kesehatanmu.</p>
                 </div>
             </div>
         </div>
@@ -247,29 +352,62 @@
 </template>
 
 <script setup>
-import { computed, h, ref } from 'vue';
+import { computed, h, onMounted, ref } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler } from 'chart.js';
-import { syncVitalData } from '@/Services/BluetoothService';
+import { syncVitalData, validateVitalData } from '@/Services/BluetoothService';
 import axios from 'axios';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
-const isSyncing = ref(false);
+const isSyncing  = ref(false);
 const syncStatus = ref('');
 
+// ── Safety Disclaimer ─────────────────────────────────────────────
+const DISCLAIMER_KEY = 'vitaly_disclaimer_v1';
+const showDisclaimer = ref(false);
+
+onMounted(() => {
+    if (!localStorage.getItem(DISCLAIMER_KEY)) {
+        // Sedikit delay agar halaman selesai render dulu
+        setTimeout(() => { showDisclaimer.value = true; }, 600);
+    }
+});
+
+const agreeDisclaimer = () => {
+    localStorage.setItem(DISCLAIMER_KEY, '1');
+    showDisclaimer.value = false;
+};
+
+// \u2500\u2500 Sync Smartwatch \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+const syncWarnings = ref([]);
+
 const doSync = async () => {
-    isSyncing.value = true;
-    const data = await syncVitalData((msg) => { syncStatus.value = msg; });
-    if (data) {
-        // Kirim data hasil sync ke backend, lalu reload
-        await axios.post('/input-mandiri', { ...data, source: 'iomt' });
+    isSyncing.value   = true;
+    syncWarnings.value = [];
+    const rawData = await syncVitalData((msg) => { syncStatus.value = msg; });
+
+    if (rawData) {
+        // \u2500\u2500 STEP 1: Validasi data sebelum dikirim ke backend \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        const { isValid, warnings, cleanData } = validateVitalData(rawData);
+
+        if (!isValid) {
+            // Tampilkan peringatan data kotor ke user
+            syncWarnings.value = warnings;
+            syncStatus.value   = '⚠️ Data tidak konsisten, mohon periksa posisi perangkat.';
+            isSyncing.value    = false;
+            return; // Batalkan pengiriman — jangan kirim data kotor ke AI
+        }
+
+        // \u2500\u2500 STEP 2: Hanya kirim data bersih ke backend \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        await axios.post('/input-mandiri', { ...cleanData, source: 'iomt' });
         window.location.reload();
     }
-    isSyncing.value = false;
-    syncStatus.value = '';
+
+    isSyncing.value    = false;
+    syncStatus.value   = '';
 };
 
 const props = defineProps({
@@ -462,3 +600,25 @@ const MetricCard = {
     }
 };
 </script>
+
+<style scoped>
+/* Safety Modal Animation */
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+    opacity: 0;
+}
+.modal-fade-enter-active .bg-white,
+.modal-fade-leave-active .bg-white {
+    transition: transform 0.3s ease;
+}
+.modal-fade-enter-from .bg-white {
+    transform: scale(0.92) translateY(10px);
+}
+.modal-fade-leave-to .bg-white {
+    transform: scale(0.92);
+}
+</style>

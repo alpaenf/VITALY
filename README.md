@@ -1,6 +1,6 @@
 # VITALY — Platform Monitoring Kesehatan Berbasis IoMT
 
-> **Versi:** 2.0 (IoMT Edition)
+> **Versi:** 2.0 (IoMT Edition - Clinical Safety Enhanced)
 > **Stack:** Laravel 11 · Vue 3 (Inertia.js) · Vite · TailwindCSS · Gemini AI
 > **Konteks:** Karya Tulis Ilmiah (KTI) — Sistem Kesehatan Digital Berbasis Internet of Medical Things
 
@@ -8,7 +8,25 @@
 
 ## 🧠 Ringkasan Sistem
 
-VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **IoMT (Internet of Medical Things)** berbasis smartwatch (Mi Band 8) dengan **analisis kecerdasan buatan (Google Gemini AI)**. Sistem ini dirancang untuk memberdayakan masyarakat agar bisa memantau kondisi kesehatannya secara mandiri, sekaligus membantu tenaga kesehatan (Health Agent) dalam mencatat dan menganalisis data vital pasien.
+VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **IoMT (Internet of Medical Things)** berbasis smartwatch dengan **Hybrid Intelligence Architecture**. Sistem ini tidak hanya mencatat data, tetapi juga memvalidasi integritas data secara klinis dan memberikan analisis mendalam menggunakan kombinasi *Deterministic Expert System* (berbasis aturan medis Kemenkes) dan *Generative AI* (Google Gemini).
+
+---
+
+## 🛡️ Mitigasi Celah Riset (Research Gaps Mitigation)
+
+Vitaly dirancang untuk menjawab tiga tantangan utama dalam pengembangan aplikasi kesehatan digital saat ini:
+
+### 1. Gap Akurasi IoMT (Consumer vs Clinical Grade)
+*   **Masalah:** Perangkat seperti Mi Band 8 adalah *consumer-grade* yang rentan terhadap *noise* atau data kotor.
+*   **Solusi Vitaly:** Implementasi **Clinical Data Validator** pada lapisan *edge*. Setiap data yang masuk disaring melalui algoritma batas fisiologis manusia (WHO/AHA Standards). Data yang tidak masuk akal (misal: HR > 220 bpm saat diam) akan ditandai sebagai artefak sensor dan diwajibkan untuk pengukuran ulang.
+
+### 2. Gap Halusinasi AI (Medical Safety)
+*   **Masalah:** Large Language Model (LLM) sering kali melakukan halusinasi atau memberikan diagnosa medis yang tidak akurat.
+*   **Solusi Vitaly:** Menggunakan **Hybrid Intelligence**. Sistem utama menggunakan *Rule-based Expert System* yang kaku untuk menentukan kategori risiko medis (Hipertensi, Diabetes, dll) sesuai standar Kemenkes RI. Gemini AI hanya digunakan sebagai *Cognitive Layer* untuk mempersonalisasi gaya bahasa dan memberikan motivasi, bukan untuk menentukan diagnosa.
+
+### 3. Gap Risiko PoC (Safety Protocol)
+*   **Masalah:** Aplikasi *Proof of Concept* (PoC) berisiko jika dilepas ke masyarakat tanpa pengawasan.
+*   **Solusi Vitaly:** Penerapan **Medical Safety Disclaimer** dan **Expert-in-the-loop**. Sistem mewajibkan persetujuan protokol keamanan sebelum penggunaan dan memposisikan **Health Facilitator** sebagai validator akhir, memastikan teknologi ini bersifat sebagai *Decision Support System* (DSS), bukan pengganti tenaga medis.
 
 ---
 
@@ -17,15 +35,27 @@ VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **I
 | Role | Sebutan di UI | Akses |
 |------|--------------|-------|
 | `user` (Pasien) | Pasien | Dashboard pribadi, riwayat, AI chat, input mandiri |
-| `kader` *(internal DB)* | **Health Agent** | Kelola pasien, input data, lihat analisis AI |
-| `admin` | Admin | Kelola Health Agent, kelola pasien, knowledge base AI |
+| `kader` *(internal DB)* | **Health Facilitator** | Kelola pasien, input data, verifikasi hasil IoMT |
+| `admin` | Admin | Kelola Facilitator, kelola pasien, knowledge base AI |
 
-### Alur Login per Role:
-```
-Pasien / Tamu  → /login → "Saya Pasien" → Google OAuth → /masuk (input NIK)
-Health Agent   → /login → "Saya Health Agent" → Email + Password / Google OAuth
-Admin          → /login → "Saya Health Agent / Admin" → Email + Password
-```
+---
+
+## 🔑 Fitur Unggulan & Protokol Keamanan
+
+### 1. Clinical Data Validator (Data Integrity)
+Layanan `BluetoothService.js` kini dilengkapi dengan fungsi `validateVitalData()` yang menyaring metrik vital berdasarkan batas klinis:
+- **Blood Pressure:** Deteksi konsistensi sistolik vs diastolik.
+- **Heart Rate:** Filter ambang batas bradikardia & takikardia ekstrem.
+- **SpO2:** Deteksi artefak sensor pada nilai saturasi rendah.
+- **Logic:** Data kotor akan ditolak oleh sistem sebelum masuk ke mesin analisis AI (*Anti-GIGO Protocol*).
+
+### 2. Medical Safety Disclaimer
+Dashboard Vitaly dilengkapi dengan **Safety Modal** yang menggunakan `localStorage` untuk memastikan setiap pengguna baru memahami limitasi teknologi IoMT dan tanggung jawab medis sebelum melihat hasil analisis.
+
+### 3. Hybrid AI Engine (Gemini + Deterministic Logic)
+Mesin analisis pada `GeminiService.php` bekerja dalam dua lapis:
+1.  **Deterministic Layer:** Menghitung skor risiko berdasarkan parameter angka yang pasti (Kemenkes RI).
+2.  **Cognitive Layer:** Gemini AI mensintesis data tersebut menjadi laporan yang empatik, profesional, dan menyertakan referensi video edukasi yang relevan.
 
 ---
 
@@ -34,58 +64,11 @@ Admin          → /login → "Saya Health Agent / Admin" → Email + Password
 ```
 VITALY/
 ├── app/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── Auth/AuthController.php       ← Google OAuth + Login biasa
-│   │   │   ├── PatientController.php         ← Lookup NIK + Daftar Mandiri
-│   │   │   ├── SelfInputController.php       ← Input data mandiri oleh pasien
-│   │   │   ├── DashboardController.php       ← Dashboard pasien
-│   │   │   ├── HealthRecordController.php    ← Riwayat data kesehatan
-│   │   │   ├── AiAnalysisController.php      ← Analisis AI Gemini
-│   │   │   ├── AiChatController.php          ← Chatbot VITALY Smart Assistant
-│   │   │   ├── EdukasiController.php         ← Konten edukasi + YouTube API
-│   │   │   ├── StandarNormalController.php   ← Referensi nilai normal
-│   │   │   ├── Kader/
-│   │   │   │   ├── KaderDashboardController.php
-│   │   │   │   └── KaderPatientController.php  ← CRUD pasien + input data
-│   │   │   └── Admin/
-│   │   │       ├── AdminDashboardController.php
-│   │   │       ├── AdminUserController.php     ← Kelola pasien (admin)
-│   │   │       ├── AdminKaderController.php    ← Kelola Health Agent
-│   │   │       └── AiKnowledgeController.php   ← Knowledge base AI
-│   ├── Models/
-│   │   ├── User.php          ← Health Agent & Admin (role: kader/admin)
-│   │   ├── Patient.php       ← Data pasien (NIK, nama, dll + self_registered)
-│   │   ├── HealthRecord.php  ← Record vital: TD, BPM, SpO2, gula darah, dll
-│   │   └── AiAnalysis.php    ← Hasil analisis AI
-│   └── Services/
-│       └── GeminiService.php ← Integrasi Google Gemini API (analisis + chat)
-│
+│   ├── Services/
+│   │   └── GeminiService.php ← 🧠 Hybrid Engine (Expert System + AI)
+│   └── Http/Controllers/
+│       └── AiAnalysisController.php ← Analisis Terintegrasi
 ├── resources/js/
-│   ├── Pages/
-│   │   ├── Landing.vue              ← Halaman utama publik
-│   │   ├── Auth/Login.vue           ← Halaman login (multi-role)
-│   │   ├── PatientLookup.vue        ← Masuk via NIK (pasien)
-│   │   ├── SelfRegister.vue         ← Daftar mandiri pasien baru (3 langkah)
-│   │   ├── SelfInput.vue            ← Input data mandiri pasien
-│   │   ├── Dashboard.vue            ← Dashboard pasien (IoMT-aware)
-│   │   ├── AiAnalysis.vue           ← Halaman analisis AI
-│   │   ├── AiChat.vue               ← Chatbot VITALY Smart Assistant
-│   │   ├── Edukasi.vue              ← Video edukasi kesehatan
-│   │   ├── StandarNormal.vue        ← Referensi nilai normal
-│   │   ├── Kader/
-│   │   │   ├── Dashboard.vue        ← Dashboard Health Agent
-│   │   │   ├── Patients.vue         ← Daftar pasien + pairing smartwatch
-│   │   │   ├── PatientDetail.vue    ← Detail + riwayat pasien
-│   │   │   └── InputData.vue        ← Input data pasien (manual + sync BLE)
-│   │   └── Admin/
-│   │       ├── Dashboard.vue
-│   │       ├── Kaders.vue           ← Kelola Health Agent (UI: "Health Agent")
-│   │       └── UserDetail.vue
-│   ├── Layouts/
-│   │   ├── AppLayout.vue            ← Layout pasien (sidebar + bottom nav mobile)
-│   │   ├── KaderLayout.vue          ← Layout Health Agent
-│   │   ├── AdminLayout.vue          ← Layout Admin
 │   │   └── AuthLayout.vue           ← Layout halaman auth (split-screen)
 │   └── Services/
 │       └── BluetoothService.js      ← 🔑 Layanan BLE / IoMT (lihat bawah)
