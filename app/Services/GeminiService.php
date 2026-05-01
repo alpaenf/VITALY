@@ -30,8 +30,9 @@ class GeminiService
      */
     public function chat(string $prompt, array $history = []): string
     {
-        // Untuk saat ini kita pakai simple completion, bisa dikembangkan menjadi chat history model
-        return $this->generateContent($prompt);
+        $systemPrompt = "Kamu adalah dr. VITALY, konsultan kesehatan virtual di platform VITALY. Jawab dengan sangat ramah, hangat, penuh empati, dan logis. Kamu bukan cuma tempat bertanya soal penyakit fisik, tapi juga teman yang siap mendengarkan curhat (keluh kesah/kecemasan pasien). Berikan kata-kata penyemangat dan validasi perasaan mereka, apalagi orang sakit seringkali butuh dukungan mental. DILARANG KERAS MENGGUNAKAN EMOJI ATAU EMOTIKON APAPUN dalam balasanmu. Jika ditanya hal umum atau diajak curhat, jawablah dengan sabar layaknya sahabat, namun tetap arahkan pelan-pelan ke kesehatan jika relevan. Beri peringatan singkat di akhir setiap sesi awal bahwa kamu adalah sistem otomatis dan bukan dokter sungguhan.\n\nSANGAT PENTING: JANGAN PERNAH menyebutkan bahwa kamu adalah AI, LLM, atau menyebutkan model seperti Gemini. Bersikaplah seolah-olah kamu adalah bagian integral dari sistem VITALY.\n\nPertanyaan User: {$prompt}";
+
+        return $this->generateContent($systemPrompt);
     }
 
     private function generateContent(string $prompt, ?array $fallbackUserData = null, ?array $fallbackRecords = null): string
@@ -71,6 +72,44 @@ class GeminiService
         return $this->generateFallbackAnalysis($fallbackUserData, $fallbackRecords);
     }
 
+    public function buildHealthPrompt(array $userData, array $records): string
+    {
+        $name = $userData['name'] ?? 'Pasien';
+        $gender = ($userData['gender'] ?? 'male') === 'male' ? 'Laki-laki' : 'Perempuan';
+        $age = $userData['age'] ?? 'tidak diketahui';
+
+        $recordsSummary = collect($records)->map(function ($record, $index) {
+            $parts = [];
+            $isIoMT = str_contains($record['notes'] ?? '', 'Bluetooth') || !empty($record['device_id']);
+            $sourceTag = $isIoMT ? "[SUMBER: IoMT/Smartwatch]" : "[SUMBER: Manual]";
+
+            if (!empty($record['systolic']) && !empty($record['diastolic'])) {
+                $parts[] = "Tekanan darah: {$record['systolic']}/{$record['diastolic']} mmHg";
+            }
+            if (!empty($record['heart_rate'])) {
+                $parts[] = "Detak jantung: {$record['heart_rate']} bpm";
+            }
+            if (!empty($record['blood_sugar'])) {
+                $parts[] = "Gula darah: {$record['blood_sugar']} mg/dL";
+            }
+            if (!empty($record['weight']) && !empty($record['height'])) {
+                $bmi = round($record['weight'] / pow($record['height'] / 100, 2), 1);
+                $parts[] = "Berat: {$record['weight']} kg, Tinggi: {$record['height']} cm (IMT: {$bmi})";
+            }
+            if (!empty($record['temperature'])) {
+                $parts[] = "Suhu tubuh: {$record['temperature']}°C";
+            }
+            if (!empty($record['oxygen_saturation'])) {
+                $parts[] = "SpO2: {$record['oxygen_saturation']}%";
+            }
+            
+            $date = $record['recorded_at'] ?? 'tanggal tidak diketahui';
+            return "Pengukuran " . ($index + 1) . " ({$date}) {$sourceTag}:\n- " . implode("\n- ", $parts);
+        })->join("\n\n");
+
+        return "Kamu adalah analis kesehatan berbasis data VITALY.\n\nAturan:\n- Gunakan Bahasa Indonesia yang jelas dan profesional.\n- Jangan mendiagnosis penyakit secara pasti.\n- Jika ada indikasi serius, anjurkan konsultasi dokter secara wajar.\n- JANGAN PERNAH menyebutkan bahwa kamu adalah AI, LLM, atau menyebutkan model seperti Gemini.\n\nPasien: {$name} ({$gender}, {$age} tahun)\n\nData Kesehatan Terakhir:\n{$recordsSummary}\n\nBerikan analisis klinis yang mudah dipahami.";
+    }
+
     private function generateFallbackAnalysis(?array $userData, ?array $records): string
     {
         if (!$records || count($records) === 0) {
@@ -88,7 +127,7 @@ class GeminiService
         $riskScore     = 0;   // 0 = aman, makin besar makin berisiko
         $combinedRisks = [];
 
-        // â”€â”€ 1. TEKANAN DARAH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── 1. TEKANAN DARAH ──────────────────────────────────
         if (!empty($latest['systolic']) && !empty($latest['diastolic'])) {
             $sys = $latest['systolic'];
             $dia = $latest['diastolic'];
@@ -140,7 +179,7 @@ class GeminiService
             }
         }
 
-        // â”€â”€ 2. GULA DARAH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── 2. GULA DARAH ─────────────────────────────────────
         if (!empty($latest['blood_sugar'])) {
             $bs = $latest['blood_sugar'];
 
@@ -168,7 +207,7 @@ class GeminiService
             }
         }
 
-        // â”€â”€ 3. DETAK JANTUNG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── 3. DETAK JANTUNG ──────────────────────────────────
         if (!empty($latest['heart_rate'])) {
             $hr = $latest['heart_rate'];
             if ($hr >= 60 && $hr <= 100) {
@@ -185,7 +224,7 @@ class GeminiService
             }
         }
 
-        // ── 4. IMT ──────────────────────────────────────────────────
+        // ── 4. IMT ────────────────────────────────────────────
         if (!empty($latest['weight']) && !empty($latest['height'])) {
             $bmi = round($latest['weight'] / pow($latest['height'] / 100, 2), 1);
             if ($bmi < 18.5) {
@@ -212,7 +251,7 @@ class GeminiService
             }
         }
 
-        // â”€â”€ 5. SUHU TUBUH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── 5. SUHU TUBUH ─────────────────────────────────────
         if (!empty($latest['temperature'])) {
             $temp = $latest['temperature'];
             if ($temp < 36.0) {
@@ -230,7 +269,7 @@ class GeminiService
             }
         }
 
-        // â”€â”€ 6. SpO2 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── 6. SpO2 ───────────────────────────────────────────
         if (!empty($latest['oxygen_saturation'])) {
             $spo2 = $latest['oxygen_saturation'];
             if ($spo2 >= 95) {
@@ -246,7 +285,7 @@ class GeminiService
             }
         }
 
-        // â”€â”€ DETEKSI RISIKO KOMBINASI (seperti ML rule-based) â”€â”€â”€â”€â”€â”€â”€
+        // ── DETEKSI RISIKO KOMBINASI (seperti ML rule-based) ──
         $comboNotes = [];
         if (in_array('hipertensi', $combinedRisks) && (in_array('diabetes', $combinedRisks) || in_array('pradiabetes', $combinedRisks))) {
             $comboNotes[] = "**Perhatian Khusus:** Kombinasi hipertensi dan gula darah tinggi meningkatkan risiko penyakit jantung dan ginjal secara signifikan. Evaluasi menyeluruh ke dokter sangat disarankan.";
@@ -261,14 +300,14 @@ class GeminiService
             $riskScore   += 2;
         }
 
-        // â”€â”€ SKOR RISIKO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── SKOR RISIKO ───────────────────────────────────────
         if ($riskScore === 0)       $riskLabel = "Sangat Baik";
         elseif ($riskScore <= 2)    $riskLabel = "Baik (ada beberapa hal yang perlu dijaga)";
         elseif ($riskScore <= 5)    $riskLabel = "Perlu Perhatian";
         elseif ($riskScore <= 9)    $riskLabel = "Berisiko Tinggi";
         else                        $riskLabel = "Kritis - Segera Tanggap";
 
-        // ── PERSONALISASI BERDASARKAN USIA & GENDER ──────────────────
+        // ── PERSONALISASI BERDASARKAN USIA & GENDER ───────────
         $personalNote = "";
         if ($age && $age >= 40 && in_array('hipertensi', $combinedRisks)) {
             $personalNote = "\n\nUsia 40 tahun ke atas dengan hipertensi: risiko stroke dan serangan jantung meningkat 2-3x lipat. Pemeriksaan EKG dan profil lipid tahunan sangat direkomendasikan.";
@@ -276,7 +315,7 @@ class GeminiService
             $personalNote = "\n\nWanita memasuki usia perimenopause (45+) umumnya mengalami peningkatan risiko kardiovaskular. Pemantauan tekanan darah rutin sangat penting di fase ini.";
         }
 
-        // ── KOMPILASI OUTPUT ──────────────────────────────────────────
+        // ── KOMPILASI OUTPUT ──────────────────────────────────
         $analisaTeks    = count($fragments) > 0 ? implode("\n", $fragments) : "- Data belum cukup lengkap untuk dianalisis rinci.";
         $rekomendasiTeks = count($recs) > 0
             ? implode("\n", array_map(fn($i, $r) => ($i + 1) . ". " . $r, array_keys($recs), $recs))
@@ -286,100 +325,6 @@ class GeminiService
             ? "🚨 **PERINGATAN DARURAT (KRITIS):** Kondisi {$name} saat ini sangat berbahaya dan berisiko fatal jika diabaikan. Segera bawa pasien ke IGD RS Terdekat atau Puskesmas sekarang juga!"
             : "Secara keseluruhan kondisi {$name} terpantau dalam batas yang dapat dikelola. Tetap pertahankan gaya hidup sehat dan pantau secara berkala.";
 
-        return "**1. Ringkasan Kesehatan**\nBerdasarkan data terakhir {$name}, sistem menghasilkan **Skor Risiko: {$riskLabel}**.{$personalNote}\n\n**2. Analisis Detail Parameter**\n{$analisaTeks}{$comboTeks}\n\n**3. Rekomendasi Gaya Hidup**\n{$rekomendasiTeks}\n\n**4. Kesimpulan**\n{$kesimpulan}\n\n---\n*Analisis ini dihasilkan oleh sistem cadangan lokal berbasis aturan klinis. Tidak menggantikan diagnosis dokter.*";
+        return "**1. Ringkasan Kesehatan**\nBerdasarkan data terakhir {$name}, sistem menghasilkan **Skor Risiko: {$riskLabel}**.{$personalNote}\n\n**2. Analisis Detail Parameter**\n{$analisaTeks}{$comboTeks}\n\n**3. Rekomendasi Gaya Hidup**\n{$rekomendasiTeks}\n\n**4. Kesimpulan**\n{$kesimpulan}\n\n---\n*Analisis ini dihasilkan secara sistematis oleh VITALY Health. Tidak menggantikan diagnosis dokter.*";
     }
-
-    /**
-     * Send a direct chat prompt to Gemini API.
-     */
-    public function chat(string $prompt, array $history = []): string
-    {
-        $systemPrompt = "Anda adalah **VITALY Smart Assistant**, asisten kesehatan AI pintar.
-
-Kepribadian Anda:
-- Ramah, empatik, profesional, dan informatif.
-- Gunakan Bahasa Indonesia.
-
-Keahlian Khusus:
-1. **IoMT & Smartwatch:** Paham koneksi Mi Band 8 ke VITALY.
-2. **Edukasi Video:** Berikan link video edukasi jika relevan dari daftar berikut:
-   - Senam Hipertensi: https://www.youtube.com/watch?v=kYv9G_lU1mQ
-   - Diet Diabetes: https://www.youtube.com/watch?v=680-RjA50uE
-   - Teknik Relaksasi: https://www.youtube.com/watch?v=17X2_tp8BfM
-   - Tips Jantung Sehat: https://www.youtube.com/watch?v=vV77P7Y2w9E
-
-Pertanyaan User: {$prompt}";
-
-        return $this->generateContent($systemPrompt);
-    }
-
-    private function generateContent(string $prompt, ?array $fallbackUserData = null, ?array $fallbackRecords = null): string
-    {
-        if (empty($this->apiKey)) {
-            return $this->generateFallbackAnalysis($fallbackUserData, $fallbackRecords);
-        }
-
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}";
-
-        try {
-            $response = Http::timeout(20)->post($url, [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $prompt]
-                        ]
-                    ]
-                ]
-            ]);
-
-            if ($response->successful()) {
-                $data = $response->json();
-                if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
-                    return $data['candidates'][0]['content']['parts'][0]['text'];
-                }
-            } else {
-                Log::error('Gemini API Error: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            Log::error('Gemini Connection Error: ' . $e->getMessage());
-        }
-
-        return $this->generateFallbackAnalysis($fallbackUserData, $fallbackRecords);
-    }
-
-    public function buildHealthPrompt(array $userData, array $records): string
-    {
-        $name = $userData['name'] ?? 'Pasien';
-        $gender = ($userData['gender'] ?? 'male') === 'male' ? 'Laki-laki' : 'Perempuan';
-        $age = $userData['age'] ?? 'tidak diketahui';
-
-        $recordsSummary = collect($records)->map(function ($record, $index) {
-            $parts = [];
-            $isIoMT = str_contains($record['notes'] ?? '', 'Bluetooth') || !empty($record['device_id']);
-            $sourceTag = $isIoMT ? "[SUMBER: IoMT/Smartwatch]" : "[SUMBER: Manual]";
-
-            if (!empty($record['systolic']) && !empty($record['diastolic'])) {
-                $parts[] = "Tekanan darah: {$record['systolic']}/{$record['diastolic']} mmHg";
-            }
-            if (!empty($record['heart_rate'])) {
-                $parts[] = "Detak jantung: {$record['heart_rate']} bpm";
-            }
-            if (!empty($record['blood_sugar'])) {
-                $parts[] = "Gula darah: {$record['blood_sugar']} mg/dL";
-            }
-            if (!empty($record['weight']) && !empty($record['height'])) {
-                $bmi = round($record['weight'] / pow($record['height'] / 100, 2), 1);
-                $parts[] = "Berat: {$record['weight']} kg, Tinggi: {$record['height']} cm (IMT: {$bmi})";
-            }
-            if (!empty($record['temperature'])) {
-                $parts[] = "Suhu tubuh: {$record['temperature']}°C";
-            }
-            if (!empty($record['oxygen_saturation'])) {
-                $parts[] = "SpO2: {$record['oxygen_saturation']}%";
-            }
-            
-            $date = $record['recorded_at'] ?? 'tanggal tidak diketahui';
-            return "Pengukuran " . ($index + 1) . " ({$date}) {$sourceTag}:\n- " . implode("\n- ", $parts);
-        })->join("\n\n");
-
 }

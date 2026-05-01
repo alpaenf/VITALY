@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\AiAnalysis;
 use App\Models\Patient;
-use App\Services\GeminiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
+use App\Services\OllamaService;
 
 class AiAnalysisController extends Controller
 {
-    public function __construct(private GeminiService $gemini) {}
 
     public function index()
     {
@@ -22,7 +21,8 @@ class AiAnalysisController extends Controller
             return $analysis;
         });
         $latestAnalysis = $analyses->first();
-        $hasRecords     = $patient->healthRecords()->exists();
+        $latestRecord   = $patient->healthRecords()->latest('recorded_at')->first();
+        $hasRecords     = (bool) $latestRecord;
 
         // Reuse YouTube videos cached by Edukasi page; populate via API if cache is empty
         $eduVideos = Cache::get('edukasi_videos_all', []);
@@ -37,9 +37,12 @@ class AiAnalysisController extends Controller
                         'nutrition' => 'gizi seimbang IMT nutrisi kemenkes',
                         'lifestyle' => 'gaya hidup sehat olahraga kesehatan indonesia',
                         'mental'    => 'kesehatan mental stres kecemasan indonesia',
+                        'spo2'      => 'cara menggunakan oximeter saturasi oksigen kemenkes',
                     ];
                     $all = [];
                     $id  = 1;
+                    $seenIds = []; // Prevent duplicate youtubeIds from different queries
+                    
                     foreach ($queries as $category => $query) {
                         $resp = Http::timeout(10)->get('https://www.googleapis.com/youtube/v3/search', [
                             'part'              => 'snippet',
@@ -54,7 +57,9 @@ class AiAnalysisController extends Controller
                         if ($resp->failed()) continue;
                         foreach ($resp->json('items', []) as $item) {
                             $videoId = $item['id']['videoId'] ?? null;
-                            if (!$videoId) continue;
+                            if (!$videoId || in_array($videoId, $seenIds)) continue;
+                            
+                            $seenIds[] = $videoId;
                             $snippet = $item['snippet'];
                             $all[] = [
                                 'id'          => $id++,
@@ -82,6 +87,7 @@ class AiAnalysisController extends Controller
         return Inertia::render('AiAnalysis', [
             'analyses'       => $analyses,
             'latestAnalysis' => $latestAnalysis,
+            'latestRecord'   => $latestRecord,
             'hasRecords'     => $hasRecords,
             'eduVideos'      => $eduVideos,
             'userInfo'       => [
@@ -126,9 +132,12 @@ class AiAnalysisController extends Controller
         ])->toArray();
 
         try {
-            // Kita sudah set GeminiService->analyzeHealth param-nya 1 aja yaitu (userData, recordsData)
-            // Jadi methodnya tidak perlu diganti, tapi mari pastikan throw error-nya ilang!
-            $result = $this->gemini->analyzeHealth($userData, $recordsData);
+            $ollama = app(OllamaService::class);
+            $result = $ollama->analyzeHealth($userData, $recordsData);
+
+            if (empty($result)) {
+                throw new \RuntimeException('Gagal memproses analisis kesehatan saat ini.');
+            }
 
             $analysis = AiAnalysis::create([
                 'patient_id'       => $patient->id,

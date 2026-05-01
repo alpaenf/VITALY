@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\Models\AiKnowledge;
 use App\Models\Patient;
+use App\Services\OllamaService;
 
 class AiChatController extends Controller
 {
@@ -45,7 +46,7 @@ class AiChatController extends Controller
 
         $patient = Patient::findOrFail(session('patient_id'));
         $latestRecord = $patient->healthRecords()->latest('recorded_at')->first();
-        $systemPrompt = "Kamu adalah dr. VITALY, asisten virtual medis di aplikasi VITALY berbasis AI. Jawab dengan sangat ramah, hangat, penuh empati, dan logis. Kamu bukan cuma tempat bertanya soal penyakit fisik, tapi juga teman yang siap mendengarkan curhat (keluh kesah/kecemasan pasien). Berikan kata-kata penyemangat dan validasi perasaan mereka, apalagi orang sakit seringkali butuh dukungan mental. DILARANG KERAS MENGGUNAKAN EMOJI ATAU EMOTIKON APAPUN dalam balasanmu. Jika ditanya hal umum atau diajak curhat, jawablah dengan sabar layaknya sahabat, namun tetap arahkan pelan-pelan ke kesehatan jika relevan. Beri peringatan singkat di akhir setiap sesi awal bahwa kamu bukan dokter sungguhan.\n\nSANGAT PENTING: Jika kamu memberikan penjelasan medis dan merasa video visual bisa membantu (seperti senam, cara pakai insulin, terapi), di akhir jawaban WAJIB tawarkan kepada pengguna apakah ia ingin diputarkan video edukasi terkait (Contoh: 'Apakah kamu mau aku carikan video tentang hal ini?').\n\nJika pengguna membalas setuju (misal: 'ya', 'mau', 'boleh', 'carikan video'), jawablah dengan singkat bahwa kamu akan menampilkan videonya, lalu WAJIB tambahkan kata kunci '[TAMPILKAN_VIDEO]' di akhir pesanmu agar sistem bisa memunculkan video.";
+        $systemPrompt = "Kamu adalah dr. VITALY, konsultan kesehatan virtual di platform VITALY. Jawab dengan sangat ramah, hangat, penuh empati, dan logis. Kamu bukan cuma tempat bertanya soal penyakit fisik, tapi juga teman yang siap mendengarkan curhat (keluh kesah/kecemasan pasien). Berikan kata-kata penyemangat dan validasi perasaan mereka, apalagi orang sakit seringkali butuh dukungan mental. DILARANG KERAS MENGGUNAKAN EMOJI ATAU EMOTIKON APAPUN dalam balasanmu. Jika ditanya hal umum atau diajak curhat, jawablah dengan sabar layaknya sahabat, namun tetap arahkan pelan-pelan ke kesehatan jika relevan. Beri peringatan singkat di akhir setiap sesi awal bahwa kamu adalah sistem otomatis dan bukan dokter sungguhan.\n\nSANGAT PENTING: JANGAN PERNAH menyebutkan bahwa kamu adalah AI, LLM, atau menyebutkan model seperti Ollama/Qwen. Bersikaplah seolah-olah kamu adalah bagian integral dari sistem VITALY. Jika kamu memberikan penjelasan medis dan merasa video visual bisa membantu (seperti senam, cara pakai insulin, terapi), di akhir jawaban WAJIB tawarkan kepada pengguna apakah ia ingin diputarkan video edukasi terkait (Contoh: 'Apakah kamu mau aku carikan video tentang hal ini?').\n\nJika pengguna membalas setuju (misal: 'ya', 'mau', 'boleh', 'carikan video'), jawablah dengan singkat bahwa kamu akan menampilkan videonya, lalu WAJIB tambahkan kata kunci '[TAMPILKAN_VIDEO]' di akhir pesanmu agar sistem bisa memunculkan video.";
         $systemPrompt .= "\nIdentitas Pasien: " . $patient->name . " (" . ($patient->gender ?? 'Tidak diketahui') . ", " . ($patient->age ?? '?') . " tahun).";
 
         if ($latestRecord) {
@@ -63,65 +64,40 @@ class AiChatController extends Controller
             $systemPrompt .= "\n--- Gunakan pengetahuan di atas untuk menjawab dengan lebih tepat dan pintar. ---";
         }
 
-        $contents = [];
         $lastUserText = '';
         foreach ($request->messages as $msg) {
-            $contents[] = [
-                'role' => $msg['role'],
-                'parts' => [
-                    ['text' => $msg['text']]
-                ]
-            ];
             if ($msg['role'] === 'user') {
                 $lastUserText = $msg['text'];
             }
         }
 
-        $payload = [
-            'systemInstruction' => [
-                'parts' => [
-                    ['text' => $systemPrompt]
-                ]
-            ],
-            'contents' => $contents,
-        ];
+        $reply  = null;
+        $videos = [];
 
-        $geminiKey = env('GEMINI_API_KEY', '');
-        $geminiModel = env('GEMINI_MODEL', 'gemini-3.0-flash');
-        $reply = null;
-
-        if ($geminiKey) {
-            try {
-                // -- HIT GEMINI API --
-                $response = Http::timeout(20)->post("https://generativelanguage.googleapis.com/v1beta/models/{$geminiModel}:generateContent?key={$geminiKey}", $payload);
-
-                if ($response->successful()) {
-                    $geminiData = $response->json();
-                    if (isset($geminiData['candidates'][0]['content']['parts'][0]['text'])) {
-                        $reply = $geminiData['candidates'][0]['content']['parts'][0]['text'];
-                    }
-                } else {
-                    Log::error('API Gemini Error: ' . $response->body());
-                }
-            } catch (\Exception $e) {
-                Log::error('Chatbot External Error: ' . $e->getMessage());
+        // Panggil Ollama langsung via OllamaService (tanpa Python service)
+        try {
+            $ollama      = app(OllamaService::class);
+            $ollamaReply = $ollama->chat($request->messages, $systemPrompt);
+            if (!empty($ollamaReply)) {
+                $reply = $ollamaReply;
             }
+        } catch (\Exception $e) {
+            Log::warning('Ollama chat error: ' . $e->getMessage());
         }
 
-        // FALLBACK: Rule-based local reply jika Gemini gagal/habis limit/error
+        // FALLBACK: Rule-based local reply jika Ollama tidak tersedia
         if (!$reply) {
             $reply = $this->ruleBasedReply($lastUserText, $latestRecord, $patient);
         }
 
         // -- SEARCH YOUTUBE VIDEOS HANYA JIKA DIBUTUHKAN --
-        $videos = [];
         $wantVideo = str_contains($reply, '[TAMPILKAN_VIDEO]') || preg_match('/(^|\b)(ya|mau|boleh|tampilin|lihat|tampilkan|carikan|silakan|gas|oke|ayo|y)(\b|$)/i', trim($lastUserText));
-        $youtubeKey = env('YOUTUBE_API_KEY', '');
+        $youtubeKey = config('services.youtube.api_key');
         
         // Buang tag khusus dari respons balasan
         $reply = trim(str_replace('[TAMPILKAN_VIDEO]', '', $reply));
         
-        if ($wantVideo && $youtubeKey) {
+        if ($wantVideo && $youtubeKey && empty($videos)) {
             // Analisis obrolan dari yang paling baru untuk tahu topik yang dibicarakan
             $textsToCheck = [$reply];
             foreach (array_reverse($request->messages) as $m) {

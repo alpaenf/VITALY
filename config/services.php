@@ -46,10 +46,6 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
     ],
 
-    'health_ai' => [
-        'url' => env('HEALTH_AI_URL', 'http://localhost:8001'),
-    ],
-
     'youtube' => [
         'api_key' => env('YOUTUBE_API_KEY', ''),
     ],

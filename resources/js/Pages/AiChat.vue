@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-        <Head title="Chat AI Kesehatan" />
+        <Head title="Konsultasi Kesehatan" />
 
         <div class="flex flex-col h-[calc(100dvh-186px)] lg:h-[calc(100vh-120px)]">
             <!-- Header Full -->
@@ -14,8 +14,8 @@
                         </svg>
                     </div>
                     <div class="flex-1 pr-1">
-                        <h1 class="text-base font-bold leading-tight">VITALY Smart Assistant</h1>
-                        <p class="text-white/80 text-[10px] mt-0.5 leading-tight">Asisten Kesehatan IoMT — Berbasis Kemenkes RI</p>
+                        <h1 class="text-base font-bold leading-tight">VITALY Health Consultant</h1>
+                        <p class="text-white/80 text-[10px] mt-0.5 leading-tight">Konsultasi Kesehatan Berbasis Pedoman Kemenkes RI</p>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0 self-end sm:self-auto">
                         <button @click="clearChat"
@@ -42,7 +42,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
                         </svg>
                      </div>
-                     <p class="text-xs font-bold text-gray-700">VITALY Smart Assistant</p>
+                     <p class="text-xs font-bold text-gray-700">VITALY Health Consultant</p>
                  </div>
                  <div class="flex items-center gap-1.5">
                      <button @click="clearChat" class="w-6 h-6 text-gray-400 hover:text-red-500 bg-gray-50 rounded flex items-center justify-center transition" title="Hapus Chat">
@@ -72,8 +72,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-800 mb-1">Halo! Saya VITALY Smart Assistant</h3>
-                        <p class="text-sm text-gray-500 max-w-xs mx-auto">Tanyakan apa saja seputar kesehatan & smartwatch Anda. Jawaban saya berbasis pedoman <strong>Kemenkes RI</strong> dan data IoMT real-time.</p>
+                        <h3 class="font-bold text-gray-800 mb-1">Halo! Saya VITALY Health Consultant</h3>
+                        <p class="text-sm text-gray-500 max-w-xs mx-auto">Tanyakan seputar kesehatan & perangkat IoMT Anda. Jawaban kami mengacu pada standar <strong>Kemenkes RI</strong> dan data pemantauan real-time.</p>
                     </div>
                     <!-- Quick suggestions -->
                     <div class="flex flex-wrap justify-center gap-2 mt-2">

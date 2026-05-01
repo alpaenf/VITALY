@@ -1,14 +1,14 @@
 # VITALY — Platform Monitoring Kesehatan Berbasis IoMT
 
-> **Versi:** 2.0 (IoMT Edition - Clinical Safety Enhanced)
-> **Stack:** Laravel 11 · Vue 3 (Inertia.js) · Vite · TailwindCSS · Gemini AI
+> **Versi:** 2.1 (Clinical Grade & Local AI Enhanced)
+> **Stack:** Laravel 11 · Vue 3 (Inertia.js) · Vite · TailwindCSS · **Ollama (Local AI)** · **Gemini AI (Fallback)**
 > **Konteks:** Karya Tulis Ilmiah (KTI) — Sistem Kesehatan Digital Berbasis Internet of Medical Things
 
 ---
 
 ## 🧠 Ringkasan Sistem
 
-VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **IoMT (Internet of Medical Things)** berbasis smartwatch dengan **Hybrid Intelligence Architecture**. Sistem ini tidak hanya mencatat data, tetapi juga memvalidasi integritas data secara klinis dan memberikan analisis mendalam menggunakan kombinasi *Deterministic Expert System* (berbasis aturan medis Kemenkes) dan *Generative AI* (Google Gemini).
+VITALY adalah platform monitoring kesehatan masyarakat yang mengintegrasikan **IoMT (Internet of Medical Things)** berbasis smartwatch dengan **Hybrid Intelligence Architecture**. Sistem ini tidak hanya mencatat data, tetapi juga memvalidasi integritas data secara klinis dan memberikan analisis mendalam menggunakan kombinasi *Deterministic Expert System* (berbasis aturan medis Kemenkes) dan **VITALY Health Consultant** (Multi-Engine AI: Ollama Local & Gemini Fallback).
 
 ---
 
@@ -22,11 +22,15 @@ Vitaly dirancang untuk menjawab tiga tantangan utama dalam pengembangan aplikasi
 
 ### 2. Gap Halusinasi AI (Medical Safety)
 *   **Masalah:** Large Language Model (LLM) sering kali melakukan halusinasi atau memberikan diagnosa medis yang tidak akurat.
-*   **Solusi Vitaly:** Menggunakan **Hybrid Intelligence**. Sistem utama menggunakan *Rule-based Expert System* yang kaku untuk menentukan kategori risiko medis (Hipertensi, Diabetes, dll) sesuai standar Kemenkes RI. Gemini AI hanya digunakan sebagai *Cognitive Layer* untuk mempersonalisasi gaya bahasa dan memberikan motivasi, bukan untuk menentukan diagnosa.
+*   **Solusi Vitaly:** Menggunakan **Hybrid Intelligence**. Sistem utama menggunakan *Rule-based Expert System* yang kaku untuk menentukan kategori risiko medis (Hipertensi, Diabetes, dll) sesuai standar Kemenkes RI. AI Multi-Engine hanya digunakan sebagai *Cognitive Layer* untuk mempersonalisasi gaya bahasa dan memberikan motivasi, bukan untuk menentukan diagnosa.
 
 ### 3. Gap Risiko PoC (Safety Protocol)
 *   **Masalah:** Aplikasi *Proof of Concept* (PoC) berisiko jika dilepas ke masyarakat tanpa pengawasan.
 *   **Solusi Vitaly:** Penerapan **Medical Safety Disclaimer** dan **Expert-in-the-loop**. Sistem mewajibkan persetujuan protokol keamanan sebelum penggunaan dan memposisikan **Health Facilitator** sebagai validator akhir, memastikan teknologi ini bersifat sebagai *Decision Support System* (DSS), bukan pengganti tenaga medis.
+
+### 4. Gap Privasi Data (Local AI Privacy)
+*   **Masalah:** Pengiriman data kesehatan ke cloud AI luar negeri berisiko pada kedaulatan data pasien.
+*   **Solusi Vitaly:** Penggunaan **Local AI Engine (Ollama)**. Data sensitif dianalisis secara lokal di server aplikasi menggunakan model `qwen2.5`, sehingga data tidak pernah meninggalkan infrastruktur aman milik VITALY.
 
 ---
 
@@ -34,7 +38,7 @@ Vitaly dirancang untuk menjawab tiga tantangan utama dalam pengembangan aplikasi
 
 | Role | Sebutan di UI | Akses |
 |------|--------------|-------|
-| `user` (Pasien) | Pasien | Dashboard pribadi, riwayat, AI chat, input mandiri |
+| `user` (Pasien) | Pasien | Dashboard pribadi, riwayat, AI chat, input mandiri, Voice Assistant |
 | `kader` *(internal DB)* | **Health Facilitator** | Kelola pasien, input data, verifikasi hasil IoMT |
 | `admin` | Admin | Kelola Facilitator, kelola pasien, knowledge base AI |
 
@@ -52,10 +56,15 @@ Layanan `BluetoothService.js` kini dilengkapi dengan fungsi `validateVitalData()
 ### 2. Medical Safety Disclaimer
 Dashboard Vitaly dilengkapi dengan **Safety Modal** yang menggunakan `localStorage` untuk memastikan setiap pengguna baru memahami limitasi teknologi IoMT dan tanggung jawab medis sebelum melihat hasil analisis.
 
-### 3. Hybrid AI Engine (Gemini + Deterministic Logic)
-Mesin analisis pada `GeminiService.php` bekerja dalam dua lapis:
-1.  **Deterministic Layer:** Menghitung skor risiko berdasarkan parameter angka yang pasti (Kemenkes RI).
-2.  **Cognitive Layer:** Gemini AI mensintesis data tersebut menjadi laporan yang empatik, profesional, dan menyertakan referensi video edukasi yang relevan.
+### 3. VITALY Health Consultant (AI Rebranding)
+Sistem dibranding ulang sebagai **"VITALY Health Consultant"**. Seluruh jargon AI teknis dihapus dari UI untuk memberikan pengalaman klinis yang profesional.
+
+### 4. Risk Status Badge & Pulse Alert
+- **Risk Badge:** Label visual (Hijau, Kuning, Oranye, Merah) pada setiap laporan analisis berdasarkan tingkat keparahan kondisi.
+- **Pulse Alert:** Dashboard akan menampilkan banner merah berdenyut jika terdeteksi parameter vital kritis (Tensi kritis, SpO2 rendah, dll).
+
+### 5. Voice Assistant (Read Aloud)
+Fitur **Text-to-Speech (TTS)** yang memungkinkan hasil analisis dibacakan secara otomatis dalam Bahasa Indonesia, meningkatkan aksesibilitas bagi semua kalangan.
 
 ---
 
@@ -65,7 +74,8 @@ Mesin analisis pada `GeminiService.php` bekerja dalam dua lapis:
 VITALY/
 ├── app/
 │   ├── Services/
-│   │   └── GeminiService.php ← 🧠 Hybrid Engine (Expert System + AI)
+│   │   ├── OllamaService.php ← 🧠 Primary Engine (Local AI - qwen2.5)
+│   │   └── GeminiService.php ← ☁️ Fallback Engine (Google Cloud)
 │   └── Http/Controllers/
 │       └── AiAnalysisController.php ← Analisis Terintegrasi
 ├── resources/js/
@@ -108,7 +118,7 @@ Daftar Mandiri (30 detik via Google)
         ↓
 Pairing Mi Band 8 di booth → data vital tersinkron otomatis
         ↓
-Gemini AI analisis langsung → hasil tampil di HP peserta
+VITALY Health Consultant analisis langsung → hasil tampil di HP peserta
         ↓
 Peserta pulang, dashboard tetap aktif → monitoring berlanjut
         ↓
@@ -128,7 +138,7 @@ Sistem sebelumnya hanya memindahkan kertas ke layar — data tetap diinput manua
 Dulu, data kesehatan seseorang "terkunci" di tangan petugas. Peserta tidak bisa mengakses, memperbarui, atau memahami datanya sendiri. VITALY menghancurkan tembok ini dengan fitur **Self-Registration & Self-Input**. Peserta bukan lagi objek yang "diperiksa", melainkan subjek yang aktif mengelola kesehatannya secara digital — bahkan setelah event selesai.
 
 ### 3. Dari Angka → Interpretasi AI yang Kontekstual
-Cek tensi 140/90? Sistem lama hanya simpan angka. VITALY menggunakan **Gemini AI** sebagai "dokter virtual" yang memberikan interpretasi kontekstual: apa artinya, apa risikonya, apa yang harus dilakukan, dan video edukasi apa yang relevan — semua otomatis, berbahasa Indonesia, berbasis standar Kemenkes RI.
+Cek tensi 140/90? Sistem lama hanya simpan angka. VITALY menggunakan **AI Multi-Engine** sebagai "dokter virtual" yang memberikan interpretasi kontekstual: apa artinya, apa risikonya, apa yang harus dilakukan, dan video edukasi apa yang relevan — semua otomatis, berbahasa Indonesia, berbasis standar Kemenkes RI.
 
 ---
 
@@ -214,23 +224,23 @@ InputData.vue → Form vital + tombol "Sync dari Smartwatch"
 
 > **Catatan:** URL `/kader/...` adalah nama teknis di backend (tidak diubah agar tidak merusak sistem). Tampilan UI tetap menampilkan **"Health Agent"**.
 
-### 5. Analisis AI (Gemini)
+### 5. Analisis AI (Multi-Engine: Ollama + Gemini)
 
 ```
 Pasien/Health Agent klik "Analisis AI"
     ↓ POST /ai-analysis
-    AiAnalysisController → GeminiService::analyze($patient, $record)
+    AiAnalysisController → OllamaService (Primary) atau GeminiService (Fallback)
     ↓
-GeminiService membangun prompt dengan:
+Service AI membangun prompt dengan:
   - Data identitas pasien (usia, gender)
   - Semua nilai vital terbaru
   - Label sumber data: [SUMBER: IoMT/Smartwatch] atau [SUMBER: Manual]
   - Knowledge base dari tabel ai_knowledge
-  - Instruksi persona: dokter IoMT Indonesia
+  - Persona VITALY Health Consultant
     ↓
-Gemini API mengembalikan:
+AI mengembalikan:
   - Interpretasi kondisi kesehatan
-  - Rekomendasi tindakan
+  - Rekomendasi tindakan (Risk Badge: Baik, Waspada, Berisiko, Kritis)
   - Link video YouTube edukatif yang relevan
   - Saran waktu kontrol ulang
 ```
@@ -411,6 +421,11 @@ GET  /standar-normal        → Referensi nilai normal
 ## ⚙️ Konfigurasi `.env` Penting
 
 ```env
+# AI Engine
+AI_SERVICE=ollama
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5:3b
+
 # Database
 DB_CONNECTION=mysql
 DB_DATABASE=vitaly
@@ -420,7 +435,7 @@ GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
 GOOGLE_REDIRECT_URI=https://your-domain.com/auth/google/callback
 
-# Google Gemini AI (wajib untuk analisis & chatbot)
+# Gemini AI (Fallback)
 GEMINI_API_KEY=...
 
 # YouTube Data API v3 (opsional — untuk video edukasi live)
@@ -443,16 +458,17 @@ Semua halaman dirancang **mobile-first** menggunakan Tailwind CSS:
 
 ---
 
-## 🤖 GeminiService.php — Prompt AI
+## 🤖 OllamaService & GeminiService — Multi-Engine AI
 
-File: `app/Services/GeminiService.php`
+Sistem menggunakan dual-engine untuk kehandalan:
+1. **OllamaService (Primary):** Menjamin privasi data dengan model `qwen2.5` lokal.
+2. **GeminiService (Fallback):** Aktif jika layanan lokal mati.
 
-Prompt sistem yang dikirim ke Gemini mencakup:
-1. **Persona:** Dokter IoMT Indonesia berbasis Kemenkes RI
+Keduanya menggunakan prompt standar yang mencakup:
+1. **Persona:** VITALY Health Consultant
 2. **Data Pasien:** Usia, gender, semua nilai vital terbaru
 3. **Label Sumber:** `[SUMBER: IoMT/Smartwatch]` atau `[SUMBER: Manual]`
-4. **Knowledge Base:** Dari tabel `ai_knowledge` (bisa dikelola admin)
-5. **Instruksi Output:** Format terstruktur — interpretasi, rekomendasi, video YouTube
+4. **Instruksi Output:** Format terstruktur — interpretasi, rekomendasi, video YouTube
 
 ---
 

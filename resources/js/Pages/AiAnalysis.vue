@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-        <Head title="Analisis AI" />
+        <Head title="Analisis Kesehatan" />
 
         <!-- Header Banner -->
         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-primary-dark text-white p-4 sm:p-5 mb-5 animate-fade-in-down">
@@ -12,8 +12,8 @@
                     <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
                 </div>
                 <div class="flex-1">
-                    <h1 class="text-xl font-bold">Analisis Kesehatan AI</h1>
-                    <p class="text-white/70 text-xs mt-0.5">Powered by VITALY Health AI Engine</p>
+                    <h1 class="text-xl font-bold">Analisis Kesehatan</h1>
+                    <p class="text-white/70 text-xs mt-0.5">Sistem Analisis Kesehatan Terintegrasi</p>
                 </div>
                 <div v-if="analyses.length" class="text-left sm:text-right flex-shrink-0">
                     <p class="text-3xl font-bold leading-none">{{ analyses.length }}</p>
@@ -39,6 +39,18 @@
                         </div>
                     </div>
 
+                    <!-- Critical Warning Banner -->
+                    <div v-if="criticalWarning" class="bg-red-50 border-2 border-red-400 rounded-xl p-3 mb-4 animate-pulse-slow">
+                        <div class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.538-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            <div>
+                                <p class="text-xs font-bold text-red-700 mb-1">⚠ PERINGATAN DATA KRITIS</p>
+                                <p v-for="msg in criticalWarning" :key="msg" class="text-xs text-red-600">• {{ msg }}</p>
+                                <p class="text-[10px] text-red-400 mt-1">Segera konsultasikan ke dokter atau fasilitas kesehatan terdekat.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div v-if="!hasRecords" class="bg-white/10 rounded-xl p-3 mb-4 text-sm text-white/80">
                         Belum ada data kesehatan. Masukkan setidaknya satu data terlebih dahulu.
                     </div>
@@ -59,7 +71,7 @@
                             </span>
                         </button>
                     </form>
-                    <Link v-else href="/input-data"
+                    <Link v-else href="/input-mandiri"
                         class="block w-full bg-white text-primary-dark font-semibold py-3 rounded-xl text-center mt-4 hover:bg-primary/5 transition">
                         Input Data Dulu
                     </Link>
@@ -69,6 +81,37 @@
                 <div v-if="$page.props.errors?.error"
                     class="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm animate-fade-in-up">
                     {{ $page.props.errors.error }}
+                </div>
+
+                <!-- Latest Data Preview -->
+                <div v-if="latestRecord" class="card-VITALY p-4 animate-fade-in-up delay-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                <svg class="w-3.5 h-3.5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 text-sm">Data Terakhir</h4>
+                        </div>
+                        <span class="text-[10px] text-gray-400">{{ formatDate(latestRecord.recorded_at) }}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-[11px]">
+                        <div v-if="latestRecord.systolic" class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                            <span class="text-gray-500">Tekanan</span>
+                            <span class="font-bold text-gray-700">{{ latestRecord.systolic }}/{{ latestRecord.diastolic }}</span>
+                        </div>
+                        <div v-if="latestRecord.heart_rate" class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                            <span class="text-gray-500">Jantung</span>
+                            <span class="font-bold text-gray-700">{{ latestRecord.heart_rate }} bpm</span>
+                        </div>
+                        <div v-if="latestRecord.blood_sugar" class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                            <span class="text-gray-500">Gula Darah</span>
+                            <span class="font-bold text-gray-700">{{ latestRecord.blood_sugar }}</span>
+                        </div>
+                        <div v-if="latestRecord.oxygen_saturation" class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                            <span class="text-gray-500">SpO2</span>
+                            <span class="font-bold text-gray-700">{{ latestRecord.oxygen_saturation }}%</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Info card -->
@@ -143,6 +186,10 @@
                                         </p>
                                         <p class="text-xs text-gray-400">{{ formatDate(analysis.created_at) }} &bull; {{ analysis.records_analyzed }} data</p>
                                     </div>
+                                    <!-- Risk Badge -->
+                                    <span :class="getRiskBadgeClass(analysis.result)" class="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0">
+                                        {{ getRiskLabel(analysis.result) }}
+                                    </span>
                                 </div>
                                 <div class="flex items-center gap-1 flex-shrink-0">
                                     <button @click="confirmDelete(analysis.id)"
@@ -173,10 +220,17 @@
                                             <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.673.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                                             WA
                                         </button>
+                                        <!-- TTS Button -->
+                                        <button @click="readAloud(analysis.result)"
+                                            :class="ttsActive ? 'bg-primary/20 text-primary' : 'bg-gray-50 text-gray-500 hover:bg-primary/10 hover:text-primary'"
+                                            class="w-full sm:w-auto justify-center inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M12 6a7.975 7.975 0 015.657 2.343M12 18a7.975 7.975 0 01-5.657-2.343M9.5 9.5a3 3 0 000 5M6.343 6.343A8 8 0 0117.657 17.657"/></svg>
+                                            {{ ttsActive ? 'Stop' : 'Baca' }}
+                                        </button>
                                         <Link :href="'/ai-chat?from_analysis=' + analysis.id"
                                             class="w-full sm:w-auto justify-center inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition sm:ml-auto">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                                            Tanya AI
+                                            Konsultasi Lanjut
                                         </Link>
                                     </div>
 
@@ -244,7 +298,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ConfirmModal from '@/Components/ConfirmModal.vue';
@@ -252,6 +306,7 @@ import ConfirmModal from '@/Components/ConfirmModal.vue';
 const props = defineProps({
     analyses:       Array,
     latestAnalysis: Object,
+    latestRecord:   Object,
     hasRecords:     Boolean,
     eduVideos:      { type: Array, default: () => [] },
     userInfo:       { type: Object, default: () => ({}) },
@@ -261,6 +316,27 @@ const analyzing = ref(false);
 const openAnalysis = ref(0);
 const confirmDeleteModal = ref(false);
 const deleteTargetId = ref(null);
+const ttsActive = ref(false);
+const criticalWarning = ref(null); // holds the warning message if vitals are critical
+
+// Check critical vitals on mount
+onMounted(() => {
+    if (props.latestRecord) {
+        const r = props.latestRecord;
+        const msgs = [];
+        if (r.systolic >= 180 || r.diastolic >= 110)
+            msgs.push(`Tekanan darah SANGAT TINGGI: ${r.systolic}/${r.diastolic} mmHg`);
+        else if (r.systolic >= 160 || r.diastolic >= 100)
+            msgs.push(`Tekanan darah Tinggi: ${r.systolic}/${r.diastolic} mmHg`);
+        if (r.oxygen_saturation && r.oxygen_saturation < 90)
+            msgs.push(`Saturasi oksigen KRITIS: ${r.oxygen_saturation}%`);
+        if (r.heart_rate && (r.heart_rate > 130 || r.heart_rate < 40))
+            msgs.push(`Detak jantung abnormal: ${r.heart_rate} bpm`);
+        if (r.blood_sugar && r.blood_sugar >= 300)
+            msgs.push(`Gula darah SANGAT TINGGI: ${r.blood_sugar} mg/dL`);
+        if (msgs.length > 0) criticalWarning.value = msgs;
+    }
+});
 
 const analysisPoints = [
     'Tekanan darah (sistolik & diastolik)',
@@ -399,7 +475,7 @@ const downloadPdf = async (analysis) => {
 </div>
 ${identityHtml}
 ${html}
-<p class="footer">Laporan ini dihasilkan oleh VITALY AI. Bersifat informatif dan tidak menggantikan diagnosa medis resmi dari dokter spesialis.</p>
+<p class="footer">Laporan ini dihasilkan secara sistematis oleh VITALY Health. Bersifat informatif dan tidak menggantikan diagnosa medis resmi dari dokter spesialis.</p>
 <script>window.onload = () => { window.print(); };<\/script>
 </body></html>`;
 
@@ -423,39 +499,72 @@ const shareWhatsApp = (analysis) => {
         .replace(/#{1,3}\s/g, '');
     const preview = plain.trim().length > 1200 ? `${plain.trim().slice(0, 1200)}...` : plain.trim();
     const shareLink = analysis.share_url ? `Link PDF laporan:\n${analysis.share_url}\n\n` : '';
-    const msg = `*Laporan Analisis Kesehatan VITALY*\n${date}\n\n${shareLink}${preview}\n\n_Dihasilkan oleh VITALY Health Monitor. Bukan pengganti konsultasi dokter._`;
+    const msg = `*Laporan Analisis Kesehatan VITALY*\n${date}\n\n${shareLink}${preview}\n\n_Laporan kesehatan otomatis oleh VITALY. Bukan pengganti konsultasi dokter._`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+};
+
+// ── Risk Badge ─────────────────────────────────────────────────────
+const getRiskLabel = (result) => {
+    if (!result) return 'N/A';
+    const r = result.toLowerCase();
+    if (r.includes('kritis') || r.includes('darurat') || r.includes('sangat berbahaya')) return 'Kritis';
+    if (r.includes('berisiko tinggi') || r.includes('hipertensi derajat') || r.includes('diabetes')) return 'Berisiko';
+    if (r.includes('perlu perhatian') || r.includes('pradiabetes') || r.includes('normal-tinggi') || r.includes('waspada')) return 'Waspada';
+    if (r.includes('sangat baik') || r.includes('optimal') || r.includes('normal dan aman')) return 'Baik';
+    return 'Baik';
+};
+
+const getRiskBadgeClass = (result) => {
+    const label = getRiskLabel(result);
+    if (label === 'Kritis') return 'bg-red-100 text-red-700 ring-1 ring-red-300';
+    if (label === 'Berisiko') return 'bg-orange-100 text-orange-700 ring-1 ring-orange-300';
+    if (label === 'Waspada') return 'bg-yellow-100 text-yellow-700 ring-1 ring-yellow-300';
+    return 'bg-green-100 text-green-700 ring-1 ring-green-300';
+};
+
+// ── Text-to-Speech ─────────────────────────────────────────────────
+const readAloud = (text) => {
+    if (ttsActive.value) {
+        window.speechSynthesis.cancel();
+        ttsActive.value = false;
+        return;
+    }
+    const clean = (text ?? '').replace(/\*+/g, '').replace(/#+/g, '').replace(/---/g, '');
+    const utterance = new SpeechSynthesisUtterance(clean);
+    utterance.lang = 'id-ID';
+    utterance.rate = 0.95;
+    utterance.onend = () => { ttsActive.value = false; };
+    utterance.onerror = () => { ttsActive.value = false; };
+    window.speechSynthesis.speak(utterance);
+    ttsActive.value = true;
 };
 
 // Static fallback (used when YouTube API cache is not yet populated)
 const staticEduVideos = [
-    { id: 1,  youtubeId: 'b2iSH4VKpXo', keywords: ['hipertensi','tekanan darah','sistolik','diastolik','tensi'],      title: 'Hipertensi: Penyebab, Gejala dan Penanganannya',             channel: 'Kemenkes RI' },
-    { id: 2,  youtubeId: 'l0C_GsEINHs', keywords: ['jantung','koroner','kardio','angina','pembuluh darah'],            title: 'Penyakit Jantung Koroner: Kenali dan Cegah Sejak Dini',      channel: 'PERKI Indonesia' },
-    { id: 3,  youtubeId: 'fIAB4vdqYaQ', keywords: ['diabetes','gula darah','glukosa','hiperglikemia','pradiabetes'],   title: 'Diabetes Melitus Tipe 2: Gejala dan Pencegahan',             channel: 'Kemenkes RI' },
-    { id: 4,  youtubeId: 'wuU1TGqV6IU', keywords: ['gula darah','diabetes','pola makan','diet','nutrisi'],             title: 'Pola Makan Sehat untuk Penderita Diabetes',                 channel: 'PERKENI' },
-    { id: 5,  youtubeId: 'tFnFDFNITKs', keywords: ['imt','berat badan','bmi','overweight','obesitas','kegemukan'],     title: 'Cara Menghitung IMT dan Kategori Berat Badan',               channel: 'Kemenkes RI' },
-    { id: 6,  youtubeId: 'Yt59GKQ7oN8', keywords: ['gizi','nutrisi','makan','diet','pola makan','kalori'],             title: 'Pedoman Gizi Seimbang Isi Piringku',                        channel: 'Kemenkes RI' },
-    { id: 7,  youtubeId: 'gHbYJfwFgOU', keywords: ['olahraga','aktivitas fisik','latihan','aerobik','jantung'],        title: 'Manfaat Olahraga Rutin bagi Kesehatan Jantung',             channel: 'WHO Indonesia' },
-    { id: 8,  youtubeId: 'MXuSCKuHe7I', keywords: ['rokok','merokok','nikotin','paru','jantung'],                      title: 'Bahaya Rokok bagi Kesehatan Jantung dan Paru',              channel: 'Kemenkes RI' },
-    { id: 9,  youtubeId: 'vgVGKyLpxeU', keywords: ['stres','stress','mental','kecemasan','psikologi','burnout'],       title: 'Cara Mengelola Stres untuk Kesehatan Optimal',              channel: 'Kemenkes RI' },
-    { id: 10, youtubeId: 'wcHHSRMVHQE', keywords: ['serangan jantung','jantung','berhenti','cpr','resusitasi'],        title: 'Pertolongan Pertama pada Serangan Jantung',                 channel: 'PERKI Indonesia' },
-    { id: 11, youtubeId: 'VHxpfgfonSk', keywords: ['diabetes','olahraga','gula darah','aktivitas fisik','latihan'],    title: 'Olahraga Aman dan Efektif untuk Penderita Diabetes',        channel: 'PERKENI' },
-    { id: 12, youtubeId: 'nm1TxQj9IsQ', keywords: ['tidur','insomnia','istirahat','kualitas tidur','sleep'],           title: 'Tips Tidur Berkualitas untuk Kesehatan Optimal',            channel: 'Kemenkes RI' },
-    { id: 13, youtubeId: 'wOOYS3KDVKY', keywords: ['kolesterol','ldl','hdl','trigliserida','lemak darah'],             title: 'Kolesterol Tinggi: Bahaya dan Cara Mengatasinya',           channel: 'Kemenkes RI' },
-    { id: 14, youtubeId: 'b0c-FhNdBnk', keywords: ['spo2','saturasi','oksigen','sesak','pernapasan','paru'],           title: 'Saturasi Oksigen Normal dan Cara Menjaganya',               channel: 'Kemenkes RI' },
-    { id: 15, youtubeId: 'fL2NI1Nj0Pk', keywords: ['obesitas','berat badan','overweight','diet','kegemukan','imt'],   title: 'Cara Menurunkan Berat Badan secara Sehat',                  channel: 'Kemenkes RI' },
+    { id: 1,  youtubeId: 'b2iSH4VKpXo', keywords: ['hipertensi','tekanan darah','sistolik','diastolik','tensi','darah tinggi'],      title: 'Hipertensi: Penyebab, Gejala dan Penanganannya',             channel: 'Kemenkes RI' },
+    { id: 2,  youtubeId: 'l0C_GsEINHs', keywords: ['jantung','koroner','kardio','angina','pembuluh darah','serangan jantung'],    title: 'Penyakit Jantung Koroner: Kenali dan Cegah Sejak Dini',      channel: 'PERKI Indonesia' },
+    { id: 3,  youtubeId: 'fIAB4vdqYaQ', keywords: ['diabetes','gula darah','glukosa','hiperglikemia','pradiabetes','kencing manis'],   title: 'Diabetes Melitus Tipe 2: Gejala dan Pencegahan',             channel: 'Kemenkes RI' },
+    { id: 4,  youtubeId: 'wuU1TGqV6IU', keywords: ['gula darah','diabetes','pola makan','diet','nutrisi','glukosa'],             title: 'Pola Makan Sehat untuk Penderita Diabetes',                 channel: 'PERKENI' },
+    { id: 5,  youtubeId: 'tFnFDFNITKs', keywords: ['imt','berat badan','bmi','overweight','obesitas','kegemukan','berat'],     title: 'Cara Menghitung IMT dan Kategori Berat Badan',               channel: 'Kemenkes RI' },
+    { id: 6,  youtubeId: 'Yt59GKQ7oN8', keywords: ['gizi','nutrisi','makan','diet','pola makan','kalori','isi piringku'],        title: 'Pedoman Gizi Seimbang Isi Piringku',                        channel: 'Kemenkes RI' },
+    { id: 7,  youtubeId: 'gHbYJfwFgOU', keywords: ['olahraga','aktivitas fisik','latihan','aerobik','jantung','gerak'],        title: 'Manfaat Olahraga Rutin bagi Kesehatan Jantung',             channel: 'WHO Indonesia' },
+    { id: 8,  youtubeId: 'MXuSCKuHe7I', keywords: ['rokok','merokok','nikotin','paru','jantung','tembakau'],                      title: 'Bahaya Rokok bagi Kesehatan Jantung dan Paru',              channel: 'Kemenkes RI' },
+    { id: 9,  youtubeId: 'vgVGKyLpxeU', keywords: ['stres','stress','mental','kecemasan','psikologi','burnout','pikiran'],       title: 'Cara Mengelola Stres untuk Kesehatan Optimal',              channel: 'Kemenkes RI' },
+    { id: 10, youtubeId: 'wcHHSRMVHQE', keywords: ['serangan jantung','jantung','berhenti','cpr','resusitasi','nadi'],        title: 'Pertolongan Pertama pada Serangan Jantung',                 channel: 'PERKI Indonesia' },
+    { id: 11, youtubeId: 'VHxpfgfonSk', keywords: ['diabetes','olahraga','gula darah','aktivitas fisik','latihan','gerak'],    title: 'Olahraga Aman dan Efektif untuk Penderita Diabetes',        channel: 'PERKENI' },
+    { id: 12, youtubeId: 'nm1TxQj9IsQ', keywords: ['tidur','insomnia','istirahat','kualitas tidur','sleep','begadang'],           title: 'Tips Tidur Berkualitas untuk Kesehatan Optimal',            channel: 'Kemenkes RI' },
+    { id: 13, youtubeId: 'wOOYS3KDVKY', keywords: ['kolesterol','ldl','hdl','trigliserida','lemak darah','lemak'],             title: 'Kolesterol Tinggi: Bahaya dan Cara Mengatasinya',           channel: 'Kemenkes RI' },
+    { id: 14, youtubeId: '8Vz_lO2_T_E', keywords: ['spo2','saturasi','oksigen','sesak','pernapasan','paru','oximeter','nafas'], title: 'Cara Menggunakan Oximeter dan Saturasi Oksigen', channel: 'Alodokter' },
+    { id: 15, youtubeId: 'fL2NI1Nj0Pk', keywords: ['obesitas','berat badan','overweight','diet','kegemukan','imt','lemak'],   title: 'Cara Menurunkan Berat Badan secara Sehat',                  channel: 'Kemenkes RI' },
 ];
-
-// Use live YouTube videos from cache (populated when user visits Edukasi), else static
-const allEduVideos = computed(() =>
-    props.eduVideos && props.eduVideos.length > 0 ? props.eduVideos : staticEduVideos
-);
 
 const getRelatedVideos = (text) => {
     if (!text) return [];
     const t = text.toLowerCase();
-
-    // Score against staticEduVideos (they always have keywords).
+    const usedIds = new Set();
+    const result = [];
+    
+    // 1. Score against staticEduVideos (deterministic scoring)
     const scored = staticEduVideos.map(v => {
         let score = 0;
         for (const kw of (v.keywords ?? [])) {
@@ -465,29 +574,43 @@ const getRelatedVideos = (text) => {
         return { ...v, score };
     });
 
-    const matched = scored
-        .filter(v => v.score > 0)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 3);
+    // 2. Sort by score, then by ID to ensure deterministic order (prevent Vue re-render bugs)
+    scored.sort((a, b) => b.score !== a.score ? b.score - a.score : a.id - b.id);
 
-    // Fallback: generic healthy-lifestyle videos
-    const candidates = matched.length > 0 ? matched : staticEduVideos.filter(v =>
-        ['olahraga','gizi','tidur','stres'].some(k => (v.keywords ?? []).includes(k))
-    ).slice(0, 3);
+    // 3. Map candidates with live API substitution
+    const candidates = scored.filter(v => v.score > 0);
+    const liveVideos = props.eduVideos && props.eduVideos.length > 0 ? props.eduVideos : [];
 
-    // If live API videos are available, find a live video whose title matches
-    // one of this static entry's keywords and substitute its ID + channel.
-    const liveVideos = props.eduVideos && props.eduVideos.length > 0 ? props.eduVideos : null;
-    if (!liveVideos) return candidates;
-
-    return candidates.map(sv => {
-        const liveMatch = liveVideos.find(lv =>
+    for (let i = 0; i < candidates.length && result.length < 3; i++) {
+        const sv = candidates[i];
+        
+        // Find a live video matching this topic that hasn't been used yet
+        const liveMatch = liveVideos.find(lv => 
+            !usedIds.has(lv.youtubeId) && 
             (sv.keywords ?? []).some(kw => (lv.title ?? '').toLowerCase().includes(kw))
         );
-        return liveMatch
-            ? { ...sv, youtubeId: liveMatch.youtubeId, channel: liveMatch.channel, title: liveMatch.title }
-            : sv;
-    });
+
+        if (liveMatch) {
+            // Assign static ID to maintain Vue key stability, but use live video details
+            result.push({ ...sv, youtubeId: liveMatch.youtubeId, channel: liveMatch.channel, title: liveMatch.title });
+            usedIds.add(liveMatch.youtubeId);
+        } else if (!usedIds.has(sv.youtubeId)) {
+            result.push(sv);
+            usedIds.add(sv.youtubeId);
+        }
+    }
+
+    // 4. Fallback padding if we don't have 3 videos yet
+    if (result.length < 3) {
+        const fallbacks = staticEduVideos.filter(v => !usedIds.has(v.youtubeId));
+        for (const f of fallbacks) {
+            if (result.length >= 3) break;
+            result.push(f);
+            usedIds.add(f.youtubeId);
+        }
+    }
+
+    return result.slice(0, 3);
 };
 
 const formatDate = (d) => new Date(d).toLocaleDateString('id-ID', {
@@ -542,6 +665,12 @@ const renderMarkdown = (text) => {
 <style scoped>
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes pulseSlow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.75; }
+}
+.animate-pulse-slow { animation: pulseSlow 2s ease-in-out infinite; }
 
 .accordion-enter-active { animation: fadeInUp 0.3s ease both; }
 .accordion-leave-active { animation: fadeInUp 0.2s ease reverse both; }

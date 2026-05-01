@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI
+from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Optional
 from analyzer import HealthAnalyzer
@@ -6,13 +6,12 @@ import os
 import requests
 import uvicorn
 
-try:
-    import google.generativeai as genai
-    _GEMINI_OK = True
-except ImportError:
-    _GEMINI_OK = False
+app = FastAPI(title="VITALY Health AI Service", version="2.0.0")
 
-app = FastAPI(title="HEALTIVA Health AI Service", version="2.0.0")
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
+OLLAMA_TIMEOUT = int(os.getenv("OLLAMA_TIMEOUT", "30"))
+OLLAMA_NUM_CTX = int(os.getenv("OLLAMA_NUM_CTX", "2048"))
 
 
 # --- Models -------------------------------------------------------------------
@@ -51,6 +50,39 @@ class ChatRequest(BaseModel):
     user: Optional[UserData] = None
     latest_record: Optional[Record] = None
     youtube_api_key: Optional[str] = None
+    system_prompt: Optional[str] = None
+
+
+def call_ollama_chat(messages: list, system_prompt: str, timeout: Optional[int] = None) -> Optional[str]:
+    payload = {
+        "model": OLLAMA_MODEL,
+        "messages": [{"role": "system", "content": system_prompt}] + messages,
+        "stream": False,
+        "options": {
+            "temperature": 0.4,
+            "num_ctx": OLLAMA_NUM_CTX,
+        },
+    }
+    try:
+        resp = requests.post(
+            f"{OLLAMA_URL}/api/chat",
+            json=payload,
+            timeout=timeout or OLLAMA_TIMEOUT,
+        )
+        if not resp.ok:
+            return None
+        data = resp.json()
+        return data.get("message", {}).get("content")
+    except Exception:
+        return None
+
+
+def map_history_to_ollama(history: List[ChatMessage]) -> list:
+    mapped = []
+    for m in history:
+        role = "assistant" if m.role == "model" else m.role
+        mapped.append({"role": role, "content": m.text})
+    return mapped
 
 
 # --- Analyze endpoint ----------------------------------------------------------
@@ -61,7 +93,14 @@ def analyze(request: AnalyzeRequest):
         request.user.model_dump(),
         [r.model_dump() for r in request.records],
     )
-    result = analyzer.analyze()
+    prompt = build_analysis_prompt(request.user, request.records)
+    result = call_ollama_chat(
+        [{"role": "user", "content": prompt}],
+        _ANALYSIS_SYSTEM,
+        timeout=40,
+    )
+    if not result:
+        result = analyzer.analyze()
     return {"analysis": result}
 
 
@@ -147,7 +186,7 @@ def detect_youtube_query(text: str) -> Optional[str]:
 
 # --- System prompt -------------------------------------------------------------
 
-_HEALTH_SYSTEM = """Kamu adalah HEALTIVA, asisten kesehatan pribadi yang cerdas, empatik, dan menyenangkan.
+_HEALTH_SYSTEM = """Kamu adalah VITALY, asisten kesehatan pribadi yang cerdas, empatik, dan menyenangkan.
 
 Karakter:
 - Seperti teman dekat yang kebetulan paham kesehatan — santai, hangat, tidak menggurui
@@ -170,6 +209,56 @@ Batasan:
 - Untuk gejala serius, anjurkan dokter secara natural
 - Jangan akhiri setiap jawaban dengan disclaimer panjang
 - Jangan mulai dengan Halo!, Tentu!, Baik! terus-menerus"""
+
+_ANALYSIS_SYSTEM = """Kamu adalah analis kesehatan berbasis data.
+
+Aturan:
+- Gunakan Bahasa Indonesia yang jelas dan profesional.
+- Jangan mendiagnosis penyakit secara pasti.
+- Jika ada indikasi serius, anjurkan konsultasi dokter secara wajar.
+- Ikuti format yang diminta pengguna."""
+
+
+def build_analysis_prompt(user: UserData, records: List[Record]) -> str:
+    gender = "Laki-laki" if user.gender == "male" else "Perempuan"
+    age = f"{user.age} tahun" if user.age else "tidak diketahui"
+
+    lines = [
+        "Buat laporan analisis kesehatan dalam Bahasa Indonesia.",
+        "Format wajib:",
+        "1. Ringkasan Kesehatan",
+        "2. Analisis Detail Parameter",
+        "3. Rekomendasi Gaya Hidup",
+        "4. Kesimpulan",
+        "",
+        f"Data pasien: Nama {user.name}, Jenis kelamin {gender}, Usia {age}.",
+        "",
+        "Data pengukuran:",
+    ]
+
+    for i, r in enumerate(records, start=1):
+        parts = []
+        if r.systolic and r.diastolic:
+            parts.append(f"Tekanan darah {r.systolic}/{r.diastolic} mmHg")
+        if r.heart_rate:
+            parts.append(f"Detak jantung {r.heart_rate} bpm")
+        if r.blood_sugar:
+            parts.append(f"Gula darah {r.blood_sugar} mg/dL")
+        if r.weight and r.height:
+            bmi = round(r.weight / (r.height / 100) ** 2, 1)
+            parts.append(f"BB {r.weight} kg, TB {r.height} cm (IMT {bmi})")
+        if r.temperature:
+            parts.append(f"Suhu {r.temperature}C")
+        if r.oxygen_saturation:
+            parts.append(f"SpO2 {r.oxygen_saturation}%")
+
+        date = r.recorded_at or "tanggal tidak diketahui"
+        if parts:
+            lines.append(f"Pengukuran {i} ({date}): " + "; ".join(parts))
+        else:
+            lines.append(f"Pengukuran {i} ({date}): data tidak tersedia")
+
+    return "\n".join(lines)
 
 
 # --- Rule-based fallback --------------------------------------------------------
@@ -390,7 +479,7 @@ def rule_based_reply(last_msg: str, record: Optional[Record], user: Optional[Use
         return "Haha iya! Btw ada yang mau ditanyain soal kesehatan?"
 
     return (
-        f"Hei {name}! Aku HEALTIVA, asisten kesehatan kamu. "
+        f"Hei {name}! Aku VITALY, asisten kesehatan kamu. "
         "Bisa bantu soal tekanan darah, gula darah, IMT, jantung, olahraga, tidur, dan masih banyak lagi. "
         "Mau tanya apa nih?"
     )
@@ -430,23 +519,14 @@ def chat(request: ChatRequest):
                f"Umur: {request.user.age or '?'} tahun, "
                f"Kelamin: {request.user.gender or '?'}.") + ctx
 
-    # Try Gemini
-    reply_text = None
-    api_key = os.getenv("GEMINI_API_KEY", "")
-    if _GEMINI_OK and api_key:
-        try:
-            genai.configure(api_key=api_key)
-            model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash-lite")
-            model = genai.GenerativeModel(
-                model_name=model_name,
-                system_instruction=_HEALTH_SYSTEM + ("\n\nKonteks pengguna:\n" + ctx if ctx else ""),
-            )
-            chat_session = model.start_chat(history=[
-                {"role": m.role, "parts": [m.text]} for m in history[:-1]
-            ])
-            reply_text = chat_session.send_message(last_msg).text
-        except Exception:
-            pass
+    system_prompt = request.system_prompt or _HEALTH_SYSTEM
+    if ctx:
+        system_prompt += "\n\nKonteks pengguna:\n" + ctx
+
+    reply_text = call_ollama_chat(
+        map_history_to_ollama(history),
+        system_prompt,
+    )
 
     # Rule-based fallback
     if not reply_text:
@@ -463,7 +543,7 @@ def chat(request: ChatRequest):
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "service": "HEALTIVA Health AI v2"}
+    return {"status": "ok", "service": "VITALY Health AI v2"}
 
 
 if __name__ == "__main__":

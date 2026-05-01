@@ -206,9 +206,10 @@ const ChatIcon    = { render: () => h('svg', { fill: 'none', stroke: 'currentCol
 const HistoryIcon = { render: () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' })]) };
 
 const navItems = [
-    { name: 'dashboard', href: '/dashboard',  label: 'Dashboard', icon: DashboardIcon },
-    { name: 'ai',        href: '/ai-analysis', label: 'Analisis',  icon: AiIcon },
-    { name: 'chat',      href: '/ai-chat',     label: 'Chat AI',   icon: ChatIcon },
+    { name: 'dashboard', href: '/dashboard',      label: 'Beranda',  icon: DashboardIcon },
+    { name: 'input',     href: '/input-mandiri',  label: 'Input',    icon: InputIcon },
+    { name: 'ai',        href: '/ai-analysis',    label: 'Analisis', icon: AiIcon },
+    { name: 'chat',      href: '/ai-chat',        label: 'Chat AI',  icon: ChatIcon },
 ];
 </script>
 

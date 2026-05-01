@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Models\HealthRecord;
 use App\Models\AiAnalysis;
-use App\Services\GeminiService;
+use App\Services\OllamaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -145,7 +145,7 @@ class KaderPatientController extends Controller
         return response()->json(['patient' => $patient]);
     }
 
-    public function analyze(Request $request, Patient $patient, GeminiService $gemini)
+    public function analyze(Request $request, Patient $patient, OllamaService $gemini)
     {
         $records = $patient->healthRecords()
             ->latest('recorded_at')

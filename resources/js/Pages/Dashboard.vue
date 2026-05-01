@@ -35,8 +35,25 @@
                         </button>
                     </div>
 
+                    <!-- Input Data Mandiri — always accessible -->
+                    <button @click="goTo('/input-mandiri')"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-[#ECFDF5] transition text-left group w-full">
+                        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-semibold text-gray-800">Input Data Mandiri</p>
+                            <p class="text-xs text-gray-400 mt-0.5">Tambahkan data pengukuran baru</p>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-300 group-hover:text-primary transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+
                     <!-- Divider -->
-                    <div class="h-px bg-gray-100 mx-5"></div>
+                    <div class="mx-4 my-1 border-t border-gray-100"></div>
 
                     <!-- Body -->
                     <div class="px-5 py-4 space-y-3">
@@ -296,9 +313,10 @@
                         Lihat selengkapnya
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </Link>
-                    <Link href="/standar-normal" class="text-xs font-medium bg-[#FCD34D]/50 text-[#064E3B] px-3 py-1.5 rounded-lg hover:bg-[#FCD34D] transition inline-flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-                        Kalkulator IMT
+                    <!-- Input Ulang Data — selalu terlihat, bukan hanya saat belum ada data -->
+                    <Link href="/input-mandiri" class="text-xs font-medium bg-primary/10 text-primary px-3 py-1.5 rounded-lg hover:bg-primary/20 transition inline-flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        Input Data Baru
                     </Link>
                 </div>
             </div>
