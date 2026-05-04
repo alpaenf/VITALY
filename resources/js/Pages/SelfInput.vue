@@ -6,19 +6,23 @@
         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-primary-dark text-white p-5 mb-5 animate-fade-in-down">
             <div class="absolute -top-6 -right-6 w-28 h-28 bg-white/10 rounded-full"></div>
             <div class="absolute -bottom-8 -left-4 w-20 h-20 bg-white/5 rounded-full"></div>
-            <div class="relative flex items-center gap-4">
-                <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
+            <div class="relative flex flex-col sm:flex-row sm:items-center gap-4">
+                <!-- Title Section -->
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold leading-tight">Input Data Mandiri</h1>
+                        <p class="text-white/70 text-xs mt-0.5">Isi data kesehatanmu sendiri</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-lg font-bold">Input Data Mandiri</h1>
-                    <p class="text-white/70 text-xs mt-0.5">Isi data kesehatanmu sendiri</p>
-                </div>
+                
                 <!-- Sync button -->
                 <button @click="doSync" :disabled="isSyncing"
-                    class="ml-auto flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-3 py-2 rounded-xl transition disabled:opacity-60 flex-shrink-0">
+                    class="sm:ml-auto w-full sm:w-auto flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-4 py-3 sm:py-2 rounded-xl transition disabled:opacity-60 flex-shrink-0 mt-2 sm:mt-0">
                     <svg v-if="!isSyncing" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                     </svg>
