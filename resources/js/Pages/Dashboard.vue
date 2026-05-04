@@ -165,6 +165,44 @@
             </div>
         </div>
 
+        <!-- Action Row (Always Visible) -->
+        <div class="grid grid-cols-2 gap-3 mb-5">
+            <!-- Sync Smartwatch -->
+            <button @click="doSync" :disabled="isSyncing" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 hover:opacity-90 active:scale-95 transition disabled:opacity-60 text-center">
+                <svg v-if="!isSyncing" class="w-6 h-6 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                <svg v-else class="w-6 h-6 mb-1.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <p class="font-bold text-xs">{{ isSyncing ? 'Menyinkronkan...' : 'Sync Smartwatch' }}</p>
+                <p class="text-[9px] text-white/70 mt-0.5">Bluetooth / IoMT</p>
+            </button>
+
+            <!-- Input Manual -->
+            <Link href="/input-mandiri" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-white border border-primary/20 text-gray-800 shadow-sm hover:bg-primary/5 active:scale-95 transition text-center">
+                <svg class="w-6 h-6 mb-1.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                <p class="font-bold text-xs">Input Manual</p>
+                <p class="text-[9px] text-gray-400 mt-0.5">Isi form mandiri</p>
+            </Link>
+        </div>
+
+        <!-- Data Quality Warning Banner (Always visible if there are warnings) -->
+        <div v-if="syncWarnings.length > 0" class="mb-5 bg-red-50 border border-red-200 rounded-2xl p-4 animate-fade-in-down">
+            <div class="flex items-center gap-2 mb-2">
+                <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                </svg>
+                <p class="text-xs font-bold text-red-700">Data Tidak Valid — Kualitas Sensor Rendah</p>
+            </div>
+            <ul class="space-y-1">
+                <li v-for="(w, i) in syncWarnings" :key="i" class="text-xs text-red-600 leading-relaxed">{{ w }}</li>
+            </ul>
+            <p class="text-[10px] text-red-400 mt-2 font-medium">Pastikan perangkat terpasang dengan benar di pergelangan tangan dan diam saat pengukuran.</p>
+        </div>
+
         <!-- Chart + Latest Record -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
             <!-- Chart -->
@@ -218,59 +256,6 @@
 
             <!-- No data — IoMT aware empty state -->
             <div v-if="!latestRecord" class="card-VITALY p-6 sm:p-8 animate-scale-in delay-150 lg:col-span-2">
-
-                <!-- Smartwatch sync CTA -->
-                <div class="flex flex-col sm:flex-row gap-3 mb-5">
-                    <!-- Sync IoMT -->
-                    <button @click="doSync"
-                        :disabled="isSyncing"
-                        class="flex-1 flex items-center gap-3 bg-gradient-to-br from-primary to-primary-dark text-white rounded-2xl px-4 py-4 hover:opacity-90 transition shadow-lg shadow-primary/25 disabled:opacity-60">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <svg v-if="!isSyncing" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                            </svg>
-                            <svg v-else class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                            </svg>
-                        </div>
-                        <div class="text-left">
-                            <p class="font-bold text-sm">{{ isSyncing ? (syncStatus || 'Mencari perangkat...') : 'Sync Smartwatch' }}</p>
-                            <p class="text-white/70 text-xs mt-0.5">Mi Band 8 / BLE otomatis</p>
-                        </div>
-                    </button>
-
-                    <!-- Input Mandiri -->
-                    <Link href="/input-mandiri"
-                        class="flex-1 flex items-center gap-3 bg-white border-2 border-primary/20 rounded-2xl px-4 py-4 hover:border-primary/50 hover:bg-primary/5 transition">
-                        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="font-bold text-sm text-gray-800">Input Manual</p>
-                            <p class="text-gray-400 text-xs mt-0.5">Isi data sendiri</p>
-                        </div>
-                    </Link>
-                </div>
-
-                <!-- Data Quality Warning Banner -->
-                <div v-if="syncWarnings.length > 0"
-                    class="mb-4 bg-red-50 border border-red-200 rounded-2xl p-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-                        </svg>
-                        <p class="text-xs font-bold text-red-700">Data Tidak Valid — Kualitas Sensor Rendah</p>
-                    </div>
-                    <ul class="space-y-1">
-                        <li v-for="(w, i) in syncWarnings" :key="i"
-                            class="text-xs text-red-600 leading-relaxed">{{ w }}</li>
-                    </ul>
-                    <p class="text-[10px] text-red-400 mt-2 font-medium">
-                        Pastikan perangkat terpasang dengan benar di pergelangan tangan dan diam saat pengukuran.
-                    </p>
-                </div>
 
                 <!-- Hint -->
                 <div class="text-center">
