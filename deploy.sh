@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# Script Deploy MEDIX
+# Script Deploy VITALY
 # Cara penggunaan: ./deploy.sh
-# Pastikan script ini dijalankan dari dalam root folder project (medix)
+# Pastikan script ini dijalankan dari dalam root folder project (vitaly)
 
 # Konfigurasi Path (Sesuaikan jika perlu)
-# Asumsi: Folder project 'healtiva' dan 'public_html' berada di level yang sama di hosting
-PROJECT_FOLDER="healtiva"
+# Asumsi: Folder project 'Vitaly' dan 'public_html' berada di level yang sama di hosting
+PROJECT_FOLDER="Vitaly"
 PUBLIC_HTML_PATH="../public_html"
 
 echo "========================================"
-echo "🚀 Memulai Deployment MEDIX"
+echo "🚀 Memulai Deployment VITALY"
 echo "========================================"
 
 # 1. Git Pull
@@ -116,7 +116,7 @@ rm -rf "$PUBLIC_HTML_PATH/storage"
 
 # Buat symlink baru yang benar
 # Dari: public_html/storage
-# Ke:   ../MEDIX/storage/app/public
+# Ke:   ../vitaly/storage/app/public
 ln -s "../$PROJECT_FOLDER/storage/app/public" "$PUBLIC_HTML_PATH/storage"
 
 # 5. Clear Laravel caches
@@ -124,5 +124,5 @@ echo "🧹 5. Membersihkan cache Laravel..."
 php artisan optimize:clear
 
 echo "========================================"
-echo "✅ Deployment MEDIX Selesai!"
+echo "✅ Deployment VITALY Selesai!"
 echo "========================================"
