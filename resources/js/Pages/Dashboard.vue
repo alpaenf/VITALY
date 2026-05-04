@@ -105,6 +105,68 @@
             </div>
         </Transition>
 
+        <!-- Bluetooth Status Modal (themed) -->
+        <Transition name="modal-fade">
+            <div v-if="showBluetoothModal"
+                class="fixed inset-0 z-[998] flex items-center justify-center p-4"
+                style="background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);">
+                <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
+                    <div class="flex items-center gap-3 px-5 pt-5 pb-4">
+                        <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
+                            style="background: linear-gradient(135deg, #ECFDF5, #D1FAE5);">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M11 3v8l-2-2m2 2l2-2m-2 2v8m-3-4h6"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="font-bold text-gray-800 text-sm leading-tight">Bluetooth Diperlukan</h2>
+                            <p class="text-[11px] text-primary font-semibold tracking-widest uppercase mt-0.5">Sinkronisasi IoMT</p>
+                        </div>
+                        <button @click="closeBluetoothModal"
+                            class="w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition flex-shrink-0"
+                            aria-label="Tutup">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="px-5 pb-4">
+                        <div class="bg-primary/5 border border-primary/10 rounded-2xl px-4 py-3">
+                            <p class="text-xs text-gray-700 leading-relaxed">{{ bluetoothMessage }}</p>
+                        </div>
+                        <ul class="space-y-2.5 mt-4">
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">1</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">Aktifkan Bluetooth di perangkat sebelum sinkronisasi.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">2</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">Pastikan smartwatch dalam mode pairing/discoverable.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">3</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">Gunakan Chrome/Edge dan akses via HTTPS.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="px-5 pb-5 flex items-center gap-2">
+                        <button @click="closeBluetoothModal"
+                            class="flex-1 py-2.5 rounded-2xl font-semibold text-xs text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
+                            Tutup
+                        </button>
+                        <button @click="retrySync"
+                            class="flex-1 py-2.5 rounded-2xl font-bold text-xs text-white transition-all hover:opacity-90 active:scale-95 shadow-lg"
+                            style="background: linear-gradient(135deg, #059669, #047857);">
+                            Coba Lagi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </Transition>
+
 
         <!-- Greeting Banner -->
         <div class="relative overflow-hidden rounded-2xl bg-primary text-white p-4 sm:p-6 mb-5 animate-fade-in-down shadow-xl shadow-primary/20">
@@ -360,13 +422,15 @@ import { Head, Link, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler } from 'chart.js';
-import { syncVitalData, validateVitalData } from '@/Services/BluetoothService';
+import { getBluetoothStatus, syncVitalData, validateVitalData } from '@/Services/BluetoothService';
 import axios from 'axios';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
 const isSyncing  = ref(false);
 const syncStatus = ref('');
+const showBluetoothModal = ref(false);
+const bluetoothMessage = ref('');
 
 // ── Safety Disclaimer ─────────────────────────────────────────────
 const DISCLAIMER_KEY = 'vitaly_disclaimer_v1';
@@ -390,6 +454,14 @@ const syncWarnings = ref([]);
 const doSync = async () => {
     isSyncing.value   = true;
     syncWarnings.value = [];
+    const btStatus = await getBluetoothStatus();
+    if (!btStatus.canUse) {
+        bluetoothMessage.value = btStatus.message;
+        showBluetoothModal.value = true;
+        isSyncing.value = false;
+        syncStatus.value = '';
+        return;
+    }
     const rawData = await syncVitalData((msg) => { syncStatus.value = msg; });
 
     if (rawData) {
@@ -411,6 +483,15 @@ const doSync = async () => {
 
     isSyncing.value    = false;
     syncStatus.value   = '';
+};
+
+const closeBluetoothModal = () => {
+    showBluetoothModal.value = false;
+};
+
+const retrySync = () => {
+    showBluetoothModal.value = false;
+    doSync();
 };
 
 const props = defineProps({
