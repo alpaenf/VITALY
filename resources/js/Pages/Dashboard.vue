@@ -431,6 +431,8 @@ const isSyncing  = ref(false);
 const syncStatus = ref('');
 const showBluetoothModal = ref(false);
 const bluetoothMessage = ref('');
+const syncToken = ref(0);
+const SYNC_TIMEOUT_MS = 15000;
 
 // ── Safety Disclaimer ─────────────────────────────────────────────
 const DISCLAIMER_KEY = 'vitaly_disclaimer_v1';
@@ -451,7 +453,21 @@ const agreeDisclaimer = () => {
 // \u2500\u2500 Sync Smartwatch \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 const syncWarnings = ref([]);
 
+const withTimeout = (promise, ms) => new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('timeout')), ms);
+    promise
+        .then((value) => {
+            clearTimeout(timer);
+            resolve(value);
+        })
+        .catch((err) => {
+            clearTimeout(timer);
+            reject(err);
+        });
+});
+
 const doSync = async () => {
+    const token = ++syncToken.value;
     isSyncing.value   = true;
     syncWarnings.value = [];
     const btStatus = await getBluetoothStatus();
@@ -462,7 +478,26 @@ const doSync = async () => {
         syncStatus.value = '';
         return;
     }
-    const rawData = await syncVitalData((msg) => { syncStatus.value = msg; });
+    let rawData;
+    try {
+        rawData = await withTimeout(
+            syncVitalData((msg) => {
+                if (token === syncToken.value) syncStatus.value = msg;
+            }),
+            SYNC_TIMEOUT_MS
+        );
+    } catch (err) {
+        if (token !== syncToken.value) return;
+        bluetoothMessage.value = err && err.message === 'timeout'
+            ? 'Sinkronisasi terlalu lama. Pastikan Bluetooth aktif, perangkat dalam mode pairing, lalu coba lagi.'
+            : 'Sinkronisasi gagal. Periksa Bluetooth dan coba ulang.';
+        showBluetoothModal.value = true;
+        isSyncing.value = false;
+        syncStatus.value = '';
+        return;
+    }
+
+    if (token !== syncToken.value) return;
 
     if (rawData) {
         // \u2500\u2500 STEP 1: Validasi data sebelum dikirim ke backend \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500

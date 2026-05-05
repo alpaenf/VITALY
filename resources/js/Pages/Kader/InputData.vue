@@ -324,6 +324,8 @@ const syncSuccessMsg  = ref('');
 const syncDeviceName  = ref('');
 const showBluetoothModal = ref(false);
 const bluetoothMessage = ref('');
+const syncToken = ref(0);
+const SYNC_TIMEOUT_MS = 15000;
 const isSynced        = ref(false);  // true kalau data dari smartwatch
 const manualConfirmed = ref(false);
 const manualError     = ref('');
@@ -333,6 +335,19 @@ const inputAutoClass = (field) =>
     autoFilled.value[field] ? 'ring-2 ring-emerald-300 bg-emerald-50/30' : '';
 
 const markAuto  = (fields) => fields.forEach(f => (autoFilled.value[f] = true));
+
+const withTimeout = (promise, ms) => new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('timeout')), ms);
+    promise
+        .then((value) => {
+            clearTimeout(timer);
+            resolve(value);
+        })
+        .catch((err) => {
+            clearTimeout(timer);
+            reject(err);
+        });
+});
 
 
 // ── Submit form ──────────────────────────────────────────────
@@ -348,6 +363,7 @@ const submit = () => {
 
 // ── Sync dari Smartwatch via BluetoothService ────────────────
 const doSync = async () => {
+    const token = ++syncToken.value;
     isScanning.value      = true;
     btStatus.value        = '';
     showSyncSuccess.value = false;
@@ -359,10 +375,25 @@ const doSync = async () => {
         isScanning.value = false;
         return;
     }
+    let data;
+    try {
+        data = await withTimeout(
+            syncVitalData((msg) => {
+                if (token === syncToken.value) btStatus.value = msg;
+            }),
+            SYNC_TIMEOUT_MS
+        );
+    } catch (err) {
+        if (token !== syncToken.value) return;
+        bluetoothMessage.value = err && err.message === 'timeout'
+            ? 'Sinkronisasi terlalu lama. Pastikan Bluetooth aktif, perangkat dalam mode pairing, lalu coba lagi.'
+            : 'Sinkronisasi gagal. Periksa Bluetooth dan coba ulang.';
+        showBluetoothModal.value = true;
+        isScanning.value = false;
+        return;
+    }
 
-    const data = await syncVitalData((msg) => {
-        btStatus.value = msg; // update status live
-    });
+    if (token !== syncToken.value) return;
 
     // Isi form dengan hasil data
     if (data.heart_rate)  { form.heart_rate  = data.heart_rate;  }
