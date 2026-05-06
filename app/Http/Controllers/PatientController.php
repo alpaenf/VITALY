@@ -41,7 +41,9 @@ class PatientController extends Controller
 
     public function logout(Request $request)
     {
-        $request->session()->forget(['patient_id', 'tamu_google_verified', 'tamu_google_name', 'register_google_email', 'register_google_name']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
         return redirect()->route('patient.lookup');
     }
 

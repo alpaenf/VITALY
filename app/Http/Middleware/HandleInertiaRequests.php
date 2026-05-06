@@ -18,7 +18,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $patientId = $request->session()->get('patient_id');
-        $patient   = $patientId ? Patient::find($patientId) : null;
+        $patient   = ($patientId && is_numeric($patientId)) ? Patient::find($patientId) : null;
 
         return array_merge(parent::share($request), [
             'auth' => [
