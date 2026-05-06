@@ -82,8 +82,15 @@ class OllamaService
         ];
 
         try {
+            // Putuskan koneksi database sementara agar pengunjung lain bisa memakainya
+            // saat PHP sedang menunggu balasan dari Ollama (bisa sampai 60 detik)
+            \Illuminate\Support\Facades\DB::disconnect();
+
             $response = Http::timeout($timeout ?? $this->timeout)
                 ->post("{$this->ollamaUrl}/api/chat", $payload);
+
+            // Sambungkan kembali database jika sewaktu-waktu dibutuhkan setelah ini
+            \Illuminate\Support\Facades\DB::reconnect();
 
             if ($response->successful()) {
                 return $response->json('message.content') ?: null;
@@ -91,6 +98,7 @@ class OllamaService
 
             Log::warning('Ollama API non-2xx: ' . $response->status() . ' ' . $response->body());
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::reconnect();
             Log::warning('Ollama unreachable: ' . $e->getMessage());
         }
 
