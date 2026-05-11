@@ -90,10 +90,12 @@ body {
 }
 
 /* Card styles */
-.card-Vitaly {
+.card-Vitaly,
+.card-VITALY {
     background-color: white;
     border-radius: 1rem;
     box-shadow: 0 2px 12px rgba(5, 150, 105, 0.08);
+    border: 1px solid rgba(5, 150, 105, 0.06);
 }
 
 /* ── Page & Form Transitions ───────────────────────────────────── */
