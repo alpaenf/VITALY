@@ -197,4 +197,46 @@ class KaderPatientController extends Controller
         $aiAnalysis->delete();
         return back()->with('success', 'Analisis berhasil dihapus.');
     }
+
+    public function export(Request $request)
+    {
+        $search = $request->input('search');
+
+        $patients = Patient::when($search, function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%");
+            })
+            ->withCount('healthRecords', 'aiAnalyses')
+            ->latest()
+            ->get();
+
+        $filename = 'pasien_kader_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ];
+
+        $callback = function () use ($patients) {
+            $file = fopen('php://output', 'w');
+            fwrite($file, "\xEF\xBB\xBF");
+            fputcsv($file, ['ID', 'NIK', 'Nama', 'Gender', 'Tanggal Lahir', 'No HP', 'Total Data', 'Total Analisis', 'Terdaftar']);
+            foreach ($patients as $p) {
+                fputcsv($file, [
+                    $p->id,
+                    $p->nik,
+                    $p->name,
+                    $p->gender ?? '-',
+                    $p->date_of_birth?->format('d/m/Y') ?? '-',
+                    $p->phone ?? '-',
+                    $p->health_records_count,
+                    $p->ai_analyses_count,
+                    $p->created_at->format('d/m/Y'),
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }
