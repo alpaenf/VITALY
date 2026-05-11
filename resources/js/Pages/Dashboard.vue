@@ -536,12 +536,11 @@
 
 <script setup>
 import { computed, h, onMounted, ref } from 'vue';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler } from 'chart.js';
 import { getBluetoothStatus, syncVitalData, validateVitalData } from '@/Services/BluetoothService';
-import axios from 'axios';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
@@ -662,8 +661,17 @@ const doSync = async () => {
         }
 
         // ── STEP 3: Hanya kirim data bersih ke backend ───────────────────
-        await axios.post('/input-mandiri', { ...cleanData, source: 'iomt' });
-        window.location.reload();
+        // Kirim via Inertia router — navigasi proper
+        router.post('/input-mandiri', { ...cleanData, source: 'iomt' }, {
+            onSuccess: () => { isSyncing.value = false; syncStatus.value = ''; },
+            onError: () => {
+                bluetoothMessage.value   = 'Gagal menyimpan data. Coba lagi.';
+                showBluetoothModal.value = true;
+                isSyncing.value  = false;
+                syncStatus.value = '';
+            },
+        });
+        return;
     }
 
     isSyncing.value    = false;
@@ -725,18 +733,19 @@ const confirmDemo = async () => {
         return;
     }
 
-    // Simpan ke backend dengan source: 'demo' — jelas terlabel di DB
-    try {
-        await axios.post('/input-mandiri', {
-            ...cleanData,
-            source: 'demo',
-        });
-        window.location.reload();
-    } catch (err) {
-        console.error('[Demo IoMT] POST gagal:', err);
-        syncStatus.value = '⚠️ Gagal menyimpan data demo. Coba lagi.';
-        isSyncing.value  = false;
-    }
+    // Simpan via Inertia router — navigasi proper, flash message jalan
+    syncStatus.value = '✓ Menyimpan data...';
+    router.post('/input-mandiri', { ...cleanData, source: 'demo' }, {
+        onSuccess: () => {
+            isSyncing.value  = false;
+            syncStatus.value = '';
+        },
+        onError: (errors) => {
+            console.error('[Demo IoMT] Error:', errors);
+            syncStatus.value = '⚠️ Gagal menyimpan. Coba lagi.';
+            isSyncing.value  = false;
+        },
+    });
 };
 
 const props = defineProps({
