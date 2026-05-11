@@ -55,8 +55,15 @@ fi
 echo "📂 2. Menyalin aset dari folder public ke $PUBLIC_HTML_PATH..."
 # Buat folder jika belum ada (opsional, jaga-jaga)
 mkdir -p "$PUBLIC_HTML_PATH"
-# Menyalin semua isi folder public ke public_html
-cp -r public/* "$PUBLIC_HTML_PATH/"
+
+# Sinkronkan folder public -> public_html agar manifest dan aset selalu cocok
+if command -v rsync >/dev/null 2>&1; then
+    rsync -a --delete public/ "$PUBLIC_HTML_PATH/"
+else
+    # Fallback: bersihkan folder build lama agar tidak ada ketidakcocokan aset
+    rm -rf "$PUBLIC_HTML_PATH/build"
+    cp -r public/* "$PUBLIC_HTML_PATH/"
+fi
 
 # Salin atau Buat .htaccess standard Laravel
 echo "📝 Menyalin/Membuat .htaccess di public_html pengarah route..."
