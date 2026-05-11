@@ -579,7 +579,26 @@
             </div>
         </section>
 
-        <!-- â”€â”€ CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+        <!-- ── FAQ ───────────────────────────────────────────────────────── -->
+        <section class="py-20 px-6 bg-white">
+            <div class="max-w-3xl mx-auto">
+                <div class="reveal text-center mb-10" data-delay="0">
+                    <span class="text-xs font-bold text-primary uppercase tracking-widest">Pertanyaan Umum</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">FAQ Penting</h2>
+                </div>
+                <div class="space-y-4">
+                    <div v-for="(faq, i) in faqs" :key="i" class="reveal border border-gray-100 bg-gray-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow" :data-delay="i * 100">
+                        <h3 class="font-bold text-gray-800 text-base mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            {{ faq.question }}
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed pl-7">{{ faq.answer }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── CTA ──────────────────────────────────────────────────────── -->
         <section class="relative py-24 px-6 bg-primary-dark overflow-hidden">
             <!-- Wave top -->
             <div class="absolute top-0 left-0 right-0 pointer-events-none">
@@ -762,6 +781,13 @@ const testimonials = [
     { name: 'Budi Santoso', role: 'Pasien Hipertensi', quote: 'Aplikasi ini sangat membantu saya melacak hasil tensi darah saya setiap pagi. Laporan AI-nya mudah dimengerti.' },
     { name: 'Siti Aminah', role: 'Pengguna Aktif', quote: 'Saya selalu mengecek video edukasi di sini karena sangat sinkron dengan rekam medis saya. Navigasinya juga mulus!' },
     { name: 'dr. Hendra', role: 'Praktisi Kesehatan', quote: 'Data PDF yang diunduh pasien dari VITALY amat membantu saya dalam menganalisis histori medis mereka lebih cepat.' }
+];
+
+const faqs = [
+    { question: 'Apa itu VITALY?', answer: 'VITALY adalah platform monitoring kesehatan cerdas yang menghubungkan data vital pasien dengan sistem analisis AI untuk membantu tenaga kesehatan mengambil keputusan klinis secara prediktif.' },
+    { question: 'Bagaimana cara menghubungkan smartwatch ke VITALY?', answer: 'Nyalakan Bluetooth di smartphone dan smartwatch (VITALY Pulse v2.0 atau kompatibel). Masuk ke aplikasi, pilih sinkronisasi otomatis, dan data vital akan langsung terekam di profil Anda tanpa ketik manual.' },
+    { question: 'Apakah kerahasiaan data pasien terjamin?', answer: 'Sangat terjamin. Kami menerapkan standar enkripsi tinggi dan mematuhi regulasi privasi data medis yang ketat. Hanya pasien dan tenaga kesehatan berwenang yang dapat mengakses data rekam medis.' },
+    { question: 'Apa fungsi fitur Smart Triage (Prioritas)?', answer: 'Smart Triage secara otomatis mendeteksi kondisi anomali seperti lonjakan tekanan darah atau gula darah kritis, dan langsung memunculkan peringatan serta opsi Rujukan Cepat bagi tenaga kesehatan.' }
 ];
 </script>
 

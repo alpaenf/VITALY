@@ -29,7 +29,7 @@
                     <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                     </svg>
-                    <span>{{ isSyncing ? (syncStatus || 'Mencari...') : 'Sync Smartwatch' }}</span>
+                    <span>{{ isSyncing ? (syncStatus || 'Mengambil...') : 'Ambil Data Terbaru' }}</span>
                 </button>
             </div>
         </div>
@@ -47,7 +47,7 @@
             <svg class="w-4 h-4 flex-shrink-0 mt-0.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <span><strong>Tips:</strong> Klik "Sync Smartwatch" untuk mengisi data detak jantung & tekanan darah secara otomatis dari Mi Band 8. Data lain seperti berat badan dan gula darah tetap diisi manual.</span>
+            <span><strong>Tips:</strong> Klik "Ambil Data Terbaru" untuk mengisi data detak jantung & tekanan darah secara otomatis dari smartwatch kamu. Data lain seperti berat badan dan gula darah tetap diisi manual.</span>
         </div>
 
         <!-- Form -->

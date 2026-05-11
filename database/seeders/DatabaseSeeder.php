@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
 
         $kader = User::create([
             'name' => 'Health Agent VITALY',
-            'email' => 'kader@VITALY.com',
+            'email' => 'health@VITALY.com',
             'password' => Hash::make('password'),
             'role' => 'kader',
         ]);

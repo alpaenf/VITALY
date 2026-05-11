@@ -323,7 +323,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `google_id`, `role`, `phone`, `date_of_birth`, `gender`, `avatar`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Admin VITALY', 'admin@VITALY.com', NULL, 'admin', NULL, NULL, NULL, NULL, NULL, '$2y$12$l5l1lDZacqlemX8sng2PMuhcWsnamfAvEyNf1RL/9I7jnQ5pvkqoe', 'E8wg70xLCGKij1EKw6Br1yAo1U7TWCp0uyzlxgis0u8K7pv3L92mHWBJR9cZ', '2026-04-28 20:45:26', '2026-04-28 20:45:26'),
-(2, 'Health Agent VITALY', 'kader@VITALY.com', NULL, 'kader', NULL, NULL, NULL, NULL, NULL, '$2y$12$n4w/F9XvMYnRigZLnhIR8uQ3cDBpdWwA1V7g23eAjuvyMOArDPy.G', NULL, '2026-04-28 20:45:26', '2026-04-29 02:00:44');
+(2, 'Health Agent VITALY', 'health@VITALY.com', NULL, 'kader', NULL, NULL, NULL, NULL, NULL, '$2y$12$n4w/F9XvMYnRigZLnhIR8uQ3cDBpdWwA1V7g23eAjuvyMOArDPy.G', NULL, '2026-04-28 20:45:26', '2026-04-29 02:00:44');
 
 --
 -- Indexes for dumped tables

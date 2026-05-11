@@ -45,6 +45,7 @@ class DashboardController extends Controller
             'latestAnalysis' => $latestAnalysis,
             'healthScore'    => $healthScore,
             'chartData'      => $chartData,
+            'deviceId'       => $patient->device_id,
         ]);
     }
 

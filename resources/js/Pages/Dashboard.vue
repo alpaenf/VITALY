@@ -121,7 +121,7 @@
                         </div>
                         <div class="flex-1">
                             <h2 class="font-bold text-gray-800 text-sm leading-tight">Bluetooth Diperlukan</h2>
-                            <p class="text-[11px] text-primary font-semibold tracking-widest uppercase mt-0.5">Sinkronisasi IoMT</p>
+                            <p class="text-[11px] text-primary font-semibold tracking-widest uppercase mt-0.5">Ambil Data Smartwatch</p>
                         </div>
                         <button @click="closeBluetoothModal"
                             class="w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition flex-shrink-0"
@@ -226,19 +226,45 @@
                 <p class="text-[10px] text-gray-400 mt-0.5">Total Data</p>
             </div>
         </div>
+        <!-- IoMT Device Status Bar -->
+        <div v-if="props.deviceId"
+            class="flex items-center gap-2.5 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2.5 mb-4 animate-fade-in-down">
+            <span class="relative flex-shrink-0">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 block"></span>
+                <span class="absolute inset-0 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping opacity-60"></span>
+            </span>
+            <div class="flex-1 min-w-0">
+                <p class="text-xs font-bold text-emerald-800 leading-none">Smartwatch Tersandingkan</p>
+                <p class="text-[10px] text-emerald-600 font-mono mt-0.5 truncate">{{ props.deviceId }}</p>
+            </div>
+            <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-1 rounded-lg flex-shrink-0">IoMT Aktif</span>
+        </div>
+        <div v-else
+            class="flex items-center gap-2.5 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 mb-4 animate-fade-in-down">
+            <svg class="w-4 h-4 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-xs text-amber-700 flex-1">Belum ada smartwatch tersandingkan. Hubungi Health Facilitator untuk menautkan perangkat.</p>
+        </div>
 
         <!-- Action Row (Always Visible) -->
         <div class="grid grid-cols-2 gap-3 mb-5">
-            <!-- Sync Smartwatch -->
-            <button @click="doSync" :disabled="isSyncing" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 hover:opacity-90 active:scale-95 transition disabled:opacity-60 text-center">
+        <!-- Sync Smartwatch -->
+            <button @click="doSync" :disabled="isSyncing" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 hover:opacity-90 active:scale-95 transition disabled:opacity-60 text-center relative overflow-hidden">
+                <!-- Badge perangkat tersandingkan -->
+                <span v-if="props.deviceId && !isSyncing"
+                    class="absolute top-1.5 right-1.5 flex items-center gap-0.5 bg-white/20 backdrop-blur-sm text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full leading-none">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse inline-block"></span>
+                    {{ props.deviceId.slice(0, 8) }}
+                </span>
                 <svg v-if="!isSyncing" class="w-6 h-6 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 </svg>
                 <svg v-else class="w-6 h-6 mb-1.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 </svg>
-                <p class="font-bold text-xs">{{ isSyncing ? 'Menyinkronkan...' : 'Sync Smartwatch' }}</p>
-                <p class="text-[9px] text-white/70 mt-0.5">Bluetooth / IoMT</p>
+                <p class="font-bold text-xs">{{ isSyncing ? (syncStatus || 'Mengambil...') : 'Ambil Data Terbaru' }}</p>
+                <p class="text-[9px] text-white/70 mt-0.5">{{ isSyncing ? '' : (props.deviceId ? 'Smartwatch Terpasang ✓' : 'dari Smartwatch') }}</p>
             </button>
 
             <!-- Input Manual -->
@@ -536,6 +562,7 @@ const props = defineProps({
     latestAnalysis: Object,
     healthScore:    Number,
     chartData:      Array,
+    deviceId:       String,
 });
 
 const page = usePage();
