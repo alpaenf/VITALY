@@ -239,26 +239,34 @@ export const syncVitalData = async (onStatusChange = () => {}) => {
             console.info('[VITALY BT] Battery service tidak tersedia');
         }
 
-        // ── Jika tidak ada data sama sekali → fallback simulasi ───────────
+        // ── Jika tidak ada data sama sekali → tetap kembalikan data real (partial) ──
+        // Jangan fallback simulasi — lebih baik data kosong dari perangkat nyata
+        // daripada data palsu yang menyesatkan.
         if (!result.heart_rate && !result.systolic) {
-            onStatusChange('Perangkat terhubung namun data terbatas (mode simulasi)...');
+            onStatusChange(
+                '⚠️ Perangkat terhubung, namun tidak ada data GATT yang terbaca. ' +
+                'Perangkat mungkin tidak mendukung Heart Rate / Blood Pressure standard service. ' +
+                'Silakan isi data secara manual.'
+            );
             return {
-                ...(await simulateVitalData(() => {})),
-                deviceName: result.deviceName,
-                isReal    : false,
+                ...result,
+                isReal   : true,
+                isLimited: true, // sinyal ke UI bahwa data dari perangkat nyata tapi terbatas
             };
         }
 
-        onStatusChange(`✓ Selesai! Data vital berhasil dibaca.`);
-        return result;
+        onStatusChange(`✓ Selesai! Data vital berhasil dibaca dari perangkat nyata.`);
+        return { ...result, isLimited: false };
 
     } catch (err) {
         if (err.name === 'NotFoundError') {
-            onStatusChange('Tidak ada perangkat dipilih. Menggunakan mode simulasi...');
-        } else {
-            onStatusChange(`Koneksi gagal (${err.message}). Menggunakan mode simulasi...`);
+            // User menutup dialog — tidak perlu error, kembalikan null
+            onStatusChange('Tidak ada perangkat dipilih.');
+            return null;
         }
-        return simulateVitalData(onStatusChange);
+        // Error koneksi nyata — lempar ke atas agar Dashboard tampilkan modal Bluetooth
+        onStatusChange(`Koneksi gagal: ${err.message}`);
+        throw err;
     }
 };
 

@@ -525,8 +525,27 @@ const doSync = async () => {
 
     if (token !== syncToken.value) return;
 
+    // User menutup dialog pilih perangkat
+    if (rawData === null) {
+        syncStatus.value = '';
+        isSyncing.value  = false;
+        return;
+    }
+
     if (rawData) {
-        // \u2500\u2500 STEP 1: Validasi data sebelum dikirim ke backend \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        // ── Perangkat nyata terhubung tapi tidak ada data GATT ────────────
+        if (rawData.isLimited) {
+            bluetoothMessage.value =
+                `Perangkat "${rawData.deviceName}" berhasil terhubung, namun tidak dapat membaca ` +
+                `data vital secara otomatis. Perangkat ini kemungkinan menggunakan protokol proprietary ` +
+                `(bukan GATT standar). Silakan input data secara manual.`;
+            showBluetoothModal.value = true;
+            isSyncing.value = false;
+            syncStatus.value = '';
+            return;
+        }
+
+        // ── STEP 1: Validasi data sebelum dikirim ke backend ─────────────
         const { isValid, warnings, cleanData } = validateVitalData(rawData);
 
         if (!isValid) {
@@ -537,7 +556,19 @@ const doSync = async () => {
             return; // Batalkan pengiriman — jangan kirim data kotor ke AI
         }
 
-        // \u2500\u2500 STEP 2: Hanya kirim data bersih ke backend \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        // ── STEP 2: Pastikan ada minimal 1 metrik yang terisi ────────────
+        const hasAnyData = ['heart_rate', 'systolic', 'oxygen_saturation', 'temperature']
+            .some(k => cleanData[k] != null);
+
+        if (!hasAnyData) {
+            bluetoothMessage.value = 'Perangkat terhubung namun tidak ada data vital yang berhasil dibaca. Silakan input data secara manual.';
+            showBluetoothModal.value = true;
+            isSyncing.value = false;
+            syncStatus.value = '';
+            return;
+        }
+
+        // ── STEP 3: Hanya kirim data bersih ke backend ───────────────────
         await axios.post('/input-mandiri', { ...cleanData, source: 'iomt' });
         window.location.reload();
     }
