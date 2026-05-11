@@ -167,6 +167,81 @@
             </div>
         </Transition>
 
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- DEMO IoMT CONFIRMATION MODAL                               -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <Transition name="modal-fade">
+            <div v-if="showDemoModal"
+                class="fixed inset-0 z-[998] flex items-center justify-center p-4"
+                style="background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);">
+                <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
+
+                    <!-- Header -->
+                    <div class="flex items-center gap-3 px-5 pt-5 pb-4">
+                        <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
+                            style="background: linear-gradient(135deg, #FEF3C7, #FDE68A);">
+                            <!-- Beaker / lab icon -->
+                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 3v8.5L5.5 17A2 2 0 007.31 20h9.38a2 2 0 001.81-2.87L15 11.5V3M9 3h6M9 3H7m8 0h2"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <h2 class="font-bold text-gray-800 text-sm leading-tight">Demo IoMT</h2>
+                                <span class="text-[9px] font-black text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded-full uppercase tracking-widest">SIMULASI</span>
+                            </div>
+                            <p class="text-[11px] text-amber-600 font-semibold tracking-widest uppercase mt-0.5">Proof of Concept</p>
+                        </div>
+                        <button @click="showDemoModal = false"
+                            class="w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition flex-shrink-0"
+                            aria-label="Tutup">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-5 pb-4 space-y-3">
+                        <div class="bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3">
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Fitur ini akan <strong class="text-gray-900">mensimulasikan pengambilan data dari perangkat IoMT</strong>
+                                sebagai demonstrasi alur kerja sistem. Data yang dihasilkan adalah nilai acak yang realistis secara klinis.
+                            </p>
+                        </div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">!</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">Data ini <strong class="text-gray-800">bukan data nyata</strong> dari perangkat fisik.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">i</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">Rekaman akan diberi label <strong class="text-gray-800">"Demo IoMT"</strong> agar dapat dibedakan.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-black">✓</span>
+                                <span class="text-xs text-gray-600 leading-relaxed">Alur validasi, analisis AI, dan penyimpanan data tetap berjalan nyata.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-5 pb-5 flex items-center gap-2">
+                        <button @click="showDemoModal = false"
+                            class="flex-1 py-2.5 rounded-2xl font-semibold text-xs text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
+                            Batal
+                        </button>
+                        <button id="btn-demo-confirm" @click="confirmDemo"
+                            class="flex-1 py-2.5 rounded-2xl font-bold text-xs text-white transition-all hover:opacity-90 active:scale-95 shadow-lg"
+                            style="background: linear-gradient(135deg, #D97706, #92400E);">
+                            ▶&nbsp; Mulai Simulasi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </Transition>
+
 
         <!-- Greeting Banner -->
         <div class="relative overflow-hidden rounded-2xl bg-primary text-white p-4 sm:p-6 mb-5 animate-fade-in-down shadow-xl shadow-primary/20">
@@ -249,10 +324,12 @@
 
         <!-- Action Row (Always Visible) -->
         <div class="grid grid-cols-2 gap-3 mb-5">
-        <!-- Sync Smartwatch -->
-            <button @click="doSync" :disabled="isSyncing" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 hover:opacity-90 active:scale-95 transition disabled:opacity-60 text-center relative overflow-hidden">
-                <!-- Badge perangkat tersandingkan -->
-                <span v-if="props.deviceId && !isSyncing"
+
+            <!-- ── REAL Sync button (hanya tampil jika ada deviceId) ── -->
+            <button v-if="props.deviceId" @click="doSync" :disabled="isSyncing"
+                class="flex flex-col items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/25 hover:opacity-90 active:scale-95 transition disabled:opacity-60 text-center relative overflow-hidden">
+                <!-- Badge device ID -->
+                <span v-if="!isSyncing"
                     class="absolute top-1.5 right-1.5 flex items-center gap-0.5 bg-white/20 backdrop-blur-sm text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full leading-none">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse inline-block"></span>
                     {{ props.deviceId.slice(0, 8) }}
@@ -264,7 +341,25 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 </svg>
                 <p class="font-bold text-xs">{{ isSyncing ? (syncStatus || 'Mengambil...') : 'Ambil Data Terbaru' }}</p>
-                <p class="text-[9px] text-white/70 mt-0.5">{{ isSyncing ? '' : (props.deviceId ? 'Smartwatch Terpasang ✓' : 'dari Smartwatch') }}</p>
+                <p class="text-[9px] text-white/70 mt-0.5">{{ isSyncing ? '' : 'Smartwatch Terpasang ✓' }}</p>
+            </button>
+
+            <!-- ── DEMO IoMT button (tampil jika TIDAK ada deviceId) ── -->
+            <button v-else @click="showDemoModal = true" :disabled="isSyncing"
+                class="flex flex-col items-center justify-center p-3 rounded-2xl text-white shadow-lg hover:opacity-90 active:scale-95 transition disabled:opacity-60 text-center relative overflow-hidden"
+                style="background: linear-gradient(135deg, #D97706, #92400E);">
+                <!-- DEMO badge -->
+                <span class="absolute top-1.5 right-1.5 text-[8px] font-black bg-white/25 text-white px-1.5 py-0.5 rounded-full leading-none tracking-widest">DEMO</span>
+                <!-- Beaker icon -->
+                <svg v-if="!isSyncing" class="w-6 h-6 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 3v8.5L5.5 17A2 2 0 007.31 20h9.38a2 2 0 001.81-2.87L15 11.5V3M9 3h6M9 3H7m8 0h2"/>
+                </svg>
+                <svg v-else class="w-6 h-6 mb-1.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <p class="font-bold text-xs">{{ isSyncing ? (syncStatus || 'Mensimulasikan...') : 'Demo IoMT' }}</p>
+                <p class="text-[9px] text-white/70 mt-0.5">{{ isSyncing ? '' : 'Simulasi Perangkat' }}</p>
             </button>
 
             <!-- Input Manual -->
@@ -457,6 +552,7 @@ const isSyncing  = ref(false);
 const syncStatus = ref('');
 const showBluetoothModal = ref(false);
 const bluetoothMessage = ref('');
+const showDemoModal = ref(false);
 const syncToken = ref(0);
 const SYNC_TIMEOUT_MS = 15000;
 
@@ -584,6 +680,61 @@ const closeBluetoothModal = () => {
 const retrySync = () => {
     showBluetoothModal.value = false;
     doSync();
+};
+
+// ── Demo IoMT — simulasi eksplisit dengan label jelas ────────────
+const confirmDemo = async () => {
+    showDemoModal.value = false;
+    isSyncing.value     = true;
+    syncWarnings.value  = [];
+
+    // Simulasikan proses penarikan data secara bertahap
+    const steps = [
+        { msg: 'Menginisialisasi antarmuka IoMT demo...', delay: 600 },
+        { msg: 'Mensimulasikan sinyal Bluetooth BLE...', delay: 800 },
+        { msg: '✓ Membaca detak jantung...', delay: 700 },
+        { msg: '✓ Membaca tekanan darah...', delay: 700 },
+        { msg: '✓ Membaca SpO2 & suhu...', delay: 600 },
+        { msg: '✓ Data demo berhasil digenerate!', delay: 400 },
+    ];
+    for (const step of steps) {
+        syncStatus.value = step.msg;
+        await new Promise(r => setTimeout(r, step.delay));
+    }
+
+    // Generate data realistis secara klinis (sama seperti simulateVitalData)
+    const demoData = {
+        heart_rate        : Math.floor(65 + Math.random() * 35),       // 65–100
+        systolic          : Math.floor(110 + Math.random() * 40),       // 110–150
+        diastolic         : Math.floor(70  + Math.random() * 20),       // 70–90
+        oxygen_saturation : Math.floor(96  + Math.random() * 4),        // 96–100
+        temperature       : parseFloat((36.2 + Math.random() * 1.0).toFixed(1)), // 36.2–37.2
+        deviceName        : 'VITALY Pulse v2.0 (Demo)',
+        isReal            : false,
+        isLimited         : false,
+    };
+
+    // Pastikan sistolik > diastolik
+    if (demoData.systolic <= demoData.diastolic) {
+        demoData.diastolic = demoData.systolic - Math.floor(20 + Math.random() * 15);
+    }
+
+    // Validasi tetap dijalankan
+    const { isValid, warnings, cleanData } = validateVitalData(demoData);
+    if (!isValid) {
+        syncWarnings.value = warnings;
+        syncStatus.value   = '⚠️ Data demo tidak lolos validasi. Coba lagi.';
+        isSyncing.value    = false;
+        return;
+    }
+
+    // Simpan ke backend dengan source: 'demo' — jelas terlabel di DB
+    await axios.post('/input-mandiri', {
+        ...cleanData,
+        source: 'demo',
+        notes : '[Demo IoMT] Data simulasi untuk demonstrasi alur kerja sistem.',
+    });
+    window.location.reload();
 };
 
 const props = defineProps({
