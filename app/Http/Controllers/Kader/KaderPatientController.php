@@ -210,7 +210,7 @@ class KaderPatientController extends Controller
             ->latest()
             ->get();
 
-        $filename = 'pasien_kader_' . now()->format('Ymd_His') . '.csv';
+        $filename = 'pasien_health_agent_' . now()->format('Ymd_His') . '.csv';
 
         $headers = [
             'Content-Type'        => 'text/csv; charset=UTF-8',
