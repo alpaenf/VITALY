@@ -20,44 +20,56 @@
 
             <!-- Nav -->
             <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
-                <NavLink href="/kader/dashboard" :active="isActive('/kader/dashboard')">
-                    <template #icon>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Link href="/kader/dashboard"
+                    :class="isActive('/kader/dashboard') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
+                    <span :class="isActive('/kader/dashboard') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4" :class="isActive('/kader/dashboard') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                         </svg>
-                    </template>
+                    </span>
                     Dashboard
-                </NavLink>
+                </Link>
 
-                <NavLink href="/kader/pasien" :active="isActive('/kader/pasien')">
-                    <template #icon>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Link href="/kader/pasien"
+                    :class="isActive('/kader/pasien') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
+                    <span :class="isActive('/kader/pasien') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4" :class="isActive('/kader/pasien') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                    </template>
+                    </span>
                     Data Pasien
-                </NavLink>
+                </Link>
 
                 <div class="my-1.5 border-t border-gray-100"></div>
                 <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Informasi</p>
 
-                <NavLink href="/edukasi" :active="isActive('/edukasi')">
-                    <template #icon>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Link href="/edukasi"
+                    :class="isActive('/edukasi') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
+                    <span :class="isActive('/edukasi') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4" :class="isActive('/edukasi') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
-                    </template>
+                    </span>
                     Edukasi
-                </NavLink>
+                </Link>
 
-                <NavLink href="/standar-normal" :active="isActive('/standar-normal')">
-                    <template #icon>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Link href="/standar-normal"
+                    :class="isActive('/standar-normal') ? 'bg-[#ECFDF5] text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group">
+                    <span :class="isActive('/standar-normal') ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4" :class="isActive('/standar-normal') ? 'text-primary' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
-                    </template>
+                    </span>
                     Standar Normal
-                </NavLink>
+                </Link>
             </nav>
 
             <!-- Bottom: user info + logout -->
@@ -276,7 +288,7 @@
 </template>
 
 <script setup>
-import { ref, computed, h } from 'vue';
+import { ref, computed } from 'vue';
 import { usePage, Link, router } from '@inertiajs/vue3';
 import LogoutModal from '@/Components/LogoutModal.vue';
 
@@ -326,28 +338,7 @@ const pageTitle = computed(() => {
     return 'Health Agent Portal';
 });
 
-const NavLink = {
-    props: ['href', 'active'],
-    setup(props, { slots }) {
-        return () => h(Link, {
-            href: props.href,
-            class: `flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200 group ${
-                props.active
-                    ? 'bg-[#ECFDF5] text-primary font-semibold'
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
-            }`,
-        }, () => [
-            h('span', {
-                class: `w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0 ${
-                    props.active ? 'bg-primary/10' : 'bg-gray-100 group-hover:bg-gray-200'
-                }`,
-            }, [
-                h('span', { class: props.active ? 'text-primary' : 'text-gray-500' }, slots.icon?.()),
-            ]),
-            h('span', {}, slots.default?.()),
-        ]);
-    }
-};
+
 </script>
 
 <style scoped>
