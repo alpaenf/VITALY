@@ -232,7 +232,7 @@
                             Batal
                         </button>
                         <button id="btn-demo-confirm" @click="confirmDemo"
-                            class="flex-1 py-2.5 rounded-2xl font-bold text-xs text-white transition-all hover:opacity-90 active:scale-95 shadow-lg bg-amber-700">
+                            class="flex-1 py-2.5 rounded-2xl font-bold text-xs text-white transition-all hover:opacity-90 active:scale-95 shadow-lg bg-emerald-600">
                             ▶&nbsp; Mulai Simulasi
                         </button>
                     </div>
@@ -344,7 +344,7 @@
 
             <!-- ── DEMO IoMT button (tampil jika TIDAK ada deviceId) ── -->
             <button v-else @click="showDemoModal = true" :disabled="isSyncing"
-                class="flex flex-col items-center justify-center p-3 rounded-2xl text-white shadow-lg hover:opacity-90 active:scale-95 transition disabled:opacity-60 text-center relative overflow-hidden bg-amber-700">
+                class="flex flex-col items-center justify-center p-3 rounded-2xl text-white shadow-lg hover:opacity-90 active:scale-95 transition disabled:opacity-60 text-center relative overflow-hidden bg-emerald-600">
                 <!-- DEMO badge -->
                 <span class="absolute top-1.5 right-1.5 text-[8px] font-black bg-white/25 text-white px-1.5 py-0.5 rounded-full leading-none tracking-widest">DEMO</span>
                 <!-- Beaker icon -->
@@ -726,12 +726,17 @@ const confirmDemo = async () => {
     }
 
     // Simpan ke backend dengan source: 'demo' — jelas terlabel di DB
-    await axios.post('/input-mandiri', {
-        ...cleanData,
-        source: 'demo',
-        notes : '[Demo IoMT] Data simulasi untuk demonstrasi alur kerja sistem.',
-    });
-    window.location.reload();
+    try {
+        await axios.post('/input-mandiri', {
+            ...cleanData,
+            source: 'demo',
+        });
+        window.location.reload();
+    } catch (err) {
+        console.error('[Demo IoMT] POST gagal:', err);
+        syncStatus.value = '⚠️ Gagal menyimpan data demo. Coba lagi.';
+        isSyncing.value  = false;
+    }
 };
 
 const props = defineProps({

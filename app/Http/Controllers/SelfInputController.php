@@ -31,7 +31,7 @@ class SelfInputController extends Controller
             'temperature'       => 'nullable|numeric|min:34|max:42',
             'weight'            => 'nullable|numeric|min:1|max:300',
             'height'            => 'nullable|numeric|min:50|max:250',
-            'source'            => 'nullable|string|in:manual,iomt',
+            'source'            => 'nullable|string|in:manual,iomt,demo',
         ]);
 
         // At least one vital must be present
@@ -51,7 +51,9 @@ class SelfInputController extends Controller
             'weight'            => $validated['weight']            ?? null,
             'height'            => $validated['height']            ?? null,
             'recorded_at'       => now(),
-            'notes'             => '[Sumber: ' . strtoupper($validated['source'] ?? 'manual') . ' - Input Mandiri]',
+            'notes'             => $validated['source'] === 'demo'
+                ? '[Demo IoMT] Data simulasi untuk demonstrasi alur kerja sistem.'
+                : '[Sumber: ' . strtoupper($validated['source'] ?? 'manual') . ' - Input Mandiri]',
         ]);
 
         if ($request->wantsJson()) {
