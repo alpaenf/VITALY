@@ -19,18 +19,128 @@
                         <p class="text-white/70 text-xs mt-0.5">Isi data kesehatanmu sendiri</p>
                     </div>
                 </div>
-                
-                <!-- Sync button -->
-                <button @click="doSync" :disabled="isSyncing"
-                    class="sm:ml-auto w-full sm:w-auto flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-4 py-3 sm:py-2 rounded-xl transition disabled:opacity-60 flex-shrink-0 mt-2 sm:mt-0">
-                    <svg v-if="!isSyncing" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+
+                <!-- Tab Switcher -->
+                <div class="sm:ml-auto flex bg-white/10 p-1 rounded-xl">
+                    <button @click="activeTab = 'bluetooth'"
+                        :class="[activeTab === 'bluetooth' ? 'bg-white text-primary' : 'text-white']"
+                        class="px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200">
+                        BLUETOOTH
+                    </button>
+                    <button @click="activeTab = 'gateway'"
+                        :class="[activeTab === 'gateway' ? 'bg-white text-primary' : 'text-white']"
+                        class="px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200">
+                        MOBILE GATEWAY
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content for Bluetooth Tab -->
+            <div v-if="activeTab === 'bluetooth'" class="mt-4 flex flex-col sm:flex-row gap-2 animate-fade-in">
+                <!-- Notify for Xiaomi (PRIMARY) -->
+                <button @click="doSyncNotify" :disabled="isSyncing"
+                    class="flex items-center justify-center gap-2 bg-white text-primary text-xs font-bold px-4 py-3 sm:py-2 rounded-xl transition disabled:opacity-60 hover:bg-white/90 shadow-lg flex-1">
+                    <svg v-if="!isSyncing" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
                     </svg>
                     <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                     </svg>
-                    <span>{{ isSyncing ? (syncStatus || 'Mengambil...') : 'Ambil Data Terbaru' }}</span>
+                    <span>{{ isSyncing && syncMode === 'notify' ? 'Syncing...' : '📱 Sync Mi Band 8' }}</span>
                 </button>
+
+                <!-- Generic BLE (SECONDARY) -->
+                <button @click="doSync" :disabled="isSyncing"
+                    class="flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-4 py-3 sm:py-2 rounded-xl transition disabled:opacity-60 flex-1">
+                    <svg v-if="!(isSyncing && syncMode === 'ble')" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                    </svg>
+                    <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    <span>{{ (isSyncing && syncMode === 'ble') ? 'Scanning...' : 'BLE Generic' }}</span>
+                </button>
+            </div>
+
+            <!-- Content for Gateway Tab -->
+            <div v-if="activeTab === 'gateway'" class="mt-4 animate-fade-in">
+                <div class="bg-white/10 rounded-xl p-3 border border-white/20">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-white/70">IoMT Gateway API</span>
+                        <span v-if="gatewayInfo.has_token" class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">READY</span>
+                    </div>
+                    
+                    <div v-if="!gatewayInfo.has_token" class="text-center py-2">
+                        <button @click="generateToken" class="text-[10px] font-bold bg-white text-primary px-4 py-2 rounded-lg hover:bg-white/90 transition">
+                            AKTIFKAN MOBILE SYNC
+                        </button>
+                    </div>
+
+                    <div v-else class="space-y-2">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] text-white/50 uppercase font-bold">API Token (Masukkan ke HP)</label>
+                            <div class="flex gap-2">
+                                <code class="bg-black/30 flex-1 px-2 py-1.5 rounded text-[10px] text-emerald-400 border border-white/10 overflow-hidden text-ellipsis">{{ gatewayInfo.token }}</code>
+                                <button @click="generateToken" title="Ganti Token" class="text-white/40 hover:text-white transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] text-white/50 uppercase font-bold">Endpoint URL</label>
+                            <code class="bg-black/30 px-2 py-1.5 rounded text-[10px] text-blue-300 border border-white/10 overflow-hidden text-ellipsis">{{ gatewayInfo.push_url }}</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Setup Guide for Notify -->
+        <div v-if="showGuide" class="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-4 animate-fade-in-down">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">📱</span>
+                    <div>
+                        <p class="text-sm font-bold text-blue-800 mb-2">Setup Notify for Xiaomi (Wajib 1x)</p>
+                        <ol class="text-xs text-blue-700 space-y-1 list-decimal list-inside">
+                            <li>Install <strong>"Notify for Xiaomi & Mi Fitness"</strong> dari Play Store</li>
+                            <li>Buka Notify → Connect ke Mi Band 8 kamu</li>
+                            <li>Masuk ke <strong>Settings → Heart Rate</strong></li>
+                            <li>Aktifkan <strong>"Broadcast as GATT Sensor / HR Broadcast"</strong></li>
+                            <li>Buka VITALY di Chrome/Edge → Klik <strong>"Sync Mi Band 8"</strong></li>
+                        </ol>
+                    </div>
+                </div>
+                <button @click="showGuide = false" class="text-blue-400 hover:text-blue-600 flex-shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tech Log Terminal (tampil saat sync) -->
+        <div v-if="techLogs.length > 0 || isSyncing" class="bg-gray-950 rounded-2xl p-4 mb-4 font-mono text-xs overflow-hidden animate-fade-in-down">
+            <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-800">
+                <div class="flex gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                </div>
+                <span class="text-gray-400 text-[10px] tracking-wider">VITALY IoMT — BLE Data Acquisition Log</span>
+                <span v-if="isSyncing" class="ml-auto flex items-center gap-1 text-green-400">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                    LIVE
+                </span>
+                <span v-else class="ml-auto text-gray-600 text-[10px]">DONE</span>
+            </div>
+            <div ref="logContainer" class="space-y-1 max-h-40 overflow-y-auto">
+                <p v-for="(log, i) in techLogs" :key="i"
+                    class="text-green-400 leading-relaxed"
+                    :class="log.includes('✗') || log.includes('⚠️') ? 'text-yellow-400' : log.includes('✅') ? 'text-emerald-400' : 'text-green-400'">
+                    <span class="text-gray-600">{{ String(i).padStart(2,'0') }} &gt; </span>{{ log }}
+                </p>
+                <span v-if="isSyncing" class="inline-block w-2 h-3 bg-green-400 animate-pulse"></span>
             </div>
         </div>
 
@@ -39,7 +149,12 @@
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
             </svg>
-            Data berhasil disinkronkan dari smartwatch! Silakan periksa dan simpan.
+            <div>
+                <span class="font-semibold">Data berhasil disinkronkan!</span>
+                <span class="text-emerald-600 ml-1 text-xs">{{ syncDeviceName }}</span>
+                <span v-if="!syncIsReal" class="ml-2 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Mode Simulasi</span>
+                <span v-else class="ml-2 text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">📡 Real Device</span>
+            </div>
         </div>
 
         <!-- IoMT tip -->
@@ -47,7 +162,11 @@
             <svg class="w-4 h-4 flex-shrink-0 mt-0.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <span><strong>Tips:</strong> Klik "Ambil Data Terbaru" untuk mengisi data detak jantung & tekanan darah secara otomatis dari smartwatch kamu. Data lain seperti berat badan dan gula darah tetap diisi manual.</span>
+            <span>
+                <strong>Tips:</strong> Klik <strong>"📱 Sync Mi Band 8"</strong> untuk ambil data otomatis dari Mi Band via Notify for Xiaomi.
+                Belum setup?
+                <button @click="showGuide = true" class="text-blue-600 underline font-semibold">Lihat panduan</button>.
+            </span>
         </div>
 
         <!-- Form -->
@@ -152,15 +271,27 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Head } from '@inertiajs/vue3';
-import { useForm } from '@inertiajs/vue3';
+import { ref, nextTick } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { syncVitalData } from '@/Services/BluetoothService';
+import { syncFromNotify, syncVitalData } from '@/Services/BluetoothService';
 
-const isSyncing   = ref(false);
-const syncStatus  = ref('');
-const syncSuccess = ref(false);
+const isSyncing    = ref(false);
+const syncMode     = ref('');       // 'notify' | 'ble' | 'gateway'
+const syncSuccess  = ref(false);
+const syncDeviceName = ref('');
+const syncIsReal   = ref(false);
+const showGuide    = ref(false);
+const techLogs     = ref([]);
+const logContainer = ref(null);
+const activeTab    = ref('bluetooth'); // 'bluetooth' | 'gateway'
+
+// State untuk IoMT Gateway
+const gatewayInfo = ref({
+    has_token: false,
+    token: '',
+    push_url: ''
+});
 
 const autoFilled = ref({
     systolic: false, diastolic: false,
@@ -179,22 +310,83 @@ const form = useForm({
     source:            'manual',
 });
 
+// Ambil info token saat mount
+import { onMounted } from 'vue';
+import axios from 'axios';
+
+onMounted(async () => {
+    try {
+        const res = await axios.get(route('iomt.token.info'));
+        gatewayInfo.value = res.data;
+    } catch (e) { console.error("Gagal load gateway info", e); }
+});
+
+const generateToken = async () => {
+    try {
+        const res = await axios.post(route('iomt.token.generate'));
+        gatewayInfo.value.token = res.data.token;
+        gatewayInfo.value.has_token = true;
+        addLog("✅ Token IoMT baru berhasil dibuat!");
+    } catch (e) { addLog("✗ Gagal generate token."); }
+};
+
 const clearAuto = (field) => { autoFilled.value[field] = false; };
 
+// Append log + auto-scroll ke bawah
+const addLog = async (msg) => {
+    techLogs.value.push(msg);
+    await nextTick();
+    if (logContainer.value) {
+        logContainer.value.scrollTop = logContainer.value.scrollHeight;
+    }
+};
+
+const applyData = (data) => {
+    if (!data) return;
+    if (data.heart_rate)        { form.heart_rate        = data.heart_rate;        autoFilled.value.heart_rate        = true; }
+    if (data.systolic)          { form.systolic          = data.systolic;          autoFilled.value.systolic          = true; }
+    if (data.diastolic)         { form.diastolic         = data.diastolic;         autoFilled.value.diastolic         = true; }
+    if (data.oxygen_saturation) { form.oxygen_saturation = data.oxygen_saturation; autoFilled.value.oxygen_saturation = true; }
+    form.source      = 'iomt';
+    syncSuccess.value   = true;
+    syncDeviceName.value = data.deviceName || 'IoMT Device';
+    syncIsReal.value     = !!data.isReal;
+};
+
+// ── Sync via Notify for Xiaomi (Mode Utama) ──
+const doSyncNotify = async () => {
+    isSyncing.value  = true;
+    syncMode.value   = 'notify';
+    syncSuccess.value = false;
+    techLogs.value   = [];
+
+    try {
+        const data = await syncFromNotify(addLog);
+        applyData(data);
+    } catch (err) {
+        await addLog(`[VITALY] ✗ Fatal: ${err.message}`);
+    } finally {
+        isSyncing.value = false;
+        syncMode.value  = '';
+    }
+};
+
+// ── Sync via Generic BLE (Fallback) ──
 const doSync = async () => {
     isSyncing.value  = true;
+    syncMode.value   = 'ble';
     syncSuccess.value = false;
-    const data = await syncVitalData((msg) => { syncStatus.value = msg; });
-    if (data) {
-        if (data.systolic)          { form.systolic          = data.systolic;          autoFilled.value.systolic          = true; }
-        if (data.diastolic)         { form.diastolic         = data.diastolic;         autoFilled.value.diastolic         = true; }
-        if (data.heart_rate)        { form.heart_rate        = data.heart_rate;        autoFilled.value.heart_rate        = true; }
-        if (data.oxygen_saturation) { form.oxygen_saturation = data.oxygen_saturation; autoFilled.value.oxygen_saturation = true; }
-        form.source   = 'iomt';
-        syncSuccess.value = true;
+    techLogs.value   = [];
+
+    try {
+        const data = await syncVitalData((msg) => addLog(msg));
+        applyData(data);
+    } catch (err) {
+        await addLog(`[VITALY] ✗ Fatal: ${err.message}`);
+    } finally {
+        isSyncing.value = false;
+        syncMode.value  = '';
     }
-    isSyncing.value = false;
-    syncStatus.value = '';
 };
 
 const submit = () => {

@@ -9,6 +9,7 @@ use App\Http\Controllers\AiChatController;
 use App\Http\Controllers\EdukasiController;
 use App\Http\Controllers\StandarNormalController;
 use App\Http\Controllers\SelfInputController;
+use App\Http\Controllers\IomtController;
 use App\Http\Controllers\Kader\KaderDashboardController;
 use App\Http\Controllers\Kader\KaderPatientController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -68,7 +69,19 @@ Route::middleware('patient.session')->group(function () {
     // Pasien mandiri — input & sync data sendiri
     Route::get('/input-mandiri', [SelfInputController::class, 'show'])->name('self-input.show');
     Route::post('/input-mandiri', [SelfInputController::class, 'store'])->name('self-input.store');
+
+    // IoMT Token management (untuk pasien generate token)
+    Route::post('/iomt/token/generate', [IomtController::class, 'generateToken'])->name('iomt.token.generate');
+    Route::get('/iomt/token/info', [IomtController::class, 'tokenInfo'])->name('iomt.token.info');
 });
+
+// ─────────────────────────────────────────────────────────────────
+// IoMT Push API — Tidak butuh session, autentikasi via X-IoMT-Token
+// Dipanggil dari Tasker / HTTP Shortcuts / Automate di HP Android
+// ─────────────────────────────────────────────────────────────────
+Route::post('/api/iomt/push', [IomtController::class, 'push'])
+    ->name('iomt.push')
+    ->withoutMiddleware(['web']); // Tasker tidak kirim cookie session
 
 // Public signed report link for WhatsApp sharing (no auth, signature-protected)
 Route::get('/share/analysis/{aiAnalysis}', [AiAnalysisController::class, 'sharedReport'])

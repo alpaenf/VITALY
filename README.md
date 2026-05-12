@@ -515,4 +515,33 @@ php artisan view:cache
 
 ---
 
+## 🚀 Rencana Pengembangan Lebih Lanjut (Future Roadmap)
+
+VITALY dirancang untuk terus berkembang melampaui fase *Proof of Concept*. Berikut adalah rencana pengembangan strategis kami:
+
+### 1. 🧠 AI & Analitik Prediktif (Next-Gen Diagnostics)
+*   **Predictive Health Scoring:** Mengembangkan model AI yang mampu memprediksi risiko penyakit degeneratif (seperti stroke atau gagal ginjal) dalam kurun waktu 5 tahun ke depan berdasarkan tren data biometrik historis.
+*   **Multi-Modal Analysis:** Integrasi analisis citra (computer vision) untuk mendeteksi kondisi fisik melalui foto (misal: analisis warna kulit atau lidah) sebagai data pendukung diagnosis.
+
+### 2. ⌚ Ekspansi Ekosistem IoMT (Device Interoperability)
+*   **Universal Medical Device Protocol:** Memperluas dukungan integrasi tidak hanya pada smartwatch, tetapi juga pada perangkat medis tersertifikasi seperti Tensimeter Bluetooth, Glukometer digital, dan Timbangan pintar dari berbagai produsen.
+*   **Real-time Emergency Trigger:** Sistem peringatan otomatis yang akan mengirimkan koordinat lokasi dan data vital terakhir ke nomor darurat keluarga atau Puskesmas terdekat jika terdeteksi parameter vital kritis (seperti henti jantung atau hipoksia).
+
+### 3. 🏥 Telemedicine & Integrasi Nasional
+*   **SatuSehat Integration:** Melakukan sinkronisasi data rekam medis VITALY dengan platform **SatuSehat** milik Kemenkes RI untuk memastikan kontinuitas perawatan pasien di berbagai fasilitas kesehatan nasional.
+*   **Google Fit Ecosystem Bridge:** Mengintegrasikan Google Fit API sebagai *data aggregator* universal. Hal ini memungkinkan VITALY menyinkronkan data kesehatan dari ratusan perangkat *wearable* lain (Fitbit, Garmin, Samsung Gear, dll) secara otomatis tanpa perlu pairing manual satu per satu.
+
+### 4. 🔐 Keamanan & Otentikasi Modern
+*   **WhatsApp Passwordless Auth (OTP):** Implementasi otentikasi berbasis WhatsApp untuk menggantikan password tradisional. Hal ini meningkatkan keamanan melalui sistem OTP (One-Time Password) sekaligus memudahkan akses bagi pengguna lansia yang lebih familiar dengan ekosistem WhatsApp.
+*   **WhatsApp Critical Alerts:** Pengiriman notifikasi otomatis dan laporan kesehatan terenkripsi langsung ke nomor WhatsApp pasien atau wali medis jika sistem mendeteksi kondisi kesehatan yang mengkhawatirkan.
+
+### 5. 🌐 Aksesibilitas Jaringan & Bahasa
+*   **Offline-First Architecture:** Mengoptimalkan aplikasi agar tetap berfungsi penuh di daerah tertinggal (3T) yang minim koneksi internet, di mana data akan tersimpan lokal secara aman dan disinkronkan secara otomatis saat mendeteksi sinyal.
+*   **Localized Voice Assistant:** Penambahan bahasa daerah (seperti Bahasa Jawa, Sunda, dll) pada fitur *Read Aloud* untuk membantu pemahaman lansia di berbagai pelosok daerah terhadap hasil analisis kesehatan mereka.
+
+### 5. 🏆 Gamifikasi & Reward System
+*   **VITALY Points:** Implementasi sistem poin bagi pengguna yang rutin melakukan pengecekan kesehatan dan menjaga pola hidup sehat, yang nantinya dapat ditukarkan dengan insentif kesehatan (seperti voucher vitamin atau layanan pemeriksaan gratis).
+
+---
+
 *VITALY © 2026 — Sistem Monitor Kesehatan IoMT · KTI Competition Edition*
