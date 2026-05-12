@@ -20,77 +20,31 @@
                     </div>
                 </div>
 
-                <!-- Tab Switcher -->
-                <div class="sm:ml-auto flex bg-white/10 p-1 rounded-xl">
-                    <button @click="activeTab = 'bluetooth'"
-                        :class="[activeTab === 'bluetooth' ? 'bg-white text-primary' : 'text-white']"
-                        class="px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200">
-                        BLUETOOTH
+                <!-- Sync buttons -->
+                <div class="sm:ml-auto flex flex-col sm:flex-row gap-2 mt-2 sm:mt-0">
+                    <!-- Notify for Xiaomi (PRIMARY) -->
+                    <button @click="doSyncNotify" :disabled="isSyncing"
+                        class="flex items-center justify-center gap-2 bg-white text-primary text-xs font-bold px-4 py-3 sm:py-2 rounded-xl transition disabled:opacity-60 hover:bg-white/90 shadow-lg">
+                        <svg v-if="!isSyncing" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                        </svg>
+                        <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        <span>{{ isSyncing && syncMode === 'notify' ? 'Syncing...' : '📱 Sync Mi Band 8' }}</span>
                     </button>
-                    <button @click="activeTab = 'gateway'"
-                        :class="[activeTab === 'gateway' ? 'bg-white text-primary' : 'text-white']"
-                        class="px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200">
-                        MOBILE GATEWAY
+
+                    <!-- Generic BLE (SECONDARY) -->
+                    <button @click="doSync" :disabled="isSyncing"
+                        class="flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-4 py-3 sm:py-2 rounded-xl transition disabled:opacity-60">
+                        <svg v-if="!(isSyncing && syncMode === 'ble')" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                        </svg>
+                        <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        <span>{{ (isSyncing && syncMode === 'ble') ? 'Scanning...' : 'BLE Generic' }}</span>
                     </button>
-                </div>
-            </div>
-
-            <!-- Content for Bluetooth Tab -->
-            <div v-if="activeTab === 'bluetooth'" class="mt-4 flex flex-col sm:flex-row gap-2 animate-fade-in">
-                <!-- Notify for Xiaomi (PRIMARY) -->
-                <button @click="doSyncNotify" :disabled="isSyncing"
-                    class="flex items-center justify-center gap-2 bg-white text-primary text-xs font-bold px-4 py-3 sm:py-2 rounded-xl transition disabled:opacity-60 hover:bg-white/90 shadow-lg flex-1">
-                    <svg v-if="!isSyncing" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                    </svg>
-                    <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    <span>{{ isSyncing && syncMode === 'notify' ? 'Syncing...' : '📱 Sync Mi Band 8' }}</span>
-                </button>
-
-                <!-- Generic BLE (SECONDARY) -->
-                <button @click="doSync" :disabled="isSyncing"
-                    class="flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-4 py-3 sm:py-2 rounded-xl transition disabled:opacity-60 flex-1">
-                    <svg v-if="!(isSyncing && syncMode === 'ble')" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
-                    </svg>
-                    <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    <span>{{ (isSyncing && syncMode === 'ble') ? 'Scanning...' : 'BLE Generic' }}</span>
-                </button>
-            </div>
-
-            <!-- Content for Gateway Tab -->
-            <div v-if="activeTab === 'gateway'" class="mt-4 animate-fade-in">
-                <div class="bg-white/10 rounded-xl p-3 border border-white/20">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-white/70">IoMT Gateway API</span>
-                        <span v-if="gatewayInfo.has_token" class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">READY</span>
-                    </div>
-                    
-                    <div v-if="!gatewayInfo.has_token" class="text-center py-2">
-                        <button @click="generateToken" class="text-[10px] font-bold bg-white text-primary px-4 py-2 rounded-lg hover:bg-white/90 transition">
-                            AKTIFKAN MOBILE SYNC
-                        </button>
-                    </div>
-
-                    <div v-else class="space-y-2">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] text-white/50 uppercase font-bold">API Token (Masukkan ke HP)</label>
-                            <div class="flex gap-2">
-                                <code class="bg-black/30 flex-1 px-2 py-1.5 rounded text-[10px] text-emerald-400 border border-white/10 overflow-hidden text-ellipsis">{{ gatewayInfo.token }}</code>
-                                <button @click="generateToken" title="Ganti Token" class="text-white/40 hover:text-white transition">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] text-white/50 uppercase font-bold">Endpoint URL</label>
-                            <code class="bg-black/30 px-2 py-1.5 rounded text-[10px] text-blue-300 border border-white/10 overflow-hidden text-ellipsis">{{ gatewayInfo.push_url }}</code>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -277,21 +231,13 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { syncFromNotify, syncVitalData } from '@/Services/BluetoothService';
 
 const isSyncing    = ref(false);
-const syncMode     = ref('');       // 'notify' | 'ble' | 'gateway'
+const syncMode     = ref('');       // 'notify' | 'ble'
 const syncSuccess  = ref(false);
 const syncDeviceName = ref('');
 const syncIsReal   = ref(false);
 const showGuide    = ref(false);
 const techLogs     = ref([]);
 const logContainer = ref(null);
-const activeTab    = ref('bluetooth'); // 'bluetooth' | 'gateway'
-
-// State untuk IoMT Gateway
-const gatewayInfo = ref({
-    has_token: false,
-    token: '',
-    push_url: ''
-});
 
 const autoFilled = ref({
     systolic: false, diastolic: false,
@@ -309,26 +255,6 @@ const form = useForm({
     height:            '',
     source:            'manual',
 });
-
-// Ambil info token saat mount
-import { onMounted } from 'vue';
-import axios from 'axios';
-
-onMounted(async () => {
-    try {
-        const res = await axios.get(route('iomt.token.info'));
-        gatewayInfo.value = res.data;
-    } catch (e) { console.error("Gagal load gateway info", e); }
-});
-
-const generateToken = async () => {
-    try {
-        const res = await axios.post(route('iomt.token.generate'));
-        gatewayInfo.value.token = res.data.token;
-        gatewayInfo.value.has_token = true;
-        addLog("✅ Token IoMT baru berhasil dibuat!");
-    } catch (e) { addLog("✗ Gagal generate token."); }
-};
 
 const clearAuto = (field) => { autoFilled.value[field] = false; };
 

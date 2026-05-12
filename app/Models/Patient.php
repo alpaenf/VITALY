@@ -17,7 +17,6 @@ class Patient extends Model
         'phone',
         'address',
         'device_id',
-        'iomt_token',
     ];
 
     protected $casts = [
