@@ -31,7 +31,7 @@
                         <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
-                        <span>{{ isSyncing && syncMode === 'notify' ? 'Syncing...' : '📱 Sync Mi Band 8' }}</span>
+                        <span>{{ isSyncing && syncMode === 'notify' ? 'Syncing...' : 'Sync Mi Band 8' }}</span>
                     </button>
 
                     <!-- Generic BLE (SECONDARY) -->
@@ -117,7 +117,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             <span>
-                <strong>Tips:</strong> Klik <strong>"📱 Sync Mi Band 8"</strong> untuk ambil data otomatis dari Mi Band via Notify for Xiaomi.
+                <strong>Tips:</strong> Klik <strong>"Sync Mi Band 8"</strong> untuk ambil data otomatis dari Mi Band via Notify for Xiaomi.
                 Belum setup?
                 <button @click="showGuide = true" class="text-blue-600 underline font-semibold">Lihat panduan</button>.
             </span>
